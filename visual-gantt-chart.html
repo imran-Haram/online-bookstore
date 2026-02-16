@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Online Bookstore Project - Gantt Chart</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f5f5f5;
+        }
+        .gantt-container {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            overflow-x: auto;
+        }
+        .gantt-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .gantt-chart {
+            min-width: 1200px;
+        }
+        .gantt-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 12px;
+        }
+        .gantt-table th, .gantt-table td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        .gantt-table th {
+            background-color: #4CAF50;
+            color: white;
+            font-weight: bold;
+        }
+        .phase-header {
+            background-color: #2196F3;
+            color: white;
+            font-weight: bold;
+        }
+        .task-row {
+            background-color: #f9f9f9;
+        }
+        .task-row:nth-child(even) {
+            background-color: #ffffff;
+        }
+        .gantt-bar {
+            height: 20px;
+            border-radius: 3px;
+            display: inline-block;
+            margin: 2px 0;
+            position: relative;
+        }
+        .phase1 { background-color: #FF6B6B; }
+        .phase2 { background-color: #4ECDC4; }
+        .phase3 { background-color: #45B7D1; }
+        .phase4 { background-color: #96CEB4; }
+        .phase5 { background-color: #FFEAA7; }
+        .phase6 { background-color: #DDA0DD; }
+        .phase7 { background-color: #98D8C8; }
+        .completed { opacity: 0.7; border: 2px solid #4CAF50; }
+        .in-progress { opacity: 0.9; border: 2px solid #FF9800; }
+        .pending { opacity: 0.5; border: 2px solid #9E9E9E; }
+        .legend {
+            margin-top: 20px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .legend-color {
+            width: 20px;
+            height: 20px;
+            border-radius: 3px;
+        }
+        .milestone {
+            background-color: #FF4444;
+            color: white;
+            font-weight: bold;
+            text-align: center;
+        }
+        .week-header {
+            writing-mode: vertical-rl;
+            text-orientation: mixed;
+            background-color: #E3F2FD;
+            font-size: 10px;
+            min-width: 60px;
+        }
+    </style>
+</head>
+<body>
+    <div class="gantt-container">
+        <div class="gantt-header">
+            <h1>Online Bookstore Project - Gantt Chart</h1>
+            <p><strong>Project ID:</strong> F25PROJECT74F3A | <strong>Student:</strong> BC220214668 | <strong>Supervisor:</strong> Hafiz Bilal Saqib</p>
+            <p><strong>Duration:</strong> 12 Weeks (November 2024 - February 2025)</p>
+        </div>
+        
+        <div class="gantt-chart">
+            <table class="gantt-table">
+                <thead>
+                    <tr>
+                        <th style="width: 200px;">Task</th>
+                        <th style="width: 80px;">Duration</th>
+                        <th class="week-header">Week 1<br>Nov 15-21</th>
+                        <th class="week-header">Week 2<br>Nov 22-28</th>
+                        <th class="week-header">Week 3<br>Nov 29-Dec 5</th>
+                        <th class="week-header">Week 4<br>Dec 6-12</th>
+                        <th class="week-header">Week 5<br>Dec 13-19</th>
+                        <th class="week-header">Week 6<br>Dec 20-26</th>
+                        <th class="week-header">Week 7<br>Dec 27-Jan 2</th>
+                        <th class="week-header">Week 8<br>Jan 3-9</th>
+                        <th class="week-header">Week 9<br>Jan 10-16</th>
+                        <th class="week-header">Week 10<br>Jan 17-23</th>
+                        <th class="week-header">Week 11<br>Jan 24-30</th>
+                        <th class="week-header">Week 12<br>Jan 31-Feb 6</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Phase 1: Planning & Analysis -->
+                    <tr class="phase-header">
+                        <td colspan="14">Phase 1: Planning & Analysis</td>
+                    </tr>
+                    <tr class="task-row">
+                        <td>Requirements Gathering</td>
+                        <td>3 days</td>
+                        <td><div class="gantt-bar phase1 completed" style="width: 60%;"></div></td>
+                        <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+                    </tr>
+                    <tr class="task-row">
+                        <td>Functional Requirements</td>
+                        <td>2 days</td>
+                        <td><div class="gantt-bar phase1 completed" style="width: 40%; margin-left: 60%;"></div></td>
+                        <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+                    </tr>
+                    <tr class="task-row">
+                        <td>Non-Functional Requirements</td>
+                        <td>2 days</td>
+                        <td></td>
+                        <td><div class="gantt-bar phase1 completed" style="width: 40%;"></div></td>
+                        <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+                    </tr>
+                    <tr class="task-row">
+                        <td>Use Case Diagram</td>
+                        <td>2 days</td>
+                        <td></td>
+                        <td><div class="gantt-bar phase1 in-progress" style="width: 40%; margin-left: 40%;"></div></td>
+                        <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+                    </tr>
+                    <tr class="task-row">
+                        <td>Project Scope Finalization</td>
+                        <td>2 days</td>
+                        <td></td>
+                        <td><div class="gantt-bar phase1 pending" style="width: 20%; margin-left: 80%;"></div></td>
+                        <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+                    </tr>
+                    
+                    <!-- Phase 2: System Design -->
+                    <tr class="phase-header">
+                        <td colspan="14">Phase 2: System Design</td>
+                    </tr>
+                    <tr class="task-row">
+                        <td>Entity Relationship Diagram</td>
+                        <td>3 days</td>
+                        <td></td><td></td>
+                        <td><div class="gantt-bar phase2 pending" style="width: 60%;"></div></td>
+                        <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+                    </tr>
+                    <tr class="task-row">
+                        <td>Database Schema Design</td>
+                        <td>3 days</td>
+                        <td></td><td></td>
+                        <td><div class="gantt-bar phase2 pending" style="width: 40%; margin-left: 60%;"></div></td>
+                        <td><div class="gantt-bar phase2 pending" style="width: 20%;"></div></td>
+                        <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+                    </tr>
+                    <tr class="task-row">
+                        <td>System Architecture</td>
+                        <td>3 days</td>
+                        <td></td><td></td><td></td>
+                        <td><div class="gantt-bar phase2 pending" style="width: 60%;"></div></td>
+                        <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+                    </tr>
+                    <tr class="task-row">
+                        <td>Interface Design</td>
+                        <td>4 days</td>
+                        <td></td><td></td><td></td>
+                        <td><div class="gantt-bar phase2 pending" style="width: 40%; margin-left: 60%;"></div></td>
+                        <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+                    </tr>
+                    
+                    <!-- Phase 3: Database Development -->
+                    <tr class="phase-header">
+                        <td colspan="14">Phase 3: Database Development</td>
+                    </tr>
+                    <tr class="task-row">
+                        <td>Database Setup</td>
+                        <td>2 days</td>
+                        <td></td><td></td><td></td><td></td>
+                        <td><div class="gantt-bar phase3 pending" style="width: 40%;"></div></td>
+                        <td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+                    </tr>
+                    <tr class="task-row">
+                        <td>Tables Creation</td>
+                        <td>5 days</td>
+                        <td></td><td></td><td></td><td></td>
+                        <td><div class="gantt-bar phase3 pending" style="width: 60%; margin-left: 40%;"></div></td>
+                        <td><div class="gantt-bar phase3 pending" style="width: 40%;"></div></td>
+                        <td></td><td></td><td></td><td></td><td></td><td></td>
+                    </tr>
+                    <tr class="task-row">
+                        <td>Database Testing & Optimization</td>
+                        <td>4 days</td>
+                        <td></td><td></td><td></td><td></td><td></td>
+                        <td><div class="gantt-bar phase3 pending" style="width: 80%; margin-left: 20%;"></div></td>
+                        <td></td><td></td><td></td><td></td><td></td><td></td>
+                    </tr>
+                    
+                    <!-- Phase 4: Backend Development -->
+                    <tr class="phase-header">
+                        <td colspan="14">Phase 4: Backend Development</td>
+                    </tr>
+                    <tr class="task-row">
+                        <td>Models & Authentication</td>
+                        <td>5 days</td>
+                        <td></td><td></td><td></td><td></td><td></td><td></td>
+                        <td><div class="gantt-bar phase4 pending" style="width: 100%;"></div></td>
+                        <td></td><td></td><td></td><td></td><td></td>
+                    </tr>
+                    <tr class="task-row">
+                        <td>Book & Order Management</td>
+                        <td>5 days</td>
+                        <td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+                        <td><div class="gantt-bar phase4 pending" style="width: 100%;"></div></td>
+                        <td></td><td></td><td></td><td></td>
+                    </tr>
+                    
+                    <!-- Phase 5: Frontend Development -->
+                    <tr class="phase-header">
+                        <td colspan="14">Phase 5: Frontend Development</td>
+                    </tr>
+                    <tr class="task-row">
+                        <td>User Interface Pages</td>
+                        <td>7 days</td>
+                        <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+                        <td><div class="gantt-bar phase5 pending" style="width: 100%;"></div></td>
+                        <td></td><td></td><td></td>
+                    </tr>
+                    <tr class="task-row">
+                        <td>Admin Dashboard</td>
+                        <td>3 days</td>
+                        <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+                        <td><div class="gantt-bar phase5 pending" style="width: 60%;"></div></td>
+                        <td></td><td></td>
+                    </tr>
+                    
+                    <!-- Phase 6: Testing -->
+                    <tr class="phase-header">
+                        <td colspan="14">Phase 6: Testing & Integration</td>
+                    </tr>
+                    <tr class="task-row">
+                        <td>Testing & Bug Fixes</td>
+                        <td>7 days</td>
+                        <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+                        <td><div class="gantt-bar phase6 pending" style="width: 100%;"></div></td>
+                        <td></td>
+                    </tr>
+                    
+                    <!-- Phase 7: Deployment -->
+                    <tr class="phase-header">
+                        <td colspan="14">Phase 7: Deployment & Documentation</td>
+                    </tr>
+                    <tr class="task-row">
+                        <td>Deployment & Final Docs</td>
+                        <td>6 days</td>
+                        <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+                        <td><div class="gantt-bar phase7 pending" style="width: 100%;"></div></td>
+                    </tr>
+                    
+                    <!-- Milestones -->
+                    <tr class="milestone">
+                        <td colspan="2"><strong>KEY MILESTONES</strong></td>
+                        <td></td>
+                        <td>📋 Requirements</td>
+                        <td></td>
+                        <td>🎨 Design</td>
+                        <td></td>
+                        <td>🗄️ Database</td>
+                        <td>⚙️ Backend</td>
+                        <td></td>
+                        <td>🖥️ Frontend</td>
+                        <td>✅ Testing</td>
+                        <td>🚀 Delivery</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        
+        <div class="legend">
+            <h3>Legend:</h3>
+            <div class="legend-item">
+                <div class="legend-color phase1"></div>
+                <span>Phase 1: Planning & Analysis</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color phase2"></div>
+                <span>Phase 2: System Design</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color phase3"></div>
+                <span>Phase 3: Database Development</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color phase4"></div>
+                <span>Phase 4: Backend Development</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color phase5"></div>
+                <span>Phase 5: Frontend Development</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color phase6"></div>
+                <span>Phase 6: Testing & Integration</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color phase7"></div>
+                <span>Phase 7: Deployment & Documentation</span>
+            </div>
+        </div>
+        
+        <div class="legend">
+            <h3>Status:</h3>
+            <div class="legend-item">
+                <div class="legend-color completed" style="background-color: #4CAF50;"></div>
+                <span>✅ Completed</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color in-progress" style="background-color: #FF9800;"></div>
+                <span>🔄 In Progress</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color pending" style="background-color: #9E9E9E;"></div>
+                <span>⏳ Pending</span>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
