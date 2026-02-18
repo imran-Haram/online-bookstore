@@ -281,11 +281,11 @@
     <div class="page-break"></div>
     <h2>Level 0 — Context Diagram</h2>
     <div class="section-desc">
-        The Context Diagram shows the <strong>entire system as a single process</strong> and identifies all external entities (actors) that interact with it. It defines the system boundary.
+        The Context Diagram shows the <strong>entire system as a single process</strong> and identifies the two external entities that interact with it. It defines the system boundary.
     </div>
 
     <div class="diagram-container">
-        <svg width="1050" height="700" viewBox="0 0 1050 700">
+        <svg width="1050" height="620" viewBox="0 0 1050 620">
             <defs>
                 <marker id="arrow" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
                     <polygon points="0 0, 10 3.5, 0 7" fill="#636e72"/>
@@ -297,137 +297,138 @@
 
             <!-- Central Process -->
             <g class="process">
-                <ellipse cx="525" cy="350" rx="160" ry="80" fill="#74b9ff" stroke="#0984e3" stroke-width="3"/>
-                <text x="525" y="335" font-size="16" font-weight="700" fill="#fff" text-anchor="middle" font-family="Inter">Online Bookstore</text>
-                <text x="525" y="360" font-size="13" font-weight="500" fill="#fff" text-anchor="middle" font-family="Inter">System</text>
-                <text x="525" y="380" font-size="10" fill="#d6e7ff" text-anchor="middle" font-family="Inter">(P0)</text>
-            </g>
-
-            <!-- Guest Entity (top-left) -->
-            <g class="entity">
-                <rect x="50" y="60" width="130" height="50"/>
-                <text x="115" y="85">Guest</text>
+                <ellipse cx="525" cy="310" rx="165" ry="85" fill="#74b9ff" stroke="#0984e3" stroke-width="3"/>
+                <text x="525" y="295" font-size="16" font-weight="700" fill="#fff" text-anchor="middle" font-family="Inter">Online Bookstore</text>
+                <text x="525" y="318" font-size="13" font-weight="500" fill="#fff" text-anchor="middle" font-family="Inter">System</text>
+                <text x="525" y="340" font-size="10" fill="#d6e7ff" text-anchor="middle" font-family="Inter">(P0)</text>
             </g>
 
             <!-- Customer Entity (left) -->
             <g class="entity">
-                <rect x="30" y="300" width="150" height="50"/>
-                <text x="105" y="325">Customer</text>
+                <rect x="30" y="250" width="150" height="50"/>
+                <text x="105" y="275">Customer</text>
             </g>
 
             <!-- Admin Entity (right) -->
             <g class="entity">
-                <rect x="870" y="300" width="140" height="50"/>
-                <text x="940" y="325">Administrator</text>
-            </g>
-
-            <!-- ===== Guest Flows ===== -->
-            <!-- Guest → System: Registration Data -->
-            <g class="flow">
-                <line x1="180" y1="85" x2="388" y2="300" stroke="#636e72" stroke-width="1.5" marker-end="url(#arrow)"/>
-                <text x="260" y="175" class="flow-label" font-family="Inter" transform="rotate(33, 260, 175)">Registration Data</text>
-            </g>
-            <!-- System → Guest: Confirmation -->
-            <g class="flow">
-                <line x1="380" y1="290" x2="172" y2="95" stroke="#636e72" stroke-width="1.5" marker-end="url(#arrow)"/>
-                <text x="310" y="215" class="flow-label" font-family="Inter" transform="rotate(33, 310, 215)">Confirmation / Errors</text>
-            </g>
-            <!-- Guest → System: Login Credentials -->
-            <g class="flow">
-                <line x1="140" y1="110" x2="395" y2="310" stroke="#0984e3" stroke-width="1.5" marker-end="url(#arrowBlue)" stroke-dasharray="6,3"/>
-                <text x="220" y="240" class="flow-label" font-family="Inter" style="fill:#0984e3" transform="rotate(33, 220, 240)">Login Credentials</text>
+                <rect x="870" y="250" width="150" height="50"/>
+                <text x="945" y="275">Administrator</text>
             </g>
 
             <!-- ===== Customer Flows ===== -->
+            <!-- Customer → System: Registration/Login -->
+            <g class="flow">
+                <line x1="105" y1="250" x2="385" y2="235" stroke="#636e72" stroke-width="1.5" marker-end="url(#arrow)"/>
+                <text x="230" y="228" class="flow-label" font-family="Inter">Registration / Login Credentials</text>
+            </g>
+            <!-- System → Customer: Auth Result -->
+            <g class="flow">
+                <line x1="385" y1="245" x2="105" y2="252" stroke="#636e72" stroke-width="1.5" marker-end="url(#arrow)"/>
+                <text x="240" y="261" class="flow-label" font-family="Inter">Authentication Result</text>
+            </g>
+            <!-- Customer → System: Password Reset -->
+            <g class="flow">
+                <line x1="100" y1="250" x2="370" y2="245" stroke="#0984e3" stroke-width="1.5" marker-end="url(#arrowBlue)" stroke-dasharray="6,3"/>
+                <text x="230" y="243" class="flow-label" font-family="Inter" style="fill:#0984e3">Password Reset Request</text>
+            </g>
             <!-- Customer → System: Search/Filter -->
             <g class="flow">
-                <line x1="180" y1="310" x2="365" y2="330" stroke="#636e72" stroke-width="1.5" marker-end="url(#arrow)"/>
-                <text x="270" y="305" class="flow-label" font-family="Inter">Search / Filter Criteria</text>
+                <line x1="180" y1="268" x2="365" y2="280" stroke="#636e72" stroke-width="1.5" marker-end="url(#arrow)"/>
+                <text x="270" y="264" class="flow-label" font-family="Inter">Search / Filter Criteria</text>
             </g>
             <!-- System → Customer: Book Listings -->
             <g class="flow">
-                <line x1="365" y1="345" x2="180" y2="325" stroke="#636e72" stroke-width="1.5" marker-end="url(#arrow)"/>
-                <text x="270" y="348" class="flow-label" font-family="Inter">Book Listings &amp; Details</text>
+                <line x1="365" y1="292" x2="180" y2="278" stroke="#636e72" stroke-width="1.5" marker-end="url(#arrow)"/>
+                <text x="270" y="298" class="flow-label" font-family="Inter">Book Listings &amp; Details</text>
             </g>
             <!-- Customer → System: Cart Operations -->
             <g class="flow">
-                <line x1="170" y1="350" x2="368" y2="370" stroke="#636e72" stroke-width="1.5" marker-end="url(#arrow)"/>
-                <text x="240" y="377" class="flow-label" font-family="Inter">Add/Update/Remove Cart</text>
+                <line x1="170" y1="300" x2="368" y2="325" stroke="#636e72" stroke-width="1.5" marker-end="url(#arrow)"/>
+                <text x="240" y="327" class="flow-label" font-family="Inter">Add/Update/Remove Cart</text>
             </g>
             <!-- System → Customer: Cart Contents -->
             <g class="flow">
-                <line x1="368" y1="385" x2="170" y2="350" stroke="#636e72" stroke-width="1.5" marker-end="url(#arrow)"/>
-                <text x="235" y="395" class="flow-label" font-family="Inter">Cart Contents &amp; Totals</text>
+                <line x1="368" y1="338" x2="170" y2="300" stroke="#636e72" stroke-width="1.5" marker-end="url(#arrow)"/>
+                <text x="235" y="340" class="flow-label" font-family="Inter">Cart Contents &amp; Totals</text>
             </g>
             <!-- Customer → System: Checkout -->
             <g class="flow">
-                <line x1="145" y1="350" x2="390" y2="415" stroke="#636e72" stroke-width="1.5" marker-end="url(#arrow)"/>
-                <text x="210" y="415" class="flow-label" font-family="Inter">Place Order</text>
+                <line x1="145" y1="300" x2="380" y2="370" stroke="#636e72" stroke-width="1.5" marker-end="url(#arrow)"/>
+                <text x="210" y="358" class="flow-label" font-family="Inter">Place Order</text>
             </g>
             <!-- System → Customer: Order Confirm -->
             <g class="flow">
-                <line x1="390" y1="425" x2="120" y2="350" stroke="#636e72" stroke-width="1.5" marker-end="url(#arrow)"/>
-                <text x="200" y="435" class="flow-label" font-family="Inter">Order Confirmation &amp; History</text>
+                <line x1="380" y1="380" x2="120" y2="300" stroke="#636e72" stroke-width="1.5" marker-end="url(#arrow)"/>
+                <text x="200" y="372" class="flow-label" font-family="Inter">Order Confirmation &amp; History</text>
             </g>
             <!-- Customer → System: Profile -->
             <g class="flow">
-                <line x1="105" y1="300" x2="400" y2="280" stroke="#0984e3" stroke-width="1.5" marker-end="url(#arrowBlue)" stroke-dasharray="6,3"/>
-                <text x="250" y="275" class="flow-label" font-family="Inter" style="fill:#0984e3">Profile Update</text>
+                <line x1="130" y1="300" x2="380" y2="392" stroke="#0984e3" stroke-width="1.5" marker-end="url(#arrowBlue)" stroke-dasharray="6,3"/>
+                <text x="200" y="388" class="flow-label" font-family="Inter" style="fill:#0984e3">Profile Update</text>
             </g>
 
             <!-- ===== Admin Flows ===== -->
+            <!-- Admin → System: Login -->
+            <g class="flow">
+                <line x1="870" y1="255" x2="690" y2="240" stroke="#636e72" stroke-width="1.5" marker-end="url(#arrow)"/>
+                <text x="785" y="235" class="flow-label" font-family="Inter">Login Credentials</text>
+            </g>
+            <!-- System → Admin: Auth + Admin Access -->
+            <g class="flow">
+                <line x1="690" y1="250" x2="870" y2="260" stroke="#636e72" stroke-width="1.5" marker-end="url(#arrow)"/>
+                <text x="785" y="266" class="flow-label" font-family="Inter">Auth + Admin Access</text>
+            </g>
             <!-- Admin → System: Book CRUD -->
             <g class="flow">
-                <line x1="870" y1="310" x2="685" y2="325" stroke="#636e72" stroke-width="1.5" marker-end="url(#arrow)"/>
-                <text x="785" y="303" class="flow-label" font-family="Inter">Book Data (Add/Edit/Delete)</text>
+                <line x1="870" y1="272" x2="688" y2="285" stroke="#636e72" stroke-width="1.5" marker-end="url(#arrow)"/>
+                <text x="785" y="270" class="flow-label" font-family="Inter">Book Data (Add/Edit/Delete)</text>
             </g>
             <!-- System → Admin: Confirmation -->
             <g class="flow">
-                <line x1="685" y1="340" x2="870" y2="320" stroke="#636e72" stroke-width="1.5" marker-end="url(#arrow)"/>
-                <text x="785" y="346" class="flow-label" font-family="Inter">CRUD Confirmation</text>
+                <line x1="688" y1="298" x2="870" y2="280" stroke="#636e72" stroke-width="1.5" marker-end="url(#arrow)"/>
+                <text x="785" y="302" class="flow-label" font-family="Inter">CRUD Confirmation</text>
             </g>
             <!-- Admin → System: User Mgmt -->
             <g class="flow">
-                <line x1="880" y1="350" x2="682" y2="360" stroke="#636e72" stroke-width="1.5" marker-end="url(#arrow)"/>
-                <text x="800" y="370" class="flow-label" font-family="Inter">View/Delete Users</text>
+                <line x1="880" y1="300" x2="685" y2="315" stroke="#636e72" stroke-width="1.5" marker-end="url(#arrow)"/>
+                <text x="800" y="320" class="flow-label" font-family="Inter">View/Delete Users</text>
             </g>
             <!-- System → Admin: User List -->
             <g class="flow">
-                <line x1="682" y1="375" x2="880" y2="350" stroke="#636e72" stroke-width="1.5" marker-end="url(#arrow)"/>
-                <text x="800" y="390" class="flow-label" font-family="Inter">User List &amp; Details</text>
+                <line x1="685" y1="328" x2="880" y2="300" stroke="#636e72" stroke-width="1.5" marker-end="url(#arrow)"/>
+                <text x="800" y="334" class="flow-label" font-family="Inter">User List &amp; Details</text>
             </g>
             <!-- Admin → System: Order Mgmt -->
             <g class="flow">
-                <line x1="910" y1="350" x2="665" y2="400" stroke="#636e72" stroke-width="1.5" marker-end="url(#arrow)"/>
-                <text x="820" y="408" class="flow-label" font-family="Inter">View Orders / Update Status</text>
+                <line x1="900" y1="300" x2="670" y2="350" stroke="#636e72" stroke-width="1.5" marker-end="url(#arrow)"/>
+                <text x="810" y="345" class="flow-label" font-family="Inter">View Orders / Update Status</text>
             </g>
             <!-- System → Admin: Orders -->
             <g class="flow">
-                <line x1="660" y1="410" x2="910" y2="350" stroke="#636e72" stroke-width="1.5" marker-end="url(#arrow)"/>
-                <text x="820" y="425" class="flow-label" font-family="Inter">Order Data &amp; Statistics</text>
+                <line x1="670" y1="360" x2="900" y2="300" stroke="#636e72" stroke-width="1.5" marker-end="url(#arrow)"/>
+                <text x="810" y="355" class="flow-label" font-family="Inter">Order Data</text>
             </g>
             <!-- Admin → System: Dashboard -->
             <g class="flow">
-                <line x1="940" y1="300" x2="650" y2="280" stroke="#0984e3" stroke-width="1.5" marker-end="url(#arrowBlue)" stroke-dasharray="6,3"/>
-                <text x="800" y="275" class="flow-label" font-family="Inter" style="fill:#0984e3">Dashboard Request</text>
+                <line x1="920" y1="300" x2="665" y2="375" stroke="#0984e3" stroke-width="1.5" marker-end="url(#arrowBlue)" stroke-dasharray="6,3"/>
+                <text x="820" y="368" class="flow-label" font-family="Inter" style="fill:#0984e3">Dashboard Request</text>
             </g>
             <g class="flow">
-                <line x1="650" y1="290" x2="940" y2="300" stroke="#0984e3" stroke-width="1.5" marker-end="url(#arrowBlue)" stroke-dasharray="6,3"/>
-                <text x="800" y="260" class="flow-label" font-family="Inter" style="fill:#0984e3">Dashboard Statistics</text>
+                <line x1="665" y1="385" x2="920" y2="300" stroke="#0984e3" stroke-width="1.5" marker-end="url(#arrowBlue)" stroke-dasharray="6,3"/>
+                <text x="820" y="380" class="flow-label" font-family="Inter" style="fill:#0984e3">Dashboard Statistics</text>
             </g>
 
             <!-- Boundary Box -->
-            <rect x="320" y="245" width="410" height="210" fill="none" stroke="#0984e3" stroke-width="1" stroke-dasharray="8,4" rx="10"/>
-            <text x="525" y="240" font-size="10" fill="#0984e3" text-anchor="middle" font-family="Inter" font-weight="600">SYSTEM BOUNDARY</text>
+            <rect x="320" y="200" width="410" height="220" fill="none" stroke="#0984e3" stroke-width="1" stroke-dasharray="8,4" rx="10"/>
+            <text x="525" y="193" font-size="10" fill="#0984e3" text-anchor="middle" font-family="Inter" font-weight="600">SYSTEM BOUNDARY</text>
         </svg>
     </div>
 
     <h3>External Entities</h3>
     <table>
         <tr><th>Entity</th><th>Description</th></tr>
-        <tr><td><strong>Guest</strong></td><td>Unauthenticated visitor — can register a new account or log in.</td></tr>
-        <tr><td><strong>Customer</strong></td><td>Registered user — browses books, manages cart, places orders, views order history, updates profile.</td></tr>
-        <tr><td><strong>Administrator</strong></td><td>Privileged user — manages books (CRUD), users (view/delete), orders (view/update status), and views dashboard statistics.</td></tr>
+        <tr><td><strong>Customer</strong></td><td>Registers, logs in, browses books, manages cart, places orders, views order history, updates profile, resets password.</td></tr>
+        <tr><td><strong>Administrator</strong></td><td>Logs in with admin privileges, manages books (CRUD), manages users (view/delete), manages orders (view/update status), views dashboard statistics.</td></tr>
     </table>
 
     <!-- ============================================================ -->
@@ -448,20 +449,15 @@
             </defs>
 
             <!-- ===== EXTERNAL ENTITIES ===== -->
-            <!-- Guest -->
-            <g class="entity">
-                <rect x="30" y="40" width="120" height="45"/>
-                <text x="90" y="63">Guest</text>
-            </g>
             <!-- Customer -->
             <g class="entity">
-                <rect x="30" y="320" width="120" height="45"/>
-                <text x="90" y="343">Customer</text>
+                <rect x="30" y="40" width="130" height="45"/>
+                <text x="95" y="63">Customer</text>
             </g>
             <!-- Admin -->
             <g class="entity">
-                <rect x="30" y="750" width="120" height="45"/>
-                <text x="90" y="773">Administrator</text>
+                <rect x="30" y="650" width="130" height="45"/>
+                <text x="95" y="673">Administrator</text>
             </g>
 
             <!-- ===== PROCESSES ===== -->
@@ -565,10 +561,10 @@
             </g>
 
             <!-- ===== FLOWS ===== -->
-            <!-- Guest → P1 -->
+            <!-- Customer → P1 -->
             <g class="flow">
-                <line x1="150" y1="55" x2="258" y2="50" marker-end="url(#arr1)"/>
-                <text x="200" y="42" class="flow-label" font-family="Inter">Registration / Login</text>
+                <line x1="160" y1="60" x2="258" y2="50" marker-end="url(#arr1)"/>
+                <text x="205" y="42" class="flow-label" font-family="Inter">Registration / Login</text>
             </g>
             <!-- P1 → D1 -->
             <g class="flow">
@@ -588,8 +584,8 @@
 
             <!-- Customer → P2 -->
             <g class="flow">
-                <line x1="150" y1="330" x2="260" y2="165" marker-end="url(#arr1)"/>
-                <text x="180" y="240" class="flow-label" font-family="Inter" transform="rotate(-50, 180, 240)">Profile Data</text>
+                <line x1="120" y1="85" x2="260" y2="150" marker-end="url(#arr1)"/>
+                <text x="175" y="108" class="flow-label" font-family="Inter" transform="rotate(20, 175, 108)">Profile Data</text>
             </g>
             <!-- P2 → D1 -->
             <g class="flow">
@@ -599,8 +595,8 @@
 
             <!-- Customer → P3 -->
             <g class="flow">
-                <line x1="150" y1="335" x2="258" y2="285" marker-end="url(#arr1)"/>
-                <text x="185" y="298" class="flow-label" font-family="Inter">Search / Filter</text>
+                <line x1="100" y1="85" x2="258" y2="275" marker-end="url(#arr1)"/>
+                <text x="155" y="185" class="flow-label" font-family="Inter" transform="rotate(50, 155, 185)">Search / Filter</text>
             </g>
             <!-- P3 → D2 -->
             <g class="flow">
@@ -609,14 +605,14 @@
             </g>
             <!-- P3 → Customer (results) -->
             <g class="flow">
-                <line x1="258" y1="297" x2="150" y2="345" marker-end="url(#arr1)"/>
-                <text x="185" y="335" class="flow-label" font-family="Inter">Book Listings</text>
+                <line x1="258" y1="280" x2="110" y2="85" marker-end="url(#arr1)"/>
+                <text x="200" y="190" class="flow-label" font-family="Inter" transform="rotate(-50, 200, 190)">Book Listings</text>
             </g>
 
             <!-- Customer → P4 -->
             <g class="flow">
-                <line x1="150" y1="352" x2="258" y2="400" marker-end="url(#arr1)"/>
-                <text x="180" y="370" class="flow-label" font-family="Inter">Cart Actions</text>
+                <line x1="85" y1="85" x2="258" y2="395" marker-end="url(#arr1)"/>
+                <text x="140" y="250" class="flow-label" font-family="Inter" transform="rotate(60, 140, 250)">Cart Actions</text>
             </g>
             <!-- P4 → D3 -->
             <g class="flow">
@@ -630,14 +626,14 @@
             </g>
             <!-- P4 → Customer -->
             <g class="flow">
-                <line x1="258" y1="420" x2="150" y2="360" marker-end="url(#arr1)"/>
-                <text x="180" y="405" class="flow-label" font-family="Inter">Cart &amp; Totals</text>
+                <line x1="258" y1="415" x2="95" y2="85" marker-end="url(#arr1)"/>
+                <text x="195" y="260" class="flow-label" font-family="Inter" transform="rotate(-60, 195, 260)">Cart &amp; Totals</text>
             </g>
 
             <!-- Customer → P5 -->
             <g class="flow">
-                <line x1="130" y1="365" x2="258" y2="520" marker-end="url(#arr1)"/>
-                <text x="165" y="455" class="flow-label" font-family="Inter" transform="rotate(46, 165, 455)">Place Order</text>
+                <line x1="70" y1="85" x2="258" y2="515" marker-end="url(#arr1)"/>
+                <text x="130" y="310" class="flow-label" font-family="Inter" transform="rotate(66, 130, 310)">Place Order</text>
             </g>
             <!-- P5 → D4 -->
             <g class="flow">
@@ -656,14 +652,14 @@
             </g>
             <!-- P5 → Customer -->
             <g class="flow">
-                <line x1="258" y1="540" x2="120" y2="365" marker-end="url(#arr1)"/>
-                <text x="150" y="480" class="flow-label" font-family="Inter" transform="rotate(-46, 150, 480)">Order Confirm</text>
+                <line x1="258" y1="535" x2="80" y2="85" marker-end="url(#arr1)"/>
+                <text x="185" y="320" class="flow-label" font-family="Inter" transform="rotate(-66, 185, 320)">Order Confirm</text>
             </g>
 
             <!-- Admin → P6 -->
             <g class="flow">
-                <line x1="150" y1="765" x2="258" y2="680" marker-end="url(#arr1)"/>
-                <text x="180" y="710" class="flow-label" font-family="Inter">Book CRUD</text>
+                <line x1="160" y1="665" x2="258" y2="680" marker-end="url(#arr1)"/>
+                <text x="200" y="660" class="flow-label" font-family="Inter">Book CRUD</text>
             </g>
             <!-- P6 → D2 -->
             <g class="flow">
@@ -673,8 +669,8 @@
 
             <!-- Admin → P7 -->
             <g class="flow">
-                <line x1="150" y1="775" x2="258" y2="788" marker-end="url(#arr1)"/>
-                <text x="200" y="770" class="flow-label" font-family="Inter">View/Delete Users</text>
+                <line x1="140" y1="695" x2="258" y2="770" marker-end="url(#arr1)"/>
+                <text x="180" y="725" class="flow-label" font-family="Inter">View/Delete Users</text>
             </g>
             <!-- P7 → D1 -->
             <g class="flow">
@@ -684,8 +680,8 @@
 
             <!-- Admin → P8 -->
             <g class="flow">
-                <line x1="130" y1="795" x2="258" y2="895" marker-end="url(#arr1)"/>
-                <text x="170" y="855" class="flow-label" font-family="Inter">Orders/Status</text>
+                <line x1="120" y1="695" x2="258" y2="885" marker-end="url(#arr1)"/>
+                <text x="160" y="800" class="flow-label" font-family="Inter" transform="rotate(54, 160, 800)">Orders/Status</text>
             </g>
             <!-- P8 → D4 -->
             <g class="flow">
@@ -695,8 +691,8 @@
 
             <!-- Admin → P9 -->
             <g class="flow">
-                <line x1="120" y1="795" x2="258" y2="995" marker-end="url(#arr1)"/>
-                <text x="150" y="910" class="flow-label" font-family="Inter" transform="rotate(55, 150, 910)">Dashboard Req</text>
+                <line x1="100" y1="695" x2="258" y2="990" marker-end="url(#arr1)"/>
+                <text x="145" y="860" class="flow-label" font-family="Inter" transform="rotate(61, 145, 860)">Dashboard Req</text>
             </g>
             <!-- P9 reads D1, D2, D4 (dashed) -->
             <g class="flow">
@@ -751,10 +747,10 @@
                 </marker>
             </defs>
 
-            <!-- Guest Entity -->
+            <!-- Customer Entity -->
             <g class="entity">
-                <rect x="30" y="220" width="110" height="45"/>
-                <text x="85" y="243">Guest</text>
+                <rect x="30" y="220" width="120" height="45"/>
+                <text x="90" y="243">Customer</text>
             </g>
 
             <!-- P1.1 Register -->

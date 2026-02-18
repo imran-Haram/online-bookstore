@@ -260,31 +260,35 @@ A **Data Flow Diagram (DFD)** is a graphical representation of the flow of data 
 
 ### Level 0 — Context Diagram
 
-The Context Diagram shows the **entire Online Bookstore as a single process** and identifies all three external entities.
+The Context Diagram shows the **entire Online Bookstore as a single process** and identifies the two external entities that interact with it.
 
 ```
  ┌──────────┐                                                   ┌───────────────────┐
- │  Guest   │─── Registration Data / Login Credentials ────────→│                   │
- │          │←── Confirmation / Auth Result ───────────────────│                   │
- └──────────┘                                                   │                   │
-                                                                │                   │
- ┌──────────┐                                                   │                   │
+ │          │─── Registration Data / Login Credentials ────────→│                   │
+ │          │←── Authentication Result ───────────────────────│                   │
+ │          │─── Password Reset Request ───────────────────────→│                   │
+ │          │←── Reset Confirmation ──────────────────────────│                   │
  │          │─── Search / Filter Criteria ─────────────────────→│                   │
  │          │←── Book Listings & Details ──────────────────────│                   │
- │          │─── Add/Update/Remove Cart ───────────────────────→│  ONLINE BOOKSTORE │
- │ Customer │←── Cart Contents & Totals ───────────────────────│     SYSTEM (P0)   │
+ │ Customer │─── Add/Update/Remove Cart ───────────────────────→│  ONLINE BOOKSTORE │
+ │          │←── Cart Contents & Totals ───────────────────────│     SYSTEM (P0)   │
  │          │─── Place Order ──────────────────────────────────→│                   │
  │          │←── Order Confirmation & History ─────────────────│                   │
  │          │─── Profile Update ───────────────────────────────→│                   │
+ │          │←── Updated Profile ─────────────────────────────│                   │
  └──────────┘                                                   │                   │
                                                                 │                   │
  ┌──────────────┐                                               │                   │
+ │              │─── Login Credentials ────────────────────────→│                   │
+ │              │←── Authentication + Admin Access ───────────│                   │
  │              │─── Book Data (Add/Edit/Delete) ──────────────→│                   │
  │              │←── CRUD Confirmation ────────────────────────│                   │
  │ Administrator│─── View/Delete Users ────────────────────────→│                   │
  │              │←── User List & Details ──────────────────────│                   │
  │              │─── View Orders / Update Status ──────────────→│                   │
- │              │←── Order Data & Dashboard Statistics ────────│                   │
+ │              │←── Order Data ──────────────────────────────│                   │
+ │              │─── Dashboard Request ────────────────────────→│                   │
+ │              │←── Dashboard Statistics ────────────────────│                   │
  └──────────────┘                                               └───────────────────┘
 ```
 
@@ -292,18 +296,17 @@ The Context Diagram shows the **entire Online Bookstore as a single process** an
 
 | Entity | Description |
 |--------|-------------|
-| **Guest** | Unauthenticated visitor — can register or log in |
-| **Customer** | Registered user — browses books, manages cart, places orders, views history, updates profile |
-| **Administrator** | Privileged user — manages books (CRUD), users (view/delete), orders (view/update status), views dashboard |
+| **Customer** | Registers, logs in, browses books, manages cart, places orders, views order history, updates profile, resets password |
+| **Administrator** | Logs in with admin privileges, manages books (CRUD), manages users (view/delete), manages orders (view/update status), views dashboard statistics |
 
 ---
 
 ### Level 1 — System Overview DFD
 
-Level 1 decomposes the system into **9 major processes** and **6 data stores**.
+Level 1 decomposes the system into **9 major processes** and **6 data stores**, with **Customer** and **Administrator** as the only external entities.
 
 ```
-  [Guest]──→(P1 Authentication & Registration)──→[D1 Users] [D5 Pwd Tokens] [D6 Sessions]
+  [Customer]──→(P1 Authentication & Registration)──→[D1 Users] [D5 Pwd Tokens] [D6 Sessions]
                          │
   [Customer]──→(P2 Profile Management)──→[D1 Users]
                          │

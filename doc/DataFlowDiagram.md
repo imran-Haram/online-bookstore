@@ -23,74 +23,69 @@ The Context Diagram shows the **entire system as a single process** and identifi
 
 | Entity | Description |
 |--------|-------------|
-| **Customer** | A registered user who browses books, manages a cart, places orders, and views order history. |
-| **Administrator** | A privileged user who manages books, users, and orders through the admin panel. |
-| **Guest** | An unauthenticated visitor who can only register or log in. |
+| **Customer** | Registers, logs in, browses books, manages a cart, places orders, views order history, updates profile, resets password. |
+| **Administrator** | Logs in with admin privileges, manages books (CRUD), manages users (view/delete), manages orders (view/update status), views dashboard statistics. |
 
 ### Context Diagram
 
 ```
- ┌──────────┐                                                    ┌──────────────┐
- │          │── Registration Data ──────────────────────────────→│              │
- │  Guest   │← Registration Confirmation ──────────────────────│              │
- │          │── Login Credentials ─────────────────────────────→│              │
- └──────────┘← Authentication Result ──────────────────────────│              │
-                                                                │              │
- ┌──────────┐                                                   │              │
- │          │── Login Credentials ─────────────────────────────→│              │
+ ┌──────────┐                                                   ┌──────────────┐
+ │          │── Registration Data / Login Credentials ────────→│              │
  │          │← Authentication Result ──────────────────────────│              │
+ │          │── Password Reset Request ───────────────────────→│              │
+ │          │← Reset Confirmation ────────────────────────────│              │
  │          │── Profile Update Data ───────────────────────────→│              │
- │          │← Updated Profile ────────────────────────────────│              │
+ │          │← Updated Profile ──────────────────────────────│              │
  │          │── Search / Filter Criteria ──────────────────────→│    ONLINE    │
  │ Customer │← Book Listings & Details ────────────────────────│  BOOKSTORE   │
  │          │── Add to Cart Request ───────────────────────────→│   SYSTEM     │
  │          │← Cart Contents & Totals ─────────────────────────│              │
  │          │── Checkout / Place Order ────────────────────────→│              │
- │          │← Order Confirmation ─────────────────────────────│              │
- │          │── View Orders Request ───────────────────────────→│              │
- │          │← Order History & Details ────────────────────────│              │
+ │          │← Order Confirmation & History ───────────────────│              │
  └──────────┘                                                   │              │
                                                                 │              │
- ┌──────────┐                                                   │              │
- │          │── Login Credentials ─────────────────────────────→│              │
- │          │← Authentication + Admin Access ──────────────────│              │
- │          │── Book Data (Add/Edit/Delete) ───────────────────→│              │
- │  Admin   │← Book Management Confirmation ──────────────────│              │
- │          │── View Users Request ────────────────────────────→│              │
- │          │← User List & Details ────────────────────────────│              │
- │          │── Order Status Update ───────────────────────────→│              │
- │          │← Order Management Data ──────────────────────────│              │
- │          │── View Dashboard Request ────────────────────────→│              │
- │          │← Dashboard Statistics ───────────────────────────│              │
- └──────────┘                                                   └──────────────┘
+ ┌──────────────┐                                               │              │
+ │              │── Login Credentials ──────────────────────────→│              │
+ │              │← Authentication + Admin Access ───────────────│              │
+ │              │── Book Data (Add/Edit/Delete) ─────────────────→│              │
+ │              │← CRUD Confirmation ──────────────────────────│              │
+ │ Administrator│── View/Delete Users ──────────────────────────→│              │
+ │              │← User List & Details ────────────────────────│              │
+ │              │── View Orders / Update Status ────────────────→│              │
+ │              │← Order Data ────────────────────────────────│              │
+ │              │── Dashboard Request ──────────────────────────→│              │
+ │              │← Dashboard Statistics ────────────────────────│              │
+ └──────────────┘                                               └──────────────┘
 ```
 
 ### Data Flows Summary (Level 0)
 
 | # | From | To | Data Flow |
-|---|------|----|-----------|
-| 1 | Guest | System | Registration data (name, email, password) |
-| 2 | System | Guest | Registration confirmation / errors |
-| 3 | Guest / Customer / Admin | System | Login credentials (email, password) |
-| 4 | System | Guest / Customer / Admin | Authentication result (success/failure) |
-| 5 | Customer | System | Profile update data (name, email, password) |
-| 6 | System | Customer | Updated profile confirmation |
-| 7 | Customer | System | Search query, filter criteria (category, price range, stock) |
-| 8 | System | Customer | Filtered book listings, book detail pages |
-| 9 | Customer | System | Add-to-cart request (book ID, quantity) |
-| 10 | System | Customer | Cart contents with item details and totals |
-| 11 | Customer | System | Checkout / place order request |
-| 12 | System | Customer | Order confirmation with order details |
-| 13 | Customer | System | View orders request |
-| 14 | System | Customer | Order history list, individual order details |
-| 15 | Admin | System | Book data (title, author, category, price, stock, image URL, description) |
-| 16 | System | Admin | Book management confirmation (created/updated/deleted) |
-| 17 | Admin | System | View users request, delete user request |
-| 18 | System | Admin | User list, user detail with order history |
-| 19 | Admin | System | Order status update (pending, processing, shipped, delivered, cancelled) |
-| 20 | System | Admin | All orders list, order details |
-| 21 | Admin | System | Dashboard request |
-| 22 | System | Admin | Dashboard statistics (total users, books, orders, revenue) |
+|---|------|----|----------|
+| 1 | Customer | System | Registration data (name, email, password) |
+| 2 | System | Customer | Registration confirmation / errors |
+| 3 | Customer | System | Login credentials (email, password) |
+| 4 | System | Customer | Authentication result (success/failure) |
+| 5 | Customer | System | Password reset request (email) |
+| 6 | System | Customer | Reset confirmation / link |
+| 7 | Customer | System | Profile update data (name, email, password) |
+| 8 | System | Customer | Updated profile confirmation |
+| 9 | Customer | System | Search query, filter criteria (category, price range, stock) |
+| 10 | System | Customer | Filtered book listings, book detail pages |
+| 11 | Customer | System | Add-to-cart request (book ID, quantity) |
+| 12 | System | Customer | Cart contents with item details and totals |
+| 13 | Customer | System | Checkout / place order request |
+| 14 | System | Customer | Order confirmation & order history |
+| 15 | Admin | System | Login credentials (email, password) |
+| 16 | System | Admin | Authentication + admin access |
+| 17 | Admin | System | Book data (title, author, category, price, stock, image URL, description) |
+| 18 | System | Admin | Book management confirmation (created/updated/deleted) |
+| 19 | Admin | System | View users request, delete user request |
+| 20 | System | Admin | User list, user detail with order history |
+| 21 | Admin | System | View orders / update order status |
+| 22 | System | Admin | Order data |
+| 23 | Admin | System | Dashboard request |
+| 24 | System | Admin | Dashboard statistics (total users, books, orders, revenue) |
 
 ---
 
@@ -127,7 +122,7 @@ Level 1 breaks the single "Online Bookstore System" process into its **major sub
 
 ```
                     ┌──────────┐
-                    │  Guest   │
+                    │ Customer │
                     └────┬─────┘
                          │
           Registration Data, Login Credentials
@@ -141,8 +136,10 @@ Level 1 breaks the single "Online Bookstore System" process into its **major sub
                     │    │                ┌─────────────┐
       Auth Result   │    └───────────────→│ D1 Users    │
                     │     Store User      │   Store     │
-   ┌────────────┐   │                     └──────┬──────┘
-   │  Customer  │←──┘                            │
+                    │                      └──────┬──────┘
+                    │                             │
+   ┌────────────┐←──┘                             │
+   │  Customer  │                                 │
    └──┬──┬──┬───┘                                │
       │  │  │                                    │
       │  │  │  Profile Data          ┌───────────┴──────────┐
@@ -204,11 +201,11 @@ Level 1 breaks the single "Online Bookstore System" process into its **major sub
 
 | # | Source | Destination | Data Flow Description |
 |---|--------|-------------|----------------------|
-| 1 | Guest | P1 | Registration data (name, email, password) |
+| 1 | Customer | P1 | Registration data (name, email, password) |
 | 2 | P1 | D1 | New user record |
 | 3 | P1 | D5 | Password reset token |
 | 4 | P1 | D6 | New session record |
-| 5 | P1 | Guest/Customer | Authentication result, reset link |
+| 5 | P1 | Customer | Authentication result, reset link |
 | 6 | Customer | P2 | Profile update (name, email, new password) |
 | 7 | P2 | D1 | Updated user record |
 | 8 | P2 | Customer | Updated profile confirmation |
@@ -251,7 +248,7 @@ Level 2 expands each Level 1 process into more granular sub-processes. Below are
 
 ```
 ┌──────────┐
-│  Guest   │
+│ Customer │
 └──┬──┬──┬─┘
    │  │  │
    │  │  │  1.1 Registration Data (name, email, password)
