@@ -25,6 +25,7 @@ This document serves as the **comprehensive technical and functional reference**
 | 13 | **How to Run** | Step-by-step setup instructions for developers — from starting MySQL and importing the database to installing dependencies and launching the development servers. |
 | 14 | **Project File Structure** | A complete directory tree of the entire project, showing the location of every controller, model, middleware, view, migration, seeder, configuration file, and frontend asset. |
 | 15 | **Known Gaps / Future Enhancements** | An honest assessment of features not yet implemented and areas for future improvement, providing a roadmap for continued development. |
+| — | **Data Flow Diagrams (DFD)** *(separate document: `doc/DataFlowDiagram.md`)* | A complete set of DFDs at three levels: Level 0 (Context Diagram) showing external entities and system boundary, Level 1 showing 9 major processes and 6 data stores, and Level 2 with detailed decomposition of authentication, book catalog, shopping cart, order processing, admin book management, admin order management, and admin dashboard processes. |
 
 ### Purpose of This Document in the Software Development Lifecycle
 
@@ -235,6 +236,190 @@ The following features are **not** part of the current project scope:
 | 3 | Admin Panel | Fully functional admin dashboard with book, user, and order management views. |
 | 4 | Authentication System | Registration, login, password reset, email verification, and profile management. |
 | 5 | Project Documentation | This document (`doc/ProjectDocumentation.md`) covering scope, architecture, features, and setup instructions. |
+
+---
+
+## 2.2 Data Flow Diagram (DFD)
+
+A **Data Flow Diagram (DFD)** is a graphical representation of the flow of data through the Online Bookstore system. It shows how data enters the system, how it is processed, where it is stored, and how it exits. The DFDs below were developed at three standard levels of decomposition.
+
+> **Visual DFD:** Open `doc/DFD-Visual.html` in any web browser for the full graphical DFD diagrams (suitable for printing or screenshotting into Microsoft Visio).
+>
+> **Detailed DFD Reference:** See `doc/DataFlowDiagram.md` for the complete textual DFD documentation with all data flow tables.
+
+### DFD Notation
+
+| Symbol | Meaning | Description |
+|--------|---------|-------------|
+| Rectangle | **External Entity** | Source or destination of data outside the system (Guest, Customer, Administrator) |
+| Circle / Rounded Rectangle | **Process** | Transforms or manipulates data (e.g., P1 Authentication, P3 Book Catalog) |
+| Open Rectangle (with ID divider) | **Data Store** | Where data is persisted (e.g., D1 Users, D2 Books, D3 Cart Items, D4 Orders) |
+| Arrow (→) | **Data Flow** | Movement of data between entities, processes, and data stores |
+
+---
+
+### Level 0 — Context Diagram
+
+The Context Diagram shows the **entire Online Bookstore as a single process** and identifies all three external entities.
+
+```
+ ┌──────────┐                                                   ┌───────────────────┐
+ │  Guest   │─── Registration Data / Login Credentials ────────→│                   │
+ │          │←── Confirmation / Auth Result ───────────────────│                   │
+ └──────────┘                                                   │                   │
+                                                                │                   │
+ ┌──────────┐                                                   │                   │
+ │          │─── Search / Filter Criteria ─────────────────────→│                   │
+ │          │←── Book Listings & Details ──────────────────────│                   │
+ │          │─── Add/Update/Remove Cart ───────────────────────→│  ONLINE BOOKSTORE │
+ │ Customer │←── Cart Contents & Totals ───────────────────────│     SYSTEM (P0)   │
+ │          │─── Place Order ──────────────────────────────────→│                   │
+ │          │←── Order Confirmation & History ─────────────────│                   │
+ │          │─── Profile Update ───────────────────────────────→│                   │
+ └──────────┘                                                   │                   │
+                                                                │                   │
+ ┌──────────────┐                                               │                   │
+ │              │─── Book Data (Add/Edit/Delete) ──────────────→│                   │
+ │              │←── CRUD Confirmation ────────────────────────│                   │
+ │ Administrator│─── View/Delete Users ────────────────────────→│                   │
+ │              │←── User List & Details ──────────────────────│                   │
+ │              │─── View Orders / Update Status ──────────────→│                   │
+ │              │←── Order Data & Dashboard Statistics ────────│                   │
+ └──────────────┘                                               └───────────────────┘
+```
+
+**External Entities:**
+
+| Entity | Description |
+|--------|-------------|
+| **Guest** | Unauthenticated visitor — can register or log in |
+| **Customer** | Registered user — browses books, manages cart, places orders, views history, updates profile |
+| **Administrator** | Privileged user — manages books (CRUD), users (view/delete), orders (view/update status), views dashboard |
+
+---
+
+### Level 1 — System Overview DFD
+
+Level 1 decomposes the system into **9 major processes** and **6 data stores**.
+
+```
+  [Guest]──→(P1 Authentication & Registration)──→[D1 Users] [D5 Pwd Tokens] [D6 Sessions]
+                         │
+  [Customer]──→(P2 Profile Management)──→[D1 Users]
+                         │
+  [Customer]──→(P3 Book Catalog & Search)←──[D2 Books]
+                         │
+  [Customer]──→(P4 Shopping Cart Mgmt)──→[D3 Cart Items]←──[D2 Books (prices)]
+                         │
+  [Customer]──→(P5 Order Processing)──→[D4 Orders]←──[D3 Cart Items]
+                         │
+  [Admin]────→(P6 Admin Book Management)──→[D2 Books]
+                         │
+  [Admin]────→(P7 Admin User Management)──→[D1 Users]
+                         │
+  [Admin]────→(P8 Admin Order Management)──→[D4 Orders]
+                         │
+  [Admin]────→(P9 Admin Dashboard)←── Reads [D1], [D2], [D4]
+```
+
+**Processes:**
+
+| # | Process | Description |
+|---|---------|-------------|
+| P1 | Authentication & Registration | Registration, login, logout, password reset, email verification |
+| P2 | Profile Management | View, update, and delete user profile |
+| P3 | Book Catalog & Search | Book listing, detail view, search (title/author/category), filtering (category/price/stock) |
+| P4 | Shopping Cart Management | Add, update quantity, remove cart items, calculate subtotals and grand total |
+| P5 | Order Processing | Checkout, order creation (DB transaction), order history, order detail |
+| P6 | Admin Book Management | Admin CRUD operations on books (create, read, update, delete) |
+| P7 | Admin User Management | Admin view user list, user detail with order history, delete users |
+| P8 | Admin Order Management | Admin view all orders, view order detail, update order status |
+| P9 | Admin Dashboard | Aggregate statistics — total users, books, orders, revenue; recent orders and users |
+
+**Data Stores:**
+
+| ID | Store | Table(s) |
+|----|-------|----------|
+| D1 | Users | `users` |
+| D2 | Books | `books` |
+| D3 | Cart Items | `cart_items` |
+| D4 | Orders | `orders`, `order_items` |
+| D5 | Password Tokens | `password_reset_tokens` |
+| D6 | Sessions | `sessions` |
+
+---
+
+### Level 2 — Process Decomposition
+
+#### P1: Authentication & Registration
+
+| Sub-Process | Input | Output | Description |
+|-------------|-------|--------|-------------|
+| P1.1 Validate & Register | name, email, password | User record → D1 | Validates unique email, hashes password (bcrypt), creates user |
+| P1.2 Authenticate User | email, password | Session → D6 | Verifies credentials against D1, creates session |
+| P1.3 Generate Reset Token | email | Token → D5 | Creates secure token, stores in password_reset_tokens |
+| P1.4 Reset Password | token, new password | Updated user → D1 | Validates token from D5, updates password, deletes used token |
+
+#### P3: Book Catalog & Search
+
+| Sub-Process | Input | Output | Description |
+|-------------|-------|--------|-------------|
+| P3.1 List Books | Page number | Paginated list ← D2 | 10 books per page, ordered by latest |
+| P3.2 Search Books | Keyword | Matching books ← D2 | LIKE search on title, author, category |
+| P3.3 Apply Filters | Category, price range, stock | Filtered results ← D2 | WHERE clauses chained on D2 |
+| P3.4 View Book Detail | Book ID | Full record ← D2 | All fields for a single book |
+
+#### P4: Shopping Cart Management
+
+| Sub-Process | Input | Output | Description |
+|-------------|-------|--------|-------------|
+| P4.1 Add Item | book_id | Cart item → D3 | If exists: increment qty; else: create new record |
+| P4.2 Update Quantity | cart_item_id, qty | Updated record → D3 | Validates ownership, updates quantity |
+| P4.3 Remove Item | cart_item_id | Delete record → D3 | Validates ownership, deletes from cart |
+| P4.4 Calculate Totals | user_id | Items + totals ← D3, D2 | Loads cart with book relations, computes price × qty |
+
+#### P5: Order Processing
+
+| Sub-Process | Input | Output | Description |
+|-------------|-------|--------|-------------|
+| P5.1 Checkout Summary | user_id | Cart + total ← D3, D2 | Loads cart items with book data for review |
+| P5.2 Create Order *(DB Transaction)* | user_id | Order → D4, clear D3 | Inserts order row (status='pending'), inserts order_items, deletes all cart items |
+| P5.3 View Order History | user_id | Orders ← D4 | User's orders, newest first, paginated |
+| P5.4 View Order Detail | order_id | Order + items ← D4, D2 | Loads order with line items and book info; verifies ownership |
+
+#### P6: Admin Book Management
+
+| Sub-Process | Input | Output | Description |
+|-------------|-------|--------|-------------|
+| P6.1 Create Book | All book fields | INSERT → D2 | Validates and creates new book record |
+| P6.2 Update Book | book_id, updated fields | UPDATE → D2 | Loads existing from D2, validates, saves changes |
+| P6.3 Delete Book | book_id | DELETE → D2 | Removes book record |
+| P6.4 List Books | — | All books ← D2 | Paginated admin book listing |
+
+#### P9: Admin Dashboard
+
+| Sub-Process | Input | Output | Description |
+|-------------|-------|--------|-------------|
+| P9.1 Count Users | — | Total ← D1 | COUNT(*) on users table |
+| P9.2 Count Books | — | Total ← D2 | COUNT(*) on books table |
+| P9.3 Count Orders + Revenue | — | Count + SUM ← D4 | COUNT(*) and SUM(total) on orders |
+| P9.4 Recent Orders | — | 5 latest ← D4 | Latest 5 orders with status |
+| P9.5 Recent Users | — | 5 newest ← D1 | Latest 5 registered users |
+
+---
+
+### Data Store × Process Matrix
+
+| Data Store | P1 | P2 | P3 | P4 | P5 | P6 | P7 | P8 | P9 |
+|------------|----|----|----|----|----|----|----|----|-----|
+| **D1 Users** | R/W | R/W | — | — | — | — | R/W | R | R |
+| **D2 Books** | — | — | R | R | R | R/W | — | R | R |
+| **D3 Cart Items** | — | — | — | R/W | R/W | — | — | — | — |
+| **D4 Orders** | — | — | — | — | R/W | — | — | R/W | R |
+| **D5 Pwd Tokens** | R/W | — | — | — | — | — | — | — | — |
+| **D6 Sessions** | R/W | — | — | — | — | — | — | — | — |
+
+*(R = Read, W = Write, R/W = Both)*
 
 ---
 

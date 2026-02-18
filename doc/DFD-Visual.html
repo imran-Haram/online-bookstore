@@ -1,0 +1,1501 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Online Bookstore — Data Flow Diagrams (DFD)</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #f8f9fa;
+            color: #1a1a2e;
+            line-height: 1.6;
+        }
+
+        .page {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 40px 30px;
+            background: #fff;
+            min-height: 100vh;
+        }
+
+        h1 {
+            font-size: 28px;
+            font-weight: 700;
+            color: #1a1a2e;
+            text-align: center;
+            margin-bottom: 5px;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #6c757d;
+            font-size: 14px;
+            margin-bottom: 40px;
+        }
+
+        h2 {
+            font-size: 22px;
+            font-weight: 600;
+            color: #2d3436;
+            margin: 50px 0 10px 0;
+            padding-bottom: 8px;
+            border-bottom: 3px solid #0984e3;
+            display: inline-block;
+        }
+
+        h3 {
+            font-size: 17px;
+            font-weight: 600;
+            color: #2d3436;
+            margin: 30px 0 10px 0;
+        }
+
+        p, li {
+            font-size: 14px;
+            color: #444;
+            margin-bottom: 8px;
+        }
+
+        .legend {
+            display: flex;
+            gap: 30px;
+            flex-wrap: wrap;
+            padding: 20px;
+            background: #f1f3f5;
+            border-radius: 10px;
+            margin: 20px 0 30px 0;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 13px;
+            font-weight: 500;
+        }
+
+        .legend-shape {
+            width: 50px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .diagram-container {
+            width: 100%;
+            overflow-x: auto;
+            margin: 20px 0;
+            padding: 10px 0;
+        }
+
+        svg {
+            display: block;
+            margin: 0 auto;
+        }
+
+        /* External Entity - Rectangle */
+        .entity rect {
+            fill: #dfe6e9;
+            stroke: #2d3436;
+            stroke-width: 2;
+            rx: 3;
+            ry: 3;
+        }
+        .entity text {
+            font-family: 'Inter', sans-serif;
+            font-size: 13px;
+            font-weight: 600;
+            fill: #2d3436;
+            text-anchor: middle;
+            dominant-baseline: central;
+        }
+
+        /* Process - Circle/Rounded Rect */
+        .process circle, .process ellipse {
+            fill: #74b9ff;
+            stroke: #0984e3;
+            stroke-width: 2;
+        }
+        .process rect {
+            fill: #74b9ff;
+            stroke: #0984e3;
+            stroke-width: 2;
+            rx: 25;
+            ry: 25;
+        }
+        .process text {
+            font-family: 'Inter', sans-serif;
+            font-size: 12px;
+            font-weight: 600;
+            fill: #fff;
+            text-anchor: middle;
+            dominant-baseline: central;
+        }
+        .process .process-id {
+            font-size: 10px;
+            font-weight: 700;
+            fill: #fff;
+        }
+        .process .process-name {
+            font-size: 11px;
+            font-weight: 500;
+            fill: #fff;
+        }
+
+        /* Data Store - Open Rectangle */
+        .datastore rect {
+            fill: #ffeaa7;
+            stroke: #fdcb6e;
+            stroke-width: 2;
+        }
+        .datastore line {
+            stroke: #fdcb6e;
+            stroke-width: 2;
+        }
+        .datastore text {
+            font-family: 'Inter', sans-serif;
+            font-size: 11px;
+            font-weight: 600;
+            fill: #2d3436;
+            text-anchor: middle;
+            dominant-baseline: central;
+        }
+        .datastore .store-id {
+            font-size: 10px;
+            font-weight: 700;
+            fill: #636e72;
+        }
+
+        /* Arrows / Data Flows */
+        .flow line, .flow path, .flow polyline {
+            stroke: #636e72;
+            stroke-width: 1.5;
+            fill: none;
+        }
+        .flow polygon {
+            fill: #636e72;
+            stroke: none;
+        }
+        .flow-label {
+            font-family: 'Inter', sans-serif;
+            font-size: 9.5px;
+            font-weight: 400;
+            fill: #e17055;
+            text-anchor: middle;
+        }
+
+        marker polygon {
+            fill: #636e72;
+        }
+
+        .section-desc {
+            background: #f8f9fa;
+            border-left: 4px solid #0984e3;
+            padding: 12px 16px;
+            margin: 15px 0 20px 0;
+            border-radius: 0 6px 6px 0;
+            font-size: 13px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+            font-size: 13px;
+        }
+        th {
+            background: #0984e3;
+            color: #fff;
+            padding: 10px 12px;
+            text-align: left;
+            font-weight: 600;
+        }
+        td {
+            padding: 8px 12px;
+            border-bottom: 1px solid #e9ecef;
+        }
+        tr:nth-child(even) {
+            background: #f8f9fa;
+        }
+
+        .page-break {
+            page-break-before: always;
+            margin-top: 60px;
+        }
+
+        @media print {
+            body { background: #fff; }
+            .page { padding: 20px; }
+            .page-break { page-break-before: always; }
+            svg { max-width: 100%; }
+        }
+    </style>
+</head>
+<body>
+<div class="page">
+
+    <h1>Online Bookstore System</h1>
+    <h1 style="font-size:22px; color:#0984e3; margin-bottom: 5px;">Data Flow Diagrams (DFD)</h1>
+    <p class="subtitle">Prepared for CS519 — Software Engineering &nbsp;|&nbsp; February 2026</p>
+
+    <!-- ============================================================ -->
+    <!-- LEGEND -->
+    <!-- ============================================================ -->
+    <h2>DFD Notation Legend</h2>
+    <div class="legend">
+        <div class="legend-item">
+            <svg width="60" height="36"><rect x="2" y="3" width="56" height="30" rx="3" fill="#dfe6e9" stroke="#2d3436" stroke-width="2"/><text x="30" y="19" font-size="10" font-weight="600" text-anchor="middle" fill="#2d3436" font-family="Inter">Entity</text></svg>
+            <span>External Entity</span>
+        </div>
+        <div class="legend-item">
+            <svg width="60" height="36"><ellipse cx="30" cy="18" rx="28" ry="16" fill="#74b9ff" stroke="#0984e3" stroke-width="2"/><text x="30" y="19" font-size="10" font-weight="600" text-anchor="middle" fill="#fff" font-family="Inter">Process</text></svg>
+            <span>Process</span>
+        </div>
+        <div class="legend-item">
+            <svg width="70" height="36">
+                <rect x="2" y="5" width="66" height="26" fill="#ffeaa7" stroke="#fdcb6e" stroke-width="2"/>
+                <line x1="18" y1="5" x2="18" y2="31" stroke="#fdcb6e" stroke-width="2"/>
+                <text x="44" y="19" font-size="9" font-weight="600" text-anchor="middle" fill="#2d3436" font-family="Inter">D1 Store</text>
+            </svg>
+            <span>Data Store</span>
+        </div>
+        <div class="legend-item">
+            <svg width="60" height="20">
+                <defs><marker id="arrowLegend" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#636e72"/></marker></defs>
+                <line x1="2" y1="10" x2="50" y2="10" stroke="#636e72" stroke-width="2" marker-end="url(#arrowLegend)"/>
+            </svg>
+            <span>Data Flow</span>
+        </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- LEVEL 0 - CONTEXT DIAGRAM -->
+    <!-- ============================================================ -->
+    <div class="page-break"></div>
+    <h2>Level 0 — Context Diagram</h2>
+    <div class="section-desc">
+        The Context Diagram shows the <strong>entire system as a single process</strong> and identifies all external entities (actors) that interact with it. It defines the system boundary.
+    </div>
+
+    <div class="diagram-container">
+        <svg width="1050" height="700" viewBox="0 0 1050 700">
+            <defs>
+                <marker id="arrow" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+                    <polygon points="0 0, 10 3.5, 0 7" fill="#636e72"/>
+                </marker>
+                <marker id="arrowBlue" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+                    <polygon points="0 0, 10 3.5, 0 7" fill="#0984e3"/>
+                </marker>
+            </defs>
+
+            <!-- Central Process -->
+            <g class="process">
+                <ellipse cx="525" cy="350" rx="160" ry="80" fill="#74b9ff" stroke="#0984e3" stroke-width="3"/>
+                <text x="525" y="335" font-size="16" font-weight="700" fill="#fff" text-anchor="middle" font-family="Inter">Online Bookstore</text>
+                <text x="525" y="360" font-size="13" font-weight="500" fill="#fff" text-anchor="middle" font-family="Inter">System</text>
+                <text x="525" y="380" font-size="10" fill="#d6e7ff" text-anchor="middle" font-family="Inter">(P0)</text>
+            </g>
+
+            <!-- Guest Entity (top-left) -->
+            <g class="entity">
+                <rect x="50" y="60" width="130" height="50"/>
+                <text x="115" y="85">Guest</text>
+            </g>
+
+            <!-- Customer Entity (left) -->
+            <g class="entity">
+                <rect x="30" y="300" width="150" height="50"/>
+                <text x="105" y="325">Customer</text>
+            </g>
+
+            <!-- Admin Entity (right) -->
+            <g class="entity">
+                <rect x="870" y="300" width="140" height="50"/>
+                <text x="940" y="325">Administrator</text>
+            </g>
+
+            <!-- ===== Guest Flows ===== -->
+            <!-- Guest → System: Registration Data -->
+            <g class="flow">
+                <line x1="180" y1="85" x2="388" y2="300" stroke="#636e72" stroke-width="1.5" marker-end="url(#arrow)"/>
+                <text x="260" y="175" class="flow-label" font-family="Inter" transform="rotate(33, 260, 175)">Registration Data</text>
+            </g>
+            <!-- System → Guest: Confirmation -->
+            <g class="flow">
+                <line x1="380" y1="290" x2="172" y2="95" stroke="#636e72" stroke-width="1.5" marker-end="url(#arrow)"/>
+                <text x="310" y="215" class="flow-label" font-family="Inter" transform="rotate(33, 310, 215)">Confirmation / Errors</text>
+            </g>
+            <!-- Guest → System: Login Credentials -->
+            <g class="flow">
+                <line x1="140" y1="110" x2="395" y2="310" stroke="#0984e3" stroke-width="1.5" marker-end="url(#arrowBlue)" stroke-dasharray="6,3"/>
+                <text x="220" y="240" class="flow-label" font-family="Inter" style="fill:#0984e3" transform="rotate(33, 220, 240)">Login Credentials</text>
+            </g>
+
+            <!-- ===== Customer Flows ===== -->
+            <!-- Customer → System: Search/Filter -->
+            <g class="flow">
+                <line x1="180" y1="310" x2="365" y2="330" stroke="#636e72" stroke-width="1.5" marker-end="url(#arrow)"/>
+                <text x="270" y="305" class="flow-label" font-family="Inter">Search / Filter Criteria</text>
+            </g>
+            <!-- System → Customer: Book Listings -->
+            <g class="flow">
+                <line x1="365" y1="345" x2="180" y2="325" stroke="#636e72" stroke-width="1.5" marker-end="url(#arrow)"/>
+                <text x="270" y="348" class="flow-label" font-family="Inter">Book Listings &amp; Details</text>
+            </g>
+            <!-- Customer → System: Cart Operations -->
+            <g class="flow">
+                <line x1="170" y1="350" x2="368" y2="370" stroke="#636e72" stroke-width="1.5" marker-end="url(#arrow)"/>
+                <text x="240" y="377" class="flow-label" font-family="Inter">Add/Update/Remove Cart</text>
+            </g>
+            <!-- System → Customer: Cart Contents -->
+            <g class="flow">
+                <line x1="368" y1="385" x2="170" y2="350" stroke="#636e72" stroke-width="1.5" marker-end="url(#arrow)"/>
+                <text x="235" y="395" class="flow-label" font-family="Inter">Cart Contents &amp; Totals</text>
+            </g>
+            <!-- Customer → System: Checkout -->
+            <g class="flow">
+                <line x1="145" y1="350" x2="390" y2="415" stroke="#636e72" stroke-width="1.5" marker-end="url(#arrow)"/>
+                <text x="210" y="415" class="flow-label" font-family="Inter">Place Order</text>
+            </g>
+            <!-- System → Customer: Order Confirm -->
+            <g class="flow">
+                <line x1="390" y1="425" x2="120" y2="350" stroke="#636e72" stroke-width="1.5" marker-end="url(#arrow)"/>
+                <text x="200" y="435" class="flow-label" font-family="Inter">Order Confirmation &amp; History</text>
+            </g>
+            <!-- Customer → System: Profile -->
+            <g class="flow">
+                <line x1="105" y1="300" x2="400" y2="280" stroke="#0984e3" stroke-width="1.5" marker-end="url(#arrowBlue)" stroke-dasharray="6,3"/>
+                <text x="250" y="275" class="flow-label" font-family="Inter" style="fill:#0984e3">Profile Update</text>
+            </g>
+
+            <!-- ===== Admin Flows ===== -->
+            <!-- Admin → System: Book CRUD -->
+            <g class="flow">
+                <line x1="870" y1="310" x2="685" y2="325" stroke="#636e72" stroke-width="1.5" marker-end="url(#arrow)"/>
+                <text x="785" y="303" class="flow-label" font-family="Inter">Book Data (Add/Edit/Delete)</text>
+            </g>
+            <!-- System → Admin: Confirmation -->
+            <g class="flow">
+                <line x1="685" y1="340" x2="870" y2="320" stroke="#636e72" stroke-width="1.5" marker-end="url(#arrow)"/>
+                <text x="785" y="346" class="flow-label" font-family="Inter">CRUD Confirmation</text>
+            </g>
+            <!-- Admin → System: User Mgmt -->
+            <g class="flow">
+                <line x1="880" y1="350" x2="682" y2="360" stroke="#636e72" stroke-width="1.5" marker-end="url(#arrow)"/>
+                <text x="800" y="370" class="flow-label" font-family="Inter">View/Delete Users</text>
+            </g>
+            <!-- System → Admin: User List -->
+            <g class="flow">
+                <line x1="682" y1="375" x2="880" y2="350" stroke="#636e72" stroke-width="1.5" marker-end="url(#arrow)"/>
+                <text x="800" y="390" class="flow-label" font-family="Inter">User List &amp; Details</text>
+            </g>
+            <!-- Admin → System: Order Mgmt -->
+            <g class="flow">
+                <line x1="910" y1="350" x2="665" y2="400" stroke="#636e72" stroke-width="1.5" marker-end="url(#arrow)"/>
+                <text x="820" y="408" class="flow-label" font-family="Inter">View Orders / Update Status</text>
+            </g>
+            <!-- System → Admin: Orders -->
+            <g class="flow">
+                <line x1="660" y1="410" x2="910" y2="350" stroke="#636e72" stroke-width="1.5" marker-end="url(#arrow)"/>
+                <text x="820" y="425" class="flow-label" font-family="Inter">Order Data &amp; Statistics</text>
+            </g>
+            <!-- Admin → System: Dashboard -->
+            <g class="flow">
+                <line x1="940" y1="300" x2="650" y2="280" stroke="#0984e3" stroke-width="1.5" marker-end="url(#arrowBlue)" stroke-dasharray="6,3"/>
+                <text x="800" y="275" class="flow-label" font-family="Inter" style="fill:#0984e3">Dashboard Request</text>
+            </g>
+            <g class="flow">
+                <line x1="650" y1="290" x2="940" y2="300" stroke="#0984e3" stroke-width="1.5" marker-end="url(#arrowBlue)" stroke-dasharray="6,3"/>
+                <text x="800" y="260" class="flow-label" font-family="Inter" style="fill:#0984e3">Dashboard Statistics</text>
+            </g>
+
+            <!-- Boundary Box -->
+            <rect x="320" y="245" width="410" height="210" fill="none" stroke="#0984e3" stroke-width="1" stroke-dasharray="8,4" rx="10"/>
+            <text x="525" y="240" font-size="10" fill="#0984e3" text-anchor="middle" font-family="Inter" font-weight="600">SYSTEM BOUNDARY</text>
+        </svg>
+    </div>
+
+    <h3>External Entities</h3>
+    <table>
+        <tr><th>Entity</th><th>Description</th></tr>
+        <tr><td><strong>Guest</strong></td><td>Unauthenticated visitor — can register a new account or log in.</td></tr>
+        <tr><td><strong>Customer</strong></td><td>Registered user — browses books, manages cart, places orders, views order history, updates profile.</td></tr>
+        <tr><td><strong>Administrator</strong></td><td>Privileged user — manages books (CRUD), users (view/delete), orders (view/update status), and views dashboard statistics.</td></tr>
+    </table>
+
+    <!-- ============================================================ -->
+    <!-- LEVEL 1 DFD -->
+    <!-- ============================================================ -->
+    <div class="page-break"></div>
+    <h2>Level 1 — System Overview DFD</h2>
+    <div class="section-desc">
+        Level 1 decomposes the single system process into <strong>major sub-processes</strong> and shows the <strong>data stores</strong> (database tables) each process interacts with.
+    </div>
+
+    <div class="diagram-container">
+        <svg width="1050" height="1050" viewBox="0 0 1050 1050">
+            <defs>
+                <marker id="arr1" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+                    <polygon points="0 0, 10 3.5, 0 7" fill="#636e72"/>
+                </marker>
+            </defs>
+
+            <!-- ===== EXTERNAL ENTITIES ===== -->
+            <!-- Guest -->
+            <g class="entity">
+                <rect x="30" y="40" width="120" height="45"/>
+                <text x="90" y="63">Guest</text>
+            </g>
+            <!-- Customer -->
+            <g class="entity">
+                <rect x="30" y="320" width="120" height="45"/>
+                <text x="90" y="343">Customer</text>
+            </g>
+            <!-- Admin -->
+            <g class="entity">
+                <rect x="30" y="750" width="120" height="45"/>
+                <text x="90" y="773">Administrator</text>
+            </g>
+
+            <!-- ===== PROCESSES ===== -->
+            <!-- P1 Authentication -->
+            <g class="process">
+                <rect x="260" y="25" width="210" height="55" rx="25"/>
+                <text x="365" y="46" class="process-id" font-family="Inter">P1</text>
+                <text x="365" y="62" class="process-name" font-family="Inter">Authentication &amp; Registration</text>
+            </g>
+            <!-- P2 Profile -->
+            <g class="process">
+                <rect x="260" y="130" width="210" height="55" rx="25"/>
+                <text x="365" y="151" class="process-id" font-family="Inter">P2</text>
+                <text x="365" y="167" class="process-name" font-family="Inter">Profile Management</text>
+            </g>
+            <!-- P3 Book Catalog -->
+            <g class="process">
+                <rect x="260" y="260" width="210" height="55" rx="25"/>
+                <text x="365" y="281" class="process-id" font-family="Inter">P3</text>
+                <text x="365" y="297" class="process-name" font-family="Inter">Book Catalog &amp; Search</text>
+            </g>
+            <!-- P4 Cart -->
+            <g class="process">
+                <rect x="260" y="380" width="210" height="55" rx="25"/>
+                <text x="365" y="401" class="process-id" font-family="Inter">P4</text>
+                <text x="365" y="417" class="process-name" font-family="Inter">Shopping Cart Management</text>
+            </g>
+            <!-- P5 Orders -->
+            <g class="process">
+                <rect x="260" y="500" width="210" height="55" rx="25"/>
+                <text x="365" y="521" class="process-id" font-family="Inter">P5</text>
+                <text x="365" y="537" class="process-name" font-family="Inter">Order Processing</text>
+            </g>
+            <!-- P6 Admin Books -->
+            <g class="process">
+                <rect x="260" y="650" width="210" height="55" rx="25"/>
+                <text x="365" y="671" class="process-id" font-family="Inter">P6</text>
+                <text x="365" y="687" class="process-name" font-family="Inter">Admin Book Management</text>
+            </g>
+            <!-- P7 Admin Users -->
+            <g class="process">
+                <rect x="260" y="760" width="210" height="55" rx="25"/>
+                <text x="365" y="781" class="process-id" font-family="Inter">P7</text>
+                <text x="365" y="797" class="process-name" font-family="Inter">Admin User Management</text>
+            </g>
+            <!-- P8 Admin Orders -->
+            <g class="process">
+                <rect x="260" y="870" width="210" height="55" rx="25"/>
+                <text x="365" y="891" class="process-id" font-family="Inter">P8</text>
+                <text x="365" y="907" class="process-name" font-family="Inter">Admin Order Management</text>
+            </g>
+            <!-- P9 Dashboard -->
+            <g class="process">
+                <rect x="260" y="970" width="210" height="55" rx="25"/>
+                <text x="365" y="991" class="process-id" font-family="Inter">P9</text>
+                <text x="365" y="1007" class="process-name" font-family="Inter">Admin Dashboard</text>
+            </g>
+
+            <!-- ===== DATA STORES ===== -->
+            <!-- D1 Users -->
+            <g class="datastore">
+                <rect x="620" y="35" width="170" height="35"/>
+                <line x1="650" y1="35" x2="650" y2="70"/>
+                <text x="640" y="52" class="store-id" font-family="Inter" text-anchor="middle">D1</text>
+                <text x="725" y="54" font-family="Inter">Users</text>
+            </g>
+            <!-- D2 Books -->
+            <g class="datastore">
+                <rect x="620" y="270" width="170" height="35"/>
+                <line x1="650" y1="270" x2="650" y2="305"/>
+                <text x="640" y="287" class="store-id" font-family="Inter" text-anchor="middle">D2</text>
+                <text x="725" y="289" font-family="Inter">Books</text>
+            </g>
+            <!-- D3 Cart Items -->
+            <g class="datastore">
+                <rect x="620" y="390" width="170" height="35"/>
+                <line x1="650" y1="390" x2="650" y2="425"/>
+                <text x="640" y="407" class="store-id" font-family="Inter" text-anchor="middle">D3</text>
+                <text x="725" y="409" font-family="Inter">Cart Items</text>
+            </g>
+            <!-- D4 Orders -->
+            <g class="datastore">
+                <rect x="620" y="510" width="170" height="35"/>
+                <line x1="650" y1="510" x2="650" y2="545"/>
+                <text x="640" y="527" class="store-id" font-family="Inter" text-anchor="middle">D4</text>
+                <text x="725" y="529" font-family="Inter">Orders</text>
+            </g>
+            <!-- D5 Password Reset Tokens -->
+            <g class="datastore">
+                <rect x="620" y="140" width="200" height="35"/>
+                <line x1="650" y1="140" x2="650" y2="175"/>
+                <text x="640" y="157" class="store-id" font-family="Inter" text-anchor="middle">D5</text>
+                <text x="745" y="159" font-family="Inter">Password Tokens</text>
+            </g>
+            <!-- D6 Sessions -->
+            <g class="datastore">
+                <rect x="860" y="35" width="150" height="35"/>
+                <line x1="890" y1="35" x2="890" y2="70"/>
+                <text x="880" y="52" class="store-id" font-family="Inter" text-anchor="middle">D6</text>
+                <text x="945" y="54" font-family="Inter">Sessions</text>
+            </g>
+
+            <!-- ===== FLOWS ===== -->
+            <!-- Guest → P1 -->
+            <g class="flow">
+                <line x1="150" y1="55" x2="258" y2="50" marker-end="url(#arr1)"/>
+                <text x="200" y="42" class="flow-label" font-family="Inter">Registration / Login</text>
+            </g>
+            <!-- P1 → D1 -->
+            <g class="flow">
+                <line x1="470" y1="50" x2="618" y2="50" marker-end="url(#arr1)"/>
+                <text x="545" y="42" class="flow-label" font-family="Inter">User Record</text>
+            </g>
+            <!-- P1 → D5 -->
+            <g class="flow">
+                <line x1="470" y1="70" x2="618" y2="150" marker-end="url(#arr1)"/>
+                <text x="560" y="100" class="flow-label" font-family="Inter">Reset Token</text>
+            </g>
+            <!-- P1 → D6 -->
+            <g class="flow">
+                <line x1="470" y1="42" x2="858" y2="50" marker-end="url(#arr1)"/>
+                <text x="680" y="32" class="flow-label" font-family="Inter">Session</text>
+            </g>
+
+            <!-- Customer → P2 -->
+            <g class="flow">
+                <line x1="150" y1="330" x2="260" y2="165" marker-end="url(#arr1)"/>
+                <text x="180" y="240" class="flow-label" font-family="Inter" transform="rotate(-50, 180, 240)">Profile Data</text>
+            </g>
+            <!-- P2 → D1 -->
+            <g class="flow">
+                <line x1="470" y1="155" x2="618" y2="60" marker-end="url(#arr1)"/>
+                <text x="560" y="130" class="flow-label" font-family="Inter">Update User</text>
+            </g>
+
+            <!-- Customer → P3 -->
+            <g class="flow">
+                <line x1="150" y1="335" x2="258" y2="285" marker-end="url(#arr1)"/>
+                <text x="185" y="298" class="flow-label" font-family="Inter">Search / Filter</text>
+            </g>
+            <!-- P3 → D2 -->
+            <g class="flow">
+                <line x1="470" y1="287" x2="618" y2="287" marker-end="url(#arr1)"/>
+                <text x="545" y="278" class="flow-label" font-family="Inter">Read Books</text>
+            </g>
+            <!-- P3 → Customer (results) -->
+            <g class="flow">
+                <line x1="258" y1="297" x2="150" y2="345" marker-end="url(#arr1)"/>
+                <text x="185" y="335" class="flow-label" font-family="Inter">Book Listings</text>
+            </g>
+
+            <!-- Customer → P4 -->
+            <g class="flow">
+                <line x1="150" y1="352" x2="258" y2="400" marker-end="url(#arr1)"/>
+                <text x="180" y="370" class="flow-label" font-family="Inter">Cart Actions</text>
+            </g>
+            <!-- P4 → D3 -->
+            <g class="flow">
+                <line x1="470" y1="407" x2="618" y2="407" marker-end="url(#arr1)"/>
+                <text x="545" y="398" class="flow-label" font-family="Inter">Read/Write Cart</text>
+            </g>
+            <!-- D2 → P4 (book prices) -->
+            <g class="flow">
+                <line x1="705" y1="305" x2="705" y2="388" marker-end="url(#arr1)"/>
+                <text x="730" y="350" class="flow-label" font-family="Inter">Prices</text>
+            </g>
+            <!-- P4 → Customer -->
+            <g class="flow">
+                <line x1="258" y1="420" x2="150" y2="360" marker-end="url(#arr1)"/>
+                <text x="180" y="405" class="flow-label" font-family="Inter">Cart &amp; Totals</text>
+            </g>
+
+            <!-- Customer → P5 -->
+            <g class="flow">
+                <line x1="130" y1="365" x2="258" y2="520" marker-end="url(#arr1)"/>
+                <text x="165" y="455" class="flow-label" font-family="Inter" transform="rotate(46, 165, 455)">Place Order</text>
+            </g>
+            <!-- P5 → D4 -->
+            <g class="flow">
+                <line x1="470" y1="527" x2="618" y2="527" marker-end="url(#arr1)"/>
+                <text x="545" y="518" class="flow-label" font-family="Inter">Create Order</text>
+            </g>
+            <!-- D3 → P5 (read cart) -->
+            <g class="flow">
+                <line x1="705" y1="425" x2="705" y2="508" marker-end="url(#arr1)"/>
+                <text x="730" y="468" class="flow-label" font-family="Inter">Cart Items</text>
+            </g>
+            <!-- P5 → D3 (clear cart) -->
+            <g class="flow">
+                <line x1="470" y1="540" x2="618" y2="425" marker-end="url(#arr1)"/>
+                <text x="525" y="475" class="flow-label" font-family="Inter">Clear Cart</text>
+            </g>
+            <!-- P5 → Customer -->
+            <g class="flow">
+                <line x1="258" y1="540" x2="120" y2="365" marker-end="url(#arr1)"/>
+                <text x="150" y="480" class="flow-label" font-family="Inter" transform="rotate(-46, 150, 480)">Order Confirm</text>
+            </g>
+
+            <!-- Admin → P6 -->
+            <g class="flow">
+                <line x1="150" y1="765" x2="258" y2="680" marker-end="url(#arr1)"/>
+                <text x="180" y="710" class="flow-label" font-family="Inter">Book CRUD</text>
+            </g>
+            <!-- P6 → D2 -->
+            <g class="flow">
+                <line x1="470" y1="670" x2="700" y2="307" marker-end="url(#arr1)"/>
+                <text x="610" y="490" class="flow-label" font-family="Inter" transform="rotate(-63, 610, 490)">Create/Update/Delete</text>
+            </g>
+
+            <!-- Admin → P7 -->
+            <g class="flow">
+                <line x1="150" y1="775" x2="258" y2="788" marker-end="url(#arr1)"/>
+                <text x="200" y="770" class="flow-label" font-family="Inter">View/Delete Users</text>
+            </g>
+            <!-- P7 → D1 -->
+            <g class="flow">
+                <line x1="470" y1="780" x2="700" y2="72" marker-end="url(#arr1)"/>
+                <text x="610" y="420" class="flow-label" font-family="Inter" transform="rotate(-72, 610, 420)">Read/Delete Users</text>
+            </g>
+
+            <!-- Admin → P8 -->
+            <g class="flow">
+                <line x1="130" y1="795" x2="258" y2="895" marker-end="url(#arr1)"/>
+                <text x="170" y="855" class="flow-label" font-family="Inter">Orders/Status</text>
+            </g>
+            <!-- P8 → D4 -->
+            <g class="flow">
+                <line x1="470" y1="890" x2="700" y2="547" marker-end="url(#arr1)"/>
+                <text x="615" y="720" class="flow-label" font-family="Inter" transform="rotate(-63, 615, 720)">Read/Update Orders</text>
+            </g>
+
+            <!-- Admin → P9 -->
+            <g class="flow">
+                <line x1="120" y1="795" x2="258" y2="995" marker-end="url(#arr1)"/>
+                <text x="150" y="910" class="flow-label" font-family="Inter" transform="rotate(55, 150, 910)">Dashboard Req</text>
+            </g>
+            <!-- P9 reads D1, D2, D4 (dashed) -->
+            <g class="flow">
+                <line x1="470" y1="990" x2="790" y2="545" stroke="#636e72" stroke-width="1" stroke-dasharray="5,3" marker-end="url(#arr1)"/>
+                <text x="680" y="800" class="flow-label" font-family="Inter" transform="rotate(-55, 680, 800)">Reads D1, D2, D4</text>
+            </g>
+        </svg>
+    </div>
+
+    <h3>Processes</h3>
+    <table>
+        <tr><th>#</th><th>Process</th><th>Description</th></tr>
+        <tr><td>P1</td><td>Authentication &amp; Registration</td><td>Handles registration, login, logout, password reset, email verification</td></tr>
+        <tr><td>P2</td><td>Profile Management</td><td>Handles profile viewing, updating, and account deletion</td></tr>
+        <tr><td>P3</td><td>Book Catalog &amp; Search</td><td>Book listing, detail view, search by title/author/category, filtering</td></tr>
+        <tr><td>P4</td><td>Shopping Cart Management</td><td>Adding, updating, removing cart items and calculating totals</td></tr>
+        <tr><td>P5</td><td>Order Processing</td><td>Checkout, order creation (DB transaction), order history</td></tr>
+        <tr><td>P6</td><td>Admin Book Management</td><td>Admin CRUD operations on books</td></tr>
+        <tr><td>P7</td><td>Admin User Management</td><td>Admin view/delete user accounts</td></tr>
+        <tr><td>P8</td><td>Admin Order Management</td><td>Admin view all orders, update order statuses</td></tr>
+        <tr><td>P9</td><td>Admin Dashboard</td><td>Aggregates system-wide statistics (users, books, orders, revenue)</td></tr>
+    </table>
+
+    <h3>Data Stores</h3>
+    <table>
+        <tr><th>ID</th><th>Data Store</th><th>Database Table(s)</th></tr>
+        <tr><td>D1</td><td>Users</td><td><code>users</code></td></tr>
+        <tr><td>D2</td><td>Books</td><td><code>books</code></td></tr>
+        <tr><td>D3</td><td>Cart Items</td><td><code>cart_items</code></td></tr>
+        <tr><td>D4</td><td>Orders</td><td><code>orders</code>, <code>order_items</code></td></tr>
+        <tr><td>D5</td><td>Password Tokens</td><td><code>password_reset_tokens</code></td></tr>
+        <tr><td>D6</td><td>Sessions</td><td><code>sessions</code></td></tr>
+    </table>
+
+    <!-- ============================================================ -->
+    <!-- LEVEL 2 DFDs -->
+    <!-- ============================================================ -->
+    <div class="page-break"></div>
+    <h2>Level 2 — Process Decomposition</h2>
+    <div class="section-desc">
+        Level 2 expands each Level 1 process into more granular sub-processes. Below are detailed decompositions for the most critical processes.
+    </div>
+
+    <!-- ===== LEVEL 2.1 - P1: Authentication ===== -->
+    <h3>Level 2.1 — P1: Authentication &amp; Registration</h3>
+
+    <div class="diagram-container">
+        <svg width="950" height="520" viewBox="0 0 950 520">
+            <defs>
+                <marker id="arr2a" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+                    <polygon points="0 0, 10 3.5, 0 7" fill="#636e72"/>
+                </marker>
+            </defs>
+
+            <!-- Guest Entity -->
+            <g class="entity">
+                <rect x="30" y="220" width="110" height="45"/>
+                <text x="85" y="243">Guest</text>
+            </g>
+
+            <!-- P1.1 Register -->
+            <g class="process">
+                <rect x="230" y="30" width="200" height="50" rx="25"/>
+                <text x="330" y="48" class="process-id" font-family="Inter">P1.1</text>
+                <text x="330" y="64" class="process-name" font-family="Inter">Validate &amp; Register User</text>
+            </g>
+            <!-- P1.2 Authenticate -->
+            <g class="process">
+                <rect x="230" y="150" width="200" height="50" rx="25"/>
+                <text x="330" y="168" class="process-id" font-family="Inter">P1.2</text>
+                <text x="330" y="184" class="process-name" font-family="Inter">Authenticate User</text>
+            </g>
+            <!-- P1.3 Generate Reset Token -->
+            <g class="process">
+                <rect x="230" y="290" width="200" height="50" rx="25"/>
+                <text x="330" y="308" class="process-id" font-family="Inter">P1.3</text>
+                <text x="330" y="324" class="process-name" font-family="Inter">Generate Reset Token</text>
+            </g>
+            <!-- P1.4 Reset Password -->
+            <g class="process">
+                <rect x="230" y="420" width="200" height="50" rx="25"/>
+                <text x="330" y="438" class="process-id" font-family="Inter">P1.4</text>
+                <text x="330" y="454" class="process-name" font-family="Inter">Reset Password</text>
+            </g>
+
+            <!-- Data Stores -->
+            <!-- D1 Users -->
+            <g class="datastore">
+                <rect x="600" y="70" width="160" height="32"/>
+                <line x1="630" y1="70" x2="630" y2="102"/>
+                <text x="622" y="87" class="store-id" font-family="Inter" text-anchor="middle">D1</text>
+                <text x="700" y="89" font-family="Inter">Users</text>
+            </g>
+            <!-- D5 Password Tokens -->
+            <g class="datastore">
+                <rect x="600" y="300" width="200" height="32"/>
+                <line x1="630" y1="300" x2="630" y2="332"/>
+                <text x="622" y="317" class="store-id" font-family="Inter" text-anchor="middle">D5</text>
+                <text x="725" y="319" font-family="Inter">Password Tokens</text>
+            </g>
+            <!-- D6 Sessions -->
+            <g class="datastore">
+                <rect x="600" y="180" width="160" height="32"/>
+                <line x1="630" y1="180" x2="630" y2="212"/>
+                <text x="622" y="197" class="store-id" font-family="Inter" text-anchor="middle">D6</text>
+                <text x="700" y="199" font-family="Inter">Sessions</text>
+            </g>
+
+            <!-- Flows -->
+            <!-- Guest → P1.1 -->
+            <g class="flow">
+                <line x1="110" y1="225" x2="228" y2="65" marker-end="url(#arr2a)"/>
+                <text x="148" y="135" class="flow-label" font-family="Inter" transform="rotate(-56, 148, 135)">Name, Email, Password</text>
+            </g>
+            <!-- P1.1 → D1 -->
+            <g class="flow">
+                <line x1="430" y1="55" x2="598" y2="82" marker-end="url(#arr2a)"/>
+                <text x="515" y="55" class="flow-label" font-family="Inter">New User Record</text>
+            </g>
+            <!-- Guest → P1.2 -->
+            <g class="flow">
+                <line x1="140" y1="240" x2="228" y2="180" marker-end="url(#arr2a)"/>
+                <text x="160" y="202" class="flow-label" font-family="Inter">Email, Password</text>
+            </g>
+            <!-- D1 → P1.2 (verify) -->
+            <g class="flow">
+                <line x1="598" y1="95" x2="430" y2="168" marker-end="url(#arr2a)"/>
+                <text x="530" y="118" class="flow-label" font-family="Inter">Verify Credentials</text>
+            </g>
+            <!-- P1.2 → D6 -->
+            <g class="flow">
+                <line x1="430" y1="180" x2="598" y2="195" marker-end="url(#arr2a)"/>
+                <text x="515" y="178" class="flow-label" font-family="Inter">Create Session</text>
+            </g>
+            <!-- Guest → P1.3 -->
+            <g class="flow">
+                <line x1="130" y1="265" x2="228" y2="310" marker-end="url(#arr2a)"/>
+                <text x="160" y="280" class="flow-label" font-family="Inter">Email</text>
+            </g>
+            <!-- P1.3 → D5 -->
+            <g class="flow">
+                <line x1="430" y1="315" x2="598" y2="315" marker-end="url(#arr2a)"/>
+                <text x="515" y="306" class="flow-label" font-family="Inter">Store Reset Token</text>
+            </g>
+            <!-- Guest → P1.4 -->
+            <g class="flow">
+                <line x1="115" y1="265" x2="228" y2="440" marker-end="url(#arr2a)"/>
+                <text x="140" y="365" class="flow-label" font-family="Inter" transform="rotate(54, 140, 365)">Token + New Password</text>
+            </g>
+            <!-- D5 → P1.4 -->
+            <g class="flow">
+                <line x1="700" y1="332" x2="430" y2="435" marker-end="url(#arr2a)"/>
+                <text x="585" y="380" class="flow-label" font-family="Inter">Validate Token</text>
+            </g>
+            <!-- P1.4 → D1 -->
+            <g class="flow">
+                <line x1="430" y1="438" x2="760" y2="104" marker-end="url(#arr2a)"/>
+                <text x="640" y="270" class="flow-label" font-family="Inter" transform="rotate(-58, 640, 270)">Update Password</text>
+            </g>
+        </svg>
+    </div>
+
+    <table>
+        <tr><th>Process</th><th>Input</th><th>Output</th><th>Description</th></tr>
+        <tr><td>P1.1 Validate &amp; Register</td><td>Name, email, password</td><td>User record</td><td>Validates unique email, hashes password (bcrypt), creates user in DB</td></tr>
+        <tr><td>P1.2 Authenticate</td><td>Email, password</td><td>Session token</td><td>Verifies credentials against Users store, creates session</td></tr>
+        <tr><td>P1.3 Generate Reset Token</td><td>Email address</td><td>Reset token</td><td>Creates secure token in password_reset_tokens, sends email link</td></tr>
+        <tr><td>P1.4 Reset Password</td><td>Token, new password</td><td>Updated user</td><td>Validates token, hashes new password, updates user record</td></tr>
+    </table>
+
+    <!-- ===== LEVEL 2.3 - P3: Book Catalog ===== -->
+    <div class="page-break"></div>
+    <h3>Level 2.3 — P3: Book Catalog &amp; Search</h3>
+
+    <div class="diagram-container">
+        <svg width="900" height="500" viewBox="0 0 900 500">
+            <defs>
+                <marker id="arr2b" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+                    <polygon points="0 0, 10 3.5, 0 7" fill="#636e72"/>
+                </marker>
+            </defs>
+
+            <!-- Customer -->
+            <g class="entity">
+                <rect x="30" y="210" width="120" height="45"/>
+                <text x="90" y="233">Customer</text>
+            </g>
+
+            <!-- P3.1 List -->
+            <g class="process">
+                <rect x="250" y="30" width="200" height="50" rx="25"/>
+                <text x="350" y="48" class="process-id" font-family="Inter">P3.1</text>
+                <text x="350" y="64" class="process-name" font-family="Inter">List Books (Paginated)</text>
+            </g>
+            <!-- P3.2 Search -->
+            <g class="process">
+                <rect x="250" y="140" width="200" height="50" rx="25"/>
+                <text x="350" y="158" class="process-id" font-family="Inter">P3.2</text>
+                <text x="350" y="174" class="process-name" font-family="Inter">Search by Title/Author/Cat.</text>
+            </g>
+            <!-- P3.3 Filter -->
+            <g class="process">
+                <rect x="250" y="260" width="200" height="50" rx="25"/>
+                <text x="350" y="278" class="process-id" font-family="Inter">P3.3</text>
+                <text x="350" y="294" class="process-name" font-family="Inter">Apply Filters</text>
+            </g>
+            <!-- P3.4 Detail -->
+            <g class="process">
+                <rect x="250" y="380" width="200" height="50" rx="25"/>
+                <text x="350" y="398" class="process-id" font-family="Inter">P3.4</text>
+                <text x="350" y="414" class="process-name" font-family="Inter">View Book Detail</text>
+            </g>
+
+            <!-- D2 Books -->
+            <g class="datastore">
+                <rect x="620" y="200" width="170" height="35"/>
+                <line x1="650" y1="200" x2="650" y2="235"/>
+                <text x="642" y="218" class="store-id" font-family="Inter" text-anchor="middle">D2</text>
+                <text x="725" y="220" font-family="Inter">Books</text>
+            </g>
+
+            <!-- Flows -->
+            <g class="flow">
+                <line x1="140" y1="215" x2="248" y2="60" marker-end="url(#arr2b)"/>
+                <text x="170" y="130" class="flow-label" font-family="Inter" transform="rotate(-52, 170, 130)">Browse Request</text>
+            </g>
+            <g class="flow">
+                <line x1="450" y1="55" x2="618" y2="210" marker-end="url(#arr2b)"/>
+                <text x="550" y="120" class="flow-label" font-family="Inter" transform="rotate(42, 550, 120)">Read All Books</text>
+            </g>
+            <g class="flow">
+                <line x1="150" y1="222" x2="248" y2="170" marker-end="url(#arr2b)"/>
+                <text x="178" y="188" class="flow-label" font-family="Inter">Search Keyword</text>
+            </g>
+            <g class="flow">
+                <line x1="450" y1="165" x2="618" y2="215" marker-end="url(#arr2b)"/>
+                <text x="540" y="180" class="flow-label" font-family="Inter">LIKE Search</text>
+            </g>
+            <g class="flow">
+                <line x1="150" y1="240" x2="248" y2="280" marker-end="url(#arr2b)"/>
+                <text x="175" y="268" class="flow-label" font-family="Inter">Category, Price, Stock</text>
+            </g>
+            <g class="flow">
+                <line x1="450" y1="285" x2="618" y2="225" marker-end="url(#arr2b)"/>
+                <text x="545" y="260" class="flow-label" font-family="Inter">WHERE Clauses</text>
+            </g>
+            <g class="flow">
+                <line x1="130" y1="255" x2="248" y2="400" marker-end="url(#arr2b)"/>
+                <text x="157" y="340" class="flow-label" font-family="Inter" transform="rotate(50, 157, 340)">Book ID</text>
+            </g>
+            <g class="flow">
+                <line x1="450" y1="405" x2="618" y2="230" marker-end="url(#arr2b)"/>
+                <text x="555" y="330" class="flow-label" font-family="Inter" transform="rotate(-46, 555, 330)">Single Book Record</text>
+            </g>
+            <!-- Return flows to Customer -->
+            <g class="flow">
+                <line x1="248" y1="70" x2="140" y2="220" marker-end="url(#arr2b)" stroke="#0984e3" stroke-width="1.5" stroke-dasharray="5,3"/>
+                <text x="220" y="155" class="flow-label" font-family="Inter" style="fill:#0984e3" transform="rotate(52, 220, 155)">Paginated List</text>
+            </g>
+            <g class="flow">
+                <line x1="248" y1="180" x2="145" y2="230" marker-end="url(#arr2b)" stroke="#0984e3" stroke-width="1.5" stroke-dasharray="5,3"/>
+                <text x="175" y="222" class="flow-label" font-family="Inter" style="fill:#0984e3">Results</text>
+            </g>
+            <g class="flow">
+                <line x1="248" y1="300" x2="140" y2="250" marker-end="url(#arr2b)" stroke="#0984e3" stroke-width="1.5" stroke-dasharray="5,3"/>
+                <text x="175" y="290" class="flow-label" font-family="Inter" style="fill:#0984e3">Filtered Results</text>
+            </g>
+            <g class="flow">
+                <line x1="248" y1="415" x2="125" y2="255" marker-end="url(#arr2b)" stroke="#0984e3" stroke-width="1.5" stroke-dasharray="5,3"/>
+                <text x="215" y="355" class="flow-label" font-family="Inter" style="fill:#0984e3" transform="rotate(-50, 215, 355)">Book Detail Page</text>
+            </g>
+        </svg>
+    </div>
+
+    <table>
+        <tr><th>Process</th><th>Input</th><th>Output</th><th>Description</th></tr>
+        <tr><td>P3.1 List Books</td><td>Page number</td><td>10 books/page</td><td>Fetches books ordered by latest, paginated with Laravel paginate(10)</td></tr>
+        <tr><td>P3.2 Search Books</td><td>Search keyword</td><td>Matching books</td><td>LIKE search on title, author, and category columns</td></tr>
+        <tr><td>P3.3 Apply Filters</td><td>Category, min/max price, in_stock</td><td>Filtered results</td><td>Chains WHERE clauses for category, price range, stock &gt; 0</td></tr>
+        <tr><td>P3.4 View Book Detail</td><td>Book ID</td><td>Full book record</td><td>Returns all fields for a single book (title, author, category, price, stock, description, image)</td></tr>
+    </table>
+
+    <!-- ===== LEVEL 2.4 - P4: Shopping Cart ===== -->
+    <h3>Level 2.4 — P4: Shopping Cart Management</h3>
+
+    <div class="diagram-container">
+        <svg width="900" height="480" viewBox="0 0 900 480">
+            <defs>
+                <marker id="arr2c" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+                    <polygon points="0 0, 10 3.5, 0 7" fill="#636e72"/>
+                </marker>
+            </defs>
+
+            <!-- Customer -->
+            <g class="entity">
+                <rect x="30" y="200" width="120" height="45"/>
+                <text x="90" y="223">Customer</text>
+            </g>
+
+            <!-- P4.1 Add -->
+            <g class="process">
+                <rect x="250" y="30" width="210" height="50" rx="25"/>
+                <text x="355" y="48" class="process-id" font-family="Inter">P4.1</text>
+                <text x="355" y="64" class="process-name" font-family="Inter">Add Item to Cart</text>
+            </g>
+            <!-- P4.2 Update -->
+            <g class="process">
+                <rect x="250" y="150" width="210" height="50" rx="25"/>
+                <text x="355" y="168" class="process-id" font-family="Inter">P4.2</text>
+                <text x="355" y="184" class="process-name" font-family="Inter">Update Item Quantity</text>
+            </g>
+            <!-- P4.3 Remove -->
+            <g class="process">
+                <rect x="250" y="270" width="210" height="50" rx="25"/>
+                <text x="355" y="288" class="process-id" font-family="Inter">P4.3</text>
+                <text x="355" y="304" class="process-name" font-family="Inter">Remove Item from Cart</text>
+            </g>
+            <!-- P4.4 View -->
+            <g class="process">
+                <rect x="250" y="390" width="210" height="50" rx="25"/>
+                <text x="355" y="408" class="process-id" font-family="Inter">P4.4</text>
+                <text x="355" y="424" class="process-name" font-family="Inter">Calculate Totals &amp; Display</text>
+            </g>
+
+            <!-- D3 Cart Items -->
+            <g class="datastore">
+                <rect x="620" y="160" width="170" height="35"/>
+                <line x1="650" y1="160" x2="650" y2="195"/>
+                <text x="642" y="178" class="store-id" font-family="Inter" text-anchor="middle">D3</text>
+                <text x="725" y="180" font-family="Inter">Cart Items</text>
+            </g>
+            <!-- D2 Books -->
+            <g class="datastore">
+                <rect x="620" y="50" width="170" height="35"/>
+                <line x1="650" y1="50" x2="650" y2="85"/>
+                <text x="642" y="68" class="store-id" font-family="Inter" text-anchor="middle">D2</text>
+                <text x="725" y="70" font-family="Inter">Books</text>
+            </g>
+
+            <!-- Flows -->
+            <g class="flow">
+                <line x1="140" y1="205" x2="248" y2="60" marker-end="url(#arr2c)"/>
+                <text x="170" y="120" class="flow-label" font-family="Inter" transform="rotate(-52, 170, 120)">Book ID</text>
+            </g>
+            <g class="flow">
+                <line x1="460" y1="50" x2="618" y2="68" marker-end="url(#arr2c)"/>
+                <text x="540" y="45" class="flow-label" font-family="Inter">Get Book Price</text>
+            </g>
+            <g class="flow">
+                <line x1="460" y1="60" x2="618" y2="170" marker-end="url(#arr2c)"/>
+                <text x="555" y="105" class="flow-label" font-family="Inter">Create/Increment</text>
+            </g>
+            <g class="flow">
+                <line x1="150" y1="218" x2="248" y2="175" marker-end="url(#arr2c)"/>
+                <text x="178" y="190" class="flow-label" font-family="Inter">Item ID, New Qty</text>
+            </g>
+            <g class="flow">
+                <line x1="460" y1="175" x2="618" y2="177" marker-end="url(#arr2c)"/>
+                <text x="540" y="167" class="flow-label" font-family="Inter">Update Qty</text>
+            </g>
+            <g class="flow">
+                <line x1="145" y1="240" x2="248" y2="290" marker-end="url(#arr2c)"/>
+                <text x="178" y="260" class="flow-label" font-family="Inter">Cart Item ID</text>
+            </g>
+            <g class="flow">
+                <line x1="460" y1="295" x2="618" y2="188" marker-end="url(#arr2c)"/>
+                <text x="555" y="245" class="flow-label" font-family="Inter">Delete Record</text>
+            </g>
+            <g class="flow">
+                <line x1="130" y1="245" x2="248" y2="410" marker-end="url(#arr2c)"/>
+                <text x="155" y="340" class="flow-label" font-family="Inter" transform="rotate(54, 155, 340)">View Cart</text>
+            </g>
+            <g class="flow">
+                <line x1="618" y1="190" x2="460" y2="408" marker-end="url(#arr2c)"/>
+                <text x="560" y="310" class="flow-label" font-family="Inter" transform="rotate(54, 560, 310)">Cart Items</text>
+            </g>
+            <g class="flow">
+                <line x1="618" y1="80" x2="460" y2="400" marker-end="url(#arr2c)"/>
+                <text x="570" y="250" class="flow-label" font-family="Inter" transform="rotate(58, 570, 250)">Titles &amp; Prices</text>
+            </g>
+            <!-- Return to Customer -->
+            <g class="flow">
+                <line x1="248" y1="425" x2="125" y2="245" marker-end="url(#arr2c)" stroke="#0984e3" stroke-width="1.5" stroke-dasharray="5,3"/>
+                <text x="210" y="360" class="flow-label" font-family="Inter" style="fill:#0984e3" transform="rotate(-55, 210, 360)">Items + Subtotals + Total</text>
+            </g>
+        </svg>
+    </div>
+
+    <table>
+        <tr><th>Process</th><th>Input</th><th>Output</th><th>Description</th></tr>
+        <tr><td>P4.1 Add Item</td><td>book_id, user_id</td><td>Cart item record</td><td>Checks if item exists → increments qty; otherwise creates new record</td></tr>
+        <tr><td>P4.2 Update Qty</td><td>cart_item_id, quantity</td><td>Updated record</td><td>Validates ownership (user_id), updates quantity</td></tr>
+        <tr><td>P4.3 Remove Item</td><td>cart_item_id</td><td>Deleted record</td><td>Validates ownership, deletes cart_item record from DB</td></tr>
+        <tr><td>P4.4 Calculate Totals</td><td>user_id</td><td>Items + totals</td><td>Loads cart items with book relations, calculates price × qty, sums all</td></tr>
+    </table>
+
+    <!-- ===== LEVEL 2.5 - P5: Order Processing ===== -->
+    <div class="page-break"></div>
+    <h3>Level 2.5 — P5: Order Processing</h3>
+
+    <div class="diagram-container">
+        <svg width="950" height="550" viewBox="0 0 950 550">
+            <defs>
+                <marker id="arr2d" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+                    <polygon points="0 0, 10 3.5, 0 7" fill="#636e72"/>
+                </marker>
+            </defs>
+
+            <!-- Customer -->
+            <g class="entity">
+                <rect x="30" y="230" width="120" height="45"/>
+                <text x="90" y="253">Customer</text>
+            </g>
+
+            <!-- P5.1 Checkout Summary -->
+            <g class="process">
+                <rect x="250" y="30" width="210" height="50" rx="25"/>
+                <text x="355" y="48" class="process-id" font-family="Inter">P5.1</text>
+                <text x="355" y="64" class="process-name" font-family="Inter">Generate Checkout Summary</text>
+            </g>
+            <!-- P5.2 Create Order -->
+            <g class="process">
+                <rect x="250" y="160" width="210" height="50" rx="25"/>
+                <text x="355" y="178" class="process-id" font-family="Inter">P5.2</text>
+                <text x="355" y="194" class="process-name" font-family="Inter">Create Order (Transaction)</text>
+            </g>
+            <!-- Sub-processes of P5.2 -->
+            <g class="process" style="opacity:0.85">
+                <rect x="530" y="120" width="190" height="40" rx="20" fill="#81ecec" stroke="#00cec9" stroke-width="2"/>
+                <text x="625" y="136" font-family="Inter" font-size="9" font-weight="600" fill="#2d3436" text-anchor="middle">P5.2a — Insert Order Row</text>
+                <text x="625" y="150" font-family="Inter" font-size="8" fill="#636e72" text-anchor="middle">status = 'pending'</text>
+            </g>
+            <g class="process" style="opacity:0.85">
+                <rect x="530" y="175" width="190" height="40" rx="20" fill="#81ecec" stroke="#00cec9" stroke-width="2"/>
+                <text x="625" y="191" font-family="Inter" font-size="9" font-weight="600" fill="#2d3436" text-anchor="middle">P5.2b — Insert Order Items</text>
+                <text x="625" y="205" font-family="Inter" font-size="8" fill="#636e72" text-anchor="middle">book_id, qty, price, line_total</text>
+            </g>
+            <g class="process" style="opacity:0.85">
+                <rect x="530" y="230" width="190" height="40" rx="20" fill="#81ecec" stroke="#00cec9" stroke-width="2"/>
+                <text x="625" y="246" font-family="Inter" font-size="9" font-weight="600" fill="#2d3436" text-anchor="middle">P5.2c — Clear Cart</text>
+                <text x="625" y="260" font-family="Inter" font-size="8" fill="#636e72" text-anchor="middle">Delete all user cart items</text>
+            </g>
+
+            <!-- P5.3 Order History -->
+            <g class="process">
+                <rect x="250" y="350" width="210" height="50" rx="25"/>
+                <text x="355" y="368" class="process-id" font-family="Inter">P5.3</text>
+                <text x="355" y="384" class="process-name" font-family="Inter">View Order History</text>
+            </g>
+            <!-- P5.4 Order Detail -->
+            <g class="process">
+                <rect x="250" y="460" width="210" height="50" rx="25"/>
+                <text x="355" y="478" class="process-id" font-family="Inter">P5.4</text>
+                <text x="355" y="494" class="process-name" font-family="Inter">View Order Detail</text>
+            </g>
+
+            <!-- D3 Cart Items -->
+            <g class="datastore">
+                <rect x="780" y="40" width="150" height="32"/>
+                <line x1="810" y1="40" x2="810" y2="72"/>
+                <text x="802" y="57" class="store-id" font-family="Inter" text-anchor="middle">D3</text>
+                <text x="870" y="59" font-family="Inter">Cart Items</text>
+            </g>
+            <!-- D4 Orders -->
+            <g class="datastore">
+                <rect x="780" y="360" width="150" height="32"/>
+                <line x1="810" y1="360" x2="810" y2="392"/>
+                <text x="802" y="377" class="store-id" font-family="Inter" text-anchor="middle">D4</text>
+                <text x="870" y="379" font-family="Inter">Orders</text>
+            </g>
+
+            <!-- Flows -->
+            <g class="flow">
+                <line x1="140" y1="235" x2="248" y2="60" marker-end="url(#arr2d)"/>
+                <text x="168" y="135" class="flow-label" font-family="Inter" transform="rotate(-52, 168, 135)">Checkout Request</text>
+            </g>
+            <g class="flow">
+                <line x1="460" y1="50" x2="778" y2="52" marker-end="url(#arr2d)"/>
+                <text x="620" y="42" class="flow-label" font-family="Inter">Read Cart Items</text>
+            </g>
+            <g class="flow">
+                <line x1="248" y1="65" x2="135" y2="232" marker-end="url(#arr2d)" stroke="#0984e3" stroke-width="1.5" stroke-dasharray="5,3"/>
+                <text x="212" y="160" class="flow-label" font-family="Inter" style="fill:#0984e3" transform="rotate(52, 212, 160)">Summary &amp; Total</text>
+            </g>
+
+            <!-- Customer → P5.2 -->
+            <g class="flow">
+                <line x1="150" y1="248" x2="248" y2="190" marker-end="url(#arr2d)"/>
+                <text x="178" y="212" class="flow-label" font-family="Inter">Confirm Order</text>
+            </g>
+            <!-- P5.2 → sub-processes -->
+            <g class="flow">
+                <line x1="460" y1="175" x2="528" y2="145" marker-end="url(#arr2d)"/>
+            </g>
+            <g class="flow">
+                <line x1="460" y1="185" x2="528" y2="192" marker-end="url(#arr2d)"/>
+            </g>
+            <g class="flow">
+                <line x1="460" y1="200" x2="528" y2="248" marker-end="url(#arr2d)"/>
+            </g>
+            <!-- Sub-processes → D4 -->
+            <g class="flow">
+                <line x1="720" y1="145" x2="850" y2="358" marker-end="url(#arr2d)"/>
+                <text x="810" y="250" class="flow-label" font-family="Inter" transform="rotate(63, 810, 250)">Insert Order</text>
+            </g>
+            <g class="flow">
+                <line x1="720" y1="200" x2="840" y2="358" marker-end="url(#arr2d)"/>
+                <text x="800" y="290" class="flow-label" font-family="Inter" transform="rotate(55, 800, 290)">Insert Items</text>
+            </g>
+            <!-- P5.2c → D3 (clear) -->
+            <g class="flow">
+                <line x1="720" y1="248" x2="855" y2="72" marker-end="url(#arr2d)"/>
+                <text x="810" y="150" class="flow-label" font-family="Inter" transform="rotate(-52, 810, 150)">Delete All</text>
+            </g>
+            <!-- P5.2 → Customer -->
+            <g class="flow">
+                <line x1="248" y1="200" x2="140" y2="250" marker-end="url(#arr2d)" stroke="#0984e3" stroke-width="1.5" stroke-dasharray="5,3"/>
+                <text x="178" y="240" class="flow-label" font-family="Inter" style="fill:#0984e3">Order Confirm</text>
+            </g>
+
+            <!-- Customer → P5.3 -->
+            <g class="flow">
+                <line x1="140" y1="265" x2="248" y2="370" marker-end="url(#arr2d)"/>
+                <text x="170" y="325" class="flow-label" font-family="Inter" transform="rotate(46, 170, 325)">View History</text>
+            </g>
+            <g class="flow">
+                <line x1="460" y1="375" x2="778" y2="375" marker-end="url(#arr2d)"/>
+                <text x="620" y="366" class="flow-label" font-family="Inter">Read User Orders</text>
+            </g>
+            <g class="flow">
+                <line x1="248" y1="385" x2="135" y2="268" marker-end="url(#arr2d)" stroke="#0984e3" stroke-width="1.5" stroke-dasharray="5,3"/>
+                <text x="215" y="345" class="flow-label" font-family="Inter" style="fill:#0984e3" transform="rotate(-46, 215, 345)">Order List</text>
+            </g>
+
+            <!-- Customer → P5.4 -->
+            <g class="flow">
+                <line x1="125" y1="275" x2="248" y2="480" marker-end="url(#arr2d)"/>
+                <text x="155" y="395" class="flow-label" font-family="Inter" transform="rotate(56, 155, 395)">Order ID</text>
+            </g>
+            <g class="flow">
+                <line x1="460" y1="485" x2="778" y2="390" marker-end="url(#arr2d)"/>
+                <text x="620" y="440" class="flow-label" font-family="Inter">Read Order + Items</text>
+            </g>
+            <g class="flow">
+                <line x1="248" y1="495" x2="120" y2="275" marker-end="url(#arr2d)" stroke="#0984e3" stroke-width="1.5" stroke-dasharray="5,3"/>
+                <text x="205" y="410" class="flow-label" font-family="Inter" style="fill:#0984e3" transform="rotate(-56, 205, 410)">Order Detail</text>
+            </g>
+
+            <!-- Transaction box around P5.2 sub-processes -->
+            <rect x="520" y="108" width="210" height="172" fill="none" stroke="#e17055" stroke-width="1.5" stroke-dasharray="6,3" rx="8"/>
+            <text x="625" y="100" font-size="9" fill="#e17055" text-anchor="middle" font-family="Inter" font-weight="600">DB TRANSACTION</text>
+        </svg>
+    </div>
+
+    <table>
+        <tr><th>Process</th><th>Input</th><th>Output</th><th>Description</th></tr>
+        <tr><td>P5.1 Checkout Summary</td><td>user_id</td><td>Cart items + total</td><td>Loads cart items with book data, calculates grand total for review</td></tr>
+        <tr><td>P5.2 Create Order</td><td>user_id, cart</td><td>Order + items</td><td>DB Transaction: creates Order (pending), creates OrderItems, clears cart</td></tr>
+        <tr><td>P5.3 Order History</td><td>user_id</td><td>Paginated orders</td><td>Fetches all orders for authenticated user, newest first</td></tr>
+        <tr><td>P5.4 Order Detail</td><td>order_id</td><td>Order with items</td><td>Loads order with items + book info; verifies ownership</td></tr>
+    </table>
+
+    <!-- ===== LEVEL 2.6 - P6: Admin Book Mgmt ===== -->
+    <h3>Level 2.6 — P6: Admin Book Management</h3>
+
+    <div class="diagram-container">
+        <svg width="850" height="420" viewBox="0 0 850 420">
+            <defs>
+                <marker id="arr2e" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+                    <polygon points="0 0, 10 3.5, 0 7" fill="#636e72"/>
+                </marker>
+            </defs>
+
+            <!-- Admin -->
+            <g class="entity">
+                <rect x="30" y="170" width="130" height="45"/>
+                <text x="95" y="193">Administrator</text>
+            </g>
+
+            <!-- P6.1 Create -->
+            <g class="process">
+                <rect x="260" y="20" width="200" height="50" rx="25"/>
+                <text x="360" y="38" class="process-id" font-family="Inter">P6.1</text>
+                <text x="360" y="54" class="process-name" font-family="Inter">Validate &amp; Create Book</text>
+            </g>
+            <!-- P6.2 Update -->
+            <g class="process">
+                <rect x="260" y="120" width="200" height="50" rx="25"/>
+                <text x="360" y="138" class="process-id" font-family="Inter">P6.2</text>
+                <text x="360" y="154" class="process-name" font-family="Inter">Validate &amp; Update Book</text>
+            </g>
+            <!-- P6.3 Delete -->
+            <g class="process">
+                <rect x="260" y="220" width="200" height="50" rx="25"/>
+                <text x="360" y="238" class="process-id" font-family="Inter">P6.3</text>
+                <text x="360" y="254" class="process-name" font-family="Inter">Delete Book</text>
+            </g>
+            <!-- P6.4 List -->
+            <g class="process">
+                <rect x="260" y="320" width="200" height="50" rx="25"/>
+                <text x="360" y="338" class="process-id" font-family="Inter">P6.4</text>
+                <text x="360" y="354" class="process-name" font-family="Inter">List All Books (Admin)</text>
+            </g>
+
+            <!-- D2 Books -->
+            <g class="datastore">
+                <rect x="620" y="170" width="170" height="35"/>
+                <line x1="650" y1="170" x2="650" y2="205"/>
+                <text x="642" y="188" class="store-id" font-family="Inter" text-anchor="middle">D2</text>
+                <text x="725" y="190" font-family="Inter">Books</text>
+            </g>
+
+            <!-- Flows -->
+            <g class="flow">
+                <line x1="160" y1="178" x2="258" y2="50" marker-end="url(#arr2e)"/>
+                <text x="185" y="100" class="flow-label" font-family="Inter" transform="rotate(-52, 185, 100)">Book Data (all fields)</text>
+            </g>
+            <g class="flow">
+                <line x1="460" y1="45" x2="618" y2="178" marker-end="url(#arr2e)"/>
+                <text x="555" y="100" class="flow-label" font-family="Inter" transform="rotate(40, 555, 100)">INSERT</text>
+            </g>
+            <g class="flow">
+                <line x1="160" y1="188" x2="258" y2="148" marker-end="url(#arr2e)"/>
+                <text x="190" y="160" class="flow-label" font-family="Inter">Updated Fields</text>
+            </g>
+            <g class="flow">
+                <line x1="460" y1="145" x2="618" y2="183" marker-end="url(#arr2e)"/>
+                <text x="540" y="156" class="flow-label" font-family="Inter">UPDATE</text>
+            </g>
+            <g class="flow">
+                <line x1="618" y1="185" x2="460" y2="135" marker-end="url(#arr2e)"/>
+                <text x="540" y="175" class="flow-label" font-family="Inter">Load Existing</text>
+            </g>
+            <g class="flow">
+                <line x1="155" y1="210" x2="258" y2="245" marker-end="url(#arr2e)"/>
+                <text x="190" y="222" class="flow-label" font-family="Inter">Book ID</text>
+            </g>
+            <g class="flow">
+                <line x1="460" y1="245" x2="618" y2="195" marker-end="url(#arr2e)"/>
+                <text x="545" y="225" class="flow-label" font-family="Inter">DELETE</text>
+            </g>
+            <g class="flow">
+                <line x1="140" y1="215" x2="258" y2="340" marker-end="url(#arr2e)"/>
+                <text x="170" y="290" class="flow-label" font-family="Inter" transform="rotate(48, 170, 290)">List Request</text>
+            </g>
+            <g class="flow">
+                <line x1="618" y1="200" x2="460" y2="340" marker-end="url(#arr2e)"/>
+                <text x="560" y="280" class="flow-label" font-family="Inter" transform="rotate(42, 560, 280)">All Books</text>
+            </g>
+            <g class="flow">
+                <line x1="248" y1="350" x2="135" y2="215" marker-end="url(#arr2e)" stroke="#0984e3" stroke-width="1.5" stroke-dasharray="5,3"/>
+                <text x="215" y="300" class="flow-label" font-family="Inter" style="fill:#0984e3" transform="rotate(-48, 215, 300)">Paginated List</text>
+            </g>
+        </svg>
+    </div>
+
+    <!-- ===== LEVEL 2.9 - P9: Admin Dashboard ===== -->
+    <h3>Level 2.9 — P9: Admin Dashboard</h3>
+
+    <div class="diagram-container">
+        <svg width="850" height="350" viewBox="0 0 850 350">
+            <defs>
+                <marker id="arr2f" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+                    <polygon points="0 0, 10 3.5, 0 7" fill="#636e72"/>
+                </marker>
+            </defs>
+
+            <!-- Admin -->
+            <g class="entity">
+                <rect x="30" y="140" width="130" height="45"/>
+                <text x="95" y="163">Administrator</text>
+            </g>
+
+            <!-- P9 Dashboard -->
+            <g class="process">
+                <rect x="250" y="80" width="210" height="160" rx="25" fill="#74b9ff" stroke="#0984e3" stroke-width="2"/>
+                <text x="355" y="110" class="process-id" font-family="Inter" font-size="12">P9 — Admin Dashboard</text>
+                <text x="355" y="140" class="process-name" font-family="Inter" font-size="10">P9.1 Count Total Users</text>
+                <text x="355" y="160" class="process-name" font-family="Inter" font-size="10">P9.2 Count Total Books</text>
+                <text x="355" y="180" class="process-name" font-family="Inter" font-size="10">P9.3 Count Orders + Revenue</text>
+                <text x="355" y="200" class="process-name" font-family="Inter" font-size="10">P9.4 Get 5 Recent Orders</text>
+                <text x="355" y="220" class="process-name" font-family="Inter" font-size="10">P9.5 Get 5 Recent Users</text>
+            </g>
+
+            <!-- Data Stores -->
+            <g class="datastore">
+                <rect x="620" y="60" width="150" height="32"/>
+                <line x1="650" y1="60" x2="650" y2="92"/>
+                <text x="642" y="77" class="store-id" font-family="Inter" text-anchor="middle">D1</text>
+                <text x="710" y="79" font-family="Inter">Users</text>
+            </g>
+            <g class="datastore">
+                <rect x="620" y="140" width="150" height="32"/>
+                <line x1="650" y1="140" x2="650" y2="172"/>
+                <text x="642" y="157" class="store-id" font-family="Inter" text-anchor="middle">D2</text>
+                <text x="710" y="159" font-family="Inter">Books</text>
+            </g>
+            <g class="datastore">
+                <rect x="620" y="220" width="150" height="32"/>
+                <line x1="650" y1="220" x2="650" y2="252"/>
+                <text x="642" y="237" class="store-id" font-family="Inter" text-anchor="middle">D4</text>
+                <text x="710" y="239" font-family="Inter">Orders</text>
+            </g>
+
+            <!-- Flows -->
+            <g class="flow">
+                <line x1="160" y1="160" x2="248" y2="160" marker-end="url(#arr2f)"/>
+                <text x="200" y="150" class="flow-label" font-family="Inter">Dashboard Req</text>
+            </g>
+            <g class="flow">
+                <line x1="460" y1="120" x2="618" y2="78" marker-end="url(#arr2f)"/>
+                <text x="540" y="90" class="flow-label" font-family="Inter">COUNT + Recent</text>
+            </g>
+            <g class="flow">
+                <line x1="460" y1="160" x2="618" y2="156" marker-end="url(#arr2f)"/>
+                <text x="540" y="150" class="flow-label" font-family="Inter">COUNT</text>
+            </g>
+            <g class="flow">
+                <line x1="460" y1="200" x2="618" y2="236" marker-end="url(#arr2f)"/>
+                <text x="540" y="225" class="flow-label" font-family="Inter">COUNT + SUM + Recent</text>
+            </g>
+            <!-- Return flows -->
+            <g class="flow">
+                <line x1="618" y1="70" x2="460" y2="112" marker-end="url(#arr2f)" stroke="#0984e3" stroke-width="1.5" stroke-dasharray="5,3"/>
+            </g>
+            <g class="flow">
+                <line x1="618" y1="150" x2="460" y2="150" marker-end="url(#arr2f)" stroke="#0984e3" stroke-width="1.5" stroke-dasharray="5,3"/>
+            </g>
+            <g class="flow">
+                <line x1="618" y1="228" x2="460" y2="192" marker-end="url(#arr2f)" stroke="#0984e3" stroke-width="1.5" stroke-dasharray="5,3"/>
+            </g>
+            <!-- Dashboard → Admin -->
+            <g class="flow">
+                <line x1="248" y1="170" x2="160" y2="170" marker-end="url(#arr2f)" stroke="#0984e3" stroke-width="1.5" stroke-dasharray="5,3"/>
+                <text x="200" y="185" class="flow-label" font-family="Inter" style="fill:#0984e3">Statistics View</text>
+            </g>
+        </svg>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- SUMMARY TABLE -->
+    <!-- ============================================================ -->
+    <div class="page-break"></div>
+    <h2>Complete Data Store × Process Matrix</h2>
+    <div class="section-desc">
+        This matrix shows which processes <strong>Read (R)</strong> from and <strong>Write (W)</strong> to each data store.
+    </div>
+
+    <table>
+        <tr>
+            <th>Data Store</th>
+            <th>P1 Auth</th>
+            <th>P2 Profile</th>
+            <th>P3 Catalog</th>
+            <th>P4 Cart</th>
+            <th>P5 Orders</th>
+            <th>P6 Admin Books</th>
+            <th>P7 Admin Users</th>
+            <th>P8 Admin Orders</th>
+            <th>P9 Dashboard</th>
+        </tr>
+        <tr>
+            <td><strong>D1 Users</strong></td>
+            <td>R/W</td><td>R/W</td><td>—</td><td>—</td><td>—</td><td>—</td><td>R/W</td><td>R</td><td>R</td>
+        </tr>
+        <tr>
+            <td><strong>D2 Books</strong></td>
+            <td>—</td><td>—</td><td>R</td><td>R</td><td>R</td><td>R/W</td><td>—</td><td>R</td><td>R</td>
+        </tr>
+        <tr>
+            <td><strong>D3 Cart Items</strong></td>
+            <td>—</td><td>—</td><td>—</td><td>R/W</td><td>R/W</td><td>—</td><td>—</td><td>—</td><td>—</td>
+        </tr>
+        <tr>
+            <td><strong>D4 Orders</strong></td>
+            <td>—</td><td>—</td><td>—</td><td>—</td><td>R/W</td><td>—</td><td>—</td><td>R/W</td><td>R</td>
+        </tr>
+        <tr>
+            <td><strong>D5 Pwd Tokens</strong></td>
+            <td>R/W</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td>
+        </tr>
+        <tr>
+            <td><strong>D6 Sessions</strong></td>
+            <td>R/W</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td>
+        </tr>
+    </table>
+
+    <h2>DFD Summary</h2>
+    <table>
+        <tr><th>DFD Level</th><th>Purpose</th><th>Processes Shown</th></tr>
+        <tr><td><strong>Level 0 (Context)</strong></td><td>System boundary — external entities and their data flows</td><td>1 (entire system)</td></tr>
+        <tr><td><strong>Level 1</strong></td><td>Major functional areas and data stores</td><td>9 processes, 6 data stores</td></tr>
+        <tr><td><strong>Level 2</strong></td><td>Detailed decomposition of each major process</td><td>25+ sub-processes</td></tr>
+    </table>
+
+    <p style="text-align:center; margin-top:40px; color:#adb5bd; font-size:12px;">
+        Online Bookstore — Data Flow Diagrams &nbsp;|&nbsp; Generated February 2026
+    </p>
+
+</div>
+</body>
+</html>
