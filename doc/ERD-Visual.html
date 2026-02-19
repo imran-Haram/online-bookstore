@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Online Bookstore — Entity Relationship Diagram (ERD)</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Inter', 'Segoe UI', sans-serif;
+            background: #f8f9fa;
+            color: #2d3436;
+            line-height: 1.6;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 30px;
+        }
+        h1 {
+            font-size: 26px;
+            font-weight: 700;
+            color: #0984e3;
+            margin-bottom: 5px;
+        }
+        .subtitle {
+            font-size: 14px;
+            color: #636e72;
+            margin-bottom: 30px;
+        }
+        h2 {
+            font-size: 22px;
+            font-weight: 600;
+            color: #2d3436;
+            margin: 50px 0 10px 0;
+            padding-bottom: 8px;
+            border-bottom: 3px solid #0984e3;
+        }
+        h3 {
+            font-size: 17px;
+            font-weight: 600;
+            color: #2d3436;
+            margin: 30px 0 10px 0;
+        }
+        p, .section-desc {
+            font-size: 14px;
+            color: #636e72;
+            margin-bottom: 15px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0 30px 0;
+            font-size: 13px;
+        }
+        th {
+            background: #0984e3;
+            color: #fff;
+            padding: 10px 14px;
+            text-align: left;
+            font-weight: 600;
+        }
+        td {
+            padding: 9px 14px;
+            border-bottom: 1px solid #dfe6e9;
+        }
+        tr:nth-child(even) td { background: #f1f3f5; }
+        code {
+            background: #dfe6e9;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-size: 12px;
+            font-family: 'Consolas', 'Courier New', monospace;
+        }
+        .diagram-container {
+            background: #fff;
+            border: 1px solid #dfe6e9;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+            overflow-x: auto;
+            text-align: center;
+        }
+        .legend {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 25px;
+            background: #fff;
+            border: 1px solid #dfe6e9;
+            border-radius: 8px;
+            padding: 18px 25px;
+            margin: 20px 0;
+            align-items: center;
+        }
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 13px;
+            color: #636e72;
+        }
+        .page-break { page-break-before: always; }
+
+        @media print {
+            body { background: #fff; }
+            .container { padding: 20px; }
+            .diagram-container { border: none; box-shadow: none; }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+
+    <h1>Entity Relationship Diagram (ERD)</h1>
+    <p class="subtitle">Online Bookstore &nbsp;|&nbsp; Laravel 12 &nbsp;|&nbsp; MySQL 8.4 &nbsp;|&nbsp; Section 2.3</p>
+
+    <!-- ============================================================ -->
+    <!-- LEGEND -->
+    <!-- ============================================================ -->
+    <h2>ERD Notation Legend</h2>
+    <div class="legend">
+        <div class="legend-item">
+            <svg width="60" height="36">
+                <rect x="2" y="3" width="56" height="30" rx="3" fill="#0984e3" stroke="#0769b5" stroke-width="2"/>
+                <text x="30" y="19" font-size="9" font-weight="700" text-anchor="middle" fill="#fff" font-family="Inter">Table</text>
+            </svg>
+            <span>Entity (Table Header)</span>
+        </div>
+        <div class="legend-item">
+            <svg width="60" height="36">
+                <rect x="2" y="3" width="56" height="30" rx="3" fill="#fff" stroke="#b2bec3" stroke-width="1.5"/>
+                <text x="30" y="14" font-size="8" font-weight="700" fill="#d63031" font-family="Inter" text-anchor="middle">PK</text>
+                <text x="30" y="26" font-size="8" fill="#2d3436" font-family="Inter" text-anchor="middle">column</text>
+            </svg>
+            <span>Primary Key</span>
+        </div>
+        <div class="legend-item">
+            <svg width="60" height="36">
+                <rect x="2" y="3" width="56" height="30" rx="3" fill="#fff" stroke="#b2bec3" stroke-width="1.5"/>
+                <text x="30" y="14" font-size="8" font-weight="700" fill="#0984e3" font-family="Inter" text-anchor="middle">FK</text>
+                <text x="30" y="26" font-size="8" fill="#2d3436" font-family="Inter" text-anchor="middle">column</text>
+            </svg>
+            <span>Foreign Key</span>
+        </div>
+        <div class="legend-item">
+            <svg width="80" height="30">
+                <line x1="5" y1="15" x2="75" y2="15" stroke="#636e72" stroke-width="2"/>
+                <text x="40" y="10" font-size="8" fill="#636e72" font-family="Inter" text-anchor="middle">1 ──── *</text>
+            </svg>
+            <span>One-to-Many Relationship</span>
+        </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- MAIN ERD DIAGRAM -->
+    <!-- ============================================================ -->
+    <h2>Entity Relationship Diagram</h2>
+    <div class="section-desc">
+        The ERD shows the <strong>5 main database entities</strong> (tables) in the Online Bookstore system, their attributes, primary keys (PK), foreign keys (FK), data types, and the relationships between them using crow's foot notation.
+    </div>
+
+    <div class="diagram-container">
+        <svg width="1100" height="780" viewBox="0 0 1100 780">
+            <defs>
+                <style>
+                    .tbl-header { fill: #0984e3; }
+                    .tbl-header text { fill: #fff; font-family: 'Inter', sans-serif; font-size: 14px; font-weight: 700; }
+                    .tbl-body { fill: #fff; stroke: #b2bec3; stroke-width: 1.5; }
+                    .col-text { font-family: 'Inter', sans-serif; font-size: 11px; fill: #2d3436; }
+                    .col-type { font-family: 'Consolas', monospace; font-size: 10px; fill: #636e72; }
+                    .pk-badge { font-family: 'Inter', sans-serif; font-size: 9px; font-weight: 700; fill: #d63031; }
+                    .fk-badge { font-family: 'Inter', sans-serif; font-size: 9px; font-weight: 700; fill: #0984e3; }
+                    .rel-line { stroke: #636e72; stroke-width: 2; fill: none; }
+                    .rel-label { font-family: 'Inter', sans-serif; font-size: 10px; fill: #636e72; font-weight: 600; }
+                </style>
+            </defs>
+
+            <!-- ===================================================== -->
+            <!-- ENTITY: users (top-left) -->
+            <!-- ===================================================== -->
+            <g transform="translate(30, 30)">
+                <!-- Header -->
+                <rect class="tbl-header" x="0" y="0" width="220" height="32" rx="5" ry="5"/>
+                <rect class="tbl-header" x="0" y="15" width="220" height="17"/>
+                <text class="tbl-header" x="110" y="22" text-anchor="middle">users</text>
+                <!-- Body -->
+                <rect class="tbl-body" x="0" y="32" width="220" height="200" rx="0" ry="0"/>
+                <!-- Columns -->
+                <text class="pk-badge" x="10" y="52">PK</text>
+                <text class="col-text" x="32" y="52">id</text>
+                <text class="col-type" x="150" y="52">BIGINT AI</text>
+                <line x1="5" y1="58" x2="215" y2="58" stroke="#dfe6e9" stroke-width="1"/>
+
+                <text class="col-text" x="32" y="74">name</text>
+                <text class="col-type" x="150" y="74">VARCHAR</text>
+
+                <text class="col-text" x="32" y="92">email</text>
+                <text class="col-type" x="150" y="92">VARCHAR UQ</text>
+
+                <text class="col-text" x="32" y="110">email_verified_at</text>
+                <text class="col-type" x="150" y="110">TIMESTAMP?</text>
+
+                <text class="col-text" x="32" y="128">is_admin</text>
+                <text class="col-type" x="150" y="128">BOOLEAN</text>
+
+                <text class="col-text" x="32" y="146">password</text>
+                <text class="col-type" x="150" y="146">VARCHAR</text>
+
+                <text class="col-text" x="32" y="164">remember_token</text>
+                <text class="col-type" x="150" y="164">VARCHAR?</text>
+
+                <text class="col-text" x="32" y="182">created_at</text>
+                <text class="col-type" x="150" y="182">TIMESTAMP</text>
+
+                <text class="col-text" x="32" y="200">updated_at</text>
+                <text class="col-type" x="150" y="200">TIMESTAMP</text>
+            </g>
+
+            <!-- ===================================================== -->
+            <!-- ENTITY: books (top-right) -->
+            <!-- ===================================================== -->
+            <g transform="translate(820, 30)">
+                <!-- Header -->
+                <rect class="tbl-header" x="0" y="0" width="240" height="32" rx="5" ry="5"/>
+                <rect class="tbl-header" x="0" y="15" width="240" height="17"/>
+                <text class="tbl-header" x="120" y="22" text-anchor="middle">books</text>
+                <!-- Body -->
+                <rect class="tbl-body" x="0" y="32" width="240" height="218" rx="0" ry="0"/>
+                <!-- Columns -->
+                <text class="pk-badge" x="10" y="52">PK</text>
+                <text class="col-text" x="32" y="52">id</text>
+                <text class="col-type" x="160" y="52">BIGINT AI</text>
+                <line x1="5" y1="58" x2="235" y2="58" stroke="#dfe6e9" stroke-width="1"/>
+
+                <text class="col-text" x="32" y="74">title</text>
+                <text class="col-type" x="160" y="74">VARCHAR</text>
+
+                <text class="col-text" x="32" y="92">author</text>
+                <text class="col-type" x="160" y="92">VARCHAR</text>
+
+                <text class="col-text" x="32" y="110">category</text>
+                <text class="col-type" x="160" y="110">VARCHAR?</text>
+
+                <text class="col-text" x="32" y="128">description</text>
+                <text class="col-type" x="160" y="128">TEXT?</text>
+
+                <text class="col-text" x="32" y="146">price</text>
+                <text class="col-type" x="160" y="146">DECIMAL(8,2)</text>
+
+                <text class="col-text" x="32" y="164">stock</text>
+                <text class="col-type" x="160" y="164">INT</text>
+
+                <text class="col-text" x="32" y="182">image_url</text>
+                <text class="col-type" x="160" y="182">VARCHAR?</text>
+
+                <text class="col-text" x="32" y="200">created_at</text>
+                <text class="col-type" x="160" y="200">TIMESTAMP</text>
+
+                <text class="col-text" x="32" y="218">updated_at</text>
+                <text class="col-type" x="160" y="218">TIMESTAMP</text>
+            </g>
+
+            <!-- ===================================================== -->
+            <!-- ENTITY: cart_items (center) -->
+            <!-- ===================================================== -->
+            <g transform="translate(430, 120)">
+                <!-- Header -->
+                <rect class="tbl-header" x="0" y="0" width="230" height="32" rx="5" ry="5"/>
+                <rect class="tbl-header" x="0" y="15" width="230" height="17"/>
+                <text class="tbl-header" x="115" y="22" text-anchor="middle">cart_items</text>
+                <!-- Body -->
+                <rect class="tbl-body" x="0" y="32" width="230" height="146" rx="0" ry="0"/>
+                <!-- Columns -->
+                <text class="pk-badge" x="10" y="52">PK</text>
+                <text class="col-text" x="32" y="52">id</text>
+                <text class="col-type" x="155" y="52">BIGINT AI</text>
+                <line x1="5" y1="58" x2="225" y2="58" stroke="#dfe6e9" stroke-width="1"/>
+
+                <text class="fk-badge" x="10" y="74">FK</text>
+                <text class="col-text" x="32" y="74">user_id</text>
+                <text class="col-type" x="155" y="74">BIGINT</text>
+
+                <text class="fk-badge" x="10" y="92">FK</text>
+                <text class="col-text" x="32" y="92">book_id</text>
+                <text class="col-type" x="155" y="92">BIGINT</text>
+
+                <text class="col-text" x="32" y="110">quantity</text>
+                <text class="col-type" x="155" y="110">INT</text>
+
+                <text class="col-text" x="32" y="128">price</text>
+                <text class="col-type" x="155" y="128">DECIMAL(8,2)</text>
+
+                <text class="col-text" x="32" y="146">created_at</text>
+                <text class="col-type" x="155" y="146">TIMESTAMP</text>
+            </g>
+
+            <!-- ===================================================== -->
+            <!-- ENTITY: orders (bottom-left) -->
+            <!-- ===================================================== -->
+            <g transform="translate(50, 480)">
+                <!-- Header -->
+                <rect class="tbl-header" x="0" y="0" width="220" height="32" rx="5" ry="5"/>
+                <rect class="tbl-header" x="0" y="15" width="220" height="17"/>
+                <text class="tbl-header" x="110" y="22" text-anchor="middle">orders</text>
+                <!-- Body -->
+                <rect class="tbl-body" x="0" y="32" width="220" height="128" rx="0" ry="0"/>
+                <!-- Columns -->
+                <text class="pk-badge" x="10" y="52">PK</text>
+                <text class="col-text" x="32" y="52">id</text>
+                <text class="col-type" x="150" y="52">BIGINT AI</text>
+                <line x1="5" y1="58" x2="215" y2="58" stroke="#dfe6e9" stroke-width="1"/>
+
+                <text class="fk-badge" x="10" y="74">FK</text>
+                <text class="col-text" x="32" y="74">user_id</text>
+                <text class="col-type" x="150" y="74">BIGINT</text>
+
+                <text class="col-text" x="32" y="92">total</text>
+                <text class="col-type" x="150" y="92">DECIMAL(10,2)</text>
+
+                <text class="col-text" x="32" y="110">status</text>
+                <text class="col-type" x="150" y="110">VARCHAR</text>
+
+                <text class="col-text" x="32" y="128">created_at</text>
+                <text class="col-type" x="150" y="128">TIMESTAMP</text>
+            </g>
+
+            <!-- ===================================================== -->
+            <!-- ENTITY: order_items (bottom-right) -->
+            <!-- ===================================================== -->
+            <g transform="translate(530, 480)">
+                <!-- Header -->
+                <rect class="tbl-header" x="0" y="0" width="250" height="32" rx="5" ry="5"/>
+                <rect class="tbl-header" x="0" y="15" width="250" height="17"/>
+                <text class="tbl-header" x="125" y="22" text-anchor="middle">order_items</text>
+                <!-- Body -->
+                <rect class="tbl-body" x="0" y="32" width="250" height="164" rx="0" ry="0"/>
+                <!-- Columns -->
+                <text class="pk-badge" x="10" y="52">PK</text>
+                <text class="col-text" x="32" y="52">id</text>
+                <text class="col-type" x="165" y="52">BIGINT AI</text>
+                <line x1="5" y1="58" x2="245" y2="58" stroke="#dfe6e9" stroke-width="1"/>
+
+                <text class="fk-badge" x="10" y="74">FK</text>
+                <text class="col-text" x="32" y="74">order_id</text>
+                <text class="col-type" x="165" y="74">BIGINT</text>
+
+                <text class="fk-badge" x="10" y="92">FK</text>
+                <text class="col-text" x="32" y="92">book_id</text>
+                <text class="col-type" x="165" y="92">BIGINT</text>
+
+                <text class="col-text" x="32" y="110">quantity</text>
+                <text class="col-type" x="165" y="110">INT</text>
+
+                <text class="col-text" x="32" y="128">price</text>
+                <text class="col-type" x="165" y="128">DECIMAL(10,2)</text>
+
+                <text class="col-text" x="32" y="146">line_total</text>
+                <text class="col-type" x="165" y="146">DECIMAL(10,2)</text>
+
+                <text class="col-text" x="32" y="164">created_at</text>
+                <text class="col-type" x="165" y="164">TIMESTAMP</text>
+            </g>
+
+            <!-- ===================================================== -->
+            <!-- RELATIONSHIPS -->
+            <!-- ===================================================== -->
+
+            <!-- ── users 1──* cart_items (user_id) ── -->
+            <!-- From users right side (250, 194) to cart_items left side (430, 194) -->
+            <line class="rel-line" x1="250" y1="194" x2="430" y2="194"/>
+            <!-- "1" near users -->
+            <text class="rel-label" x="260" y="188">1</text>
+            <!-- Crow's foot "*" near cart_items -->
+            <text class="rel-label" x="412" y="188">*</text>
+            <!-- Crow's foot lines -->
+            <line x1="430" y1="194" x2="418" y2="186" stroke="#636e72" stroke-width="2"/>
+            <line x1="430" y1="194" x2="418" y2="202" stroke="#636e72" stroke-width="2"/>
+            <text class="rel-label" x="320" y="184" text-anchor="middle" style="fill:#0984e3; font-size:9px;">user_id</text>
+
+            <!-- ── books 1──* cart_items (book_id) ── -->
+            <!-- From books left side (820, 212) to cart_items right side (660, 212) -->
+            <line class="rel-line" x1="820" y1="212" x2="660" y2="212"/>
+            <!-- "1" near books -->
+            <text class="rel-label" x="808" y="206">1</text>
+            <!-- Crow's foot "*" near cart_items -->
+            <text class="rel-label" x="668" y="206">*</text>
+            <!-- Crow's foot lines -->
+            <line x1="660" y1="212" x2="672" y2="204" stroke="#636e72" stroke-width="2"/>
+            <line x1="660" y1="212" x2="672" y2="220" stroke="#636e72" stroke-width="2"/>
+            <text class="rel-label" x="740" y="204" text-anchor="middle" style="fill:#0984e3; font-size:9px;">book_id</text>
+
+            <!-- ── users 1──* orders (user_id) ── -->
+            <!-- From users bottom (140, 262) down to orders top (160, 480) -->
+            <path class="rel-line" d="M 140,262 L 140,380 L 160,380 L 160,480" fill="none"/>
+            <!-- "1" near users -->
+            <text class="rel-label" x="148" y="278">1</text>
+            <!-- Crow's foot "*" near orders -->
+            <text class="rel-label" x="168" y="472">*</text>
+            <!-- Crow's foot lines -->
+            <line x1="160" y1="480" x2="152" y2="468" stroke="#636e72" stroke-width="2"/>
+            <line x1="160" y1="480" x2="168" y2="468" stroke="#636e72" stroke-width="2"/>
+            <text class="rel-label" x="170" y="390" style="fill:#0984e3; font-size:9px;">user_id</text>
+
+            <!-- ── orders 1──* order_items (order_id) ── -->
+            <!-- From orders right side (270, 554) to order_items left side (530, 554) -->
+            <line class="rel-line" x1="270" y1="554" x2="530" y2="554"/>
+            <!-- "1" near orders -->
+            <text class="rel-label" x="280" y="548">1</text>
+            <!-- Crow's foot "*" near order_items -->
+            <text class="rel-label" x="512" y="548">*</text>
+            <!-- Crow's foot lines -->
+            <line x1="530" y1="554" x2="518" y2="546" stroke="#636e72" stroke-width="2"/>
+            <line x1="530" y1="554" x2="518" y2="562" stroke="#636e72" stroke-width="2"/>
+            <text class="rel-label" x="400" y="546" text-anchor="middle" style="fill:#0984e3; font-size:9px;">order_id</text>
+
+            <!-- ── books 1──* order_items (book_id) ── -->
+            <!-- From books bottom (940, 280) down to order_items top-right (720, 480) -->
+            <path class="rel-line" d="M 940,280 L 940,420 L 720,420 L 720,480" fill="none"/>
+            <!-- "1" near books -->
+            <text class="rel-label" x="948" y="296">1</text>
+            <!-- Crow's foot "*" near order_items -->
+            <text class="rel-label" x="728" y="472">*</text>
+            <!-- Crow's foot lines -->
+            <line x1="720" y1="480" x2="712" y2="468" stroke="#636e72" stroke-width="2"/>
+            <line x1="720" y1="480" x2="728" y2="468" stroke="#636e72" stroke-width="2"/>
+            <text class="rel-label" x="830" y="412" text-anchor="middle" style="fill:#0984e3; font-size:9px;">book_id</text>
+
+        </svg>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- ENTITY DETAILS TABLE -->
+    <!-- ============================================================ -->
+    <h2>Entity Details</h2>
+
+    <h3>users</h3>
+    <table>
+        <tr><th>Column</th><th>Type</th><th>Constraints</th><th>Description</th></tr>
+        <tr><td><strong>id</strong></td><td><code>BIGINT</code></td><td>PK, Auto Increment</td><td>Unique user identifier</td></tr>
+        <tr><td>name</td><td><code>VARCHAR(255)</code></td><td>NOT NULL</td><td>User's full name</td></tr>
+        <tr><td>email</td><td><code>VARCHAR(255)</code></td><td>NOT NULL, UNIQUE</td><td>User's email address (used for login)</td></tr>
+        <tr><td>email_verified_at</td><td><code>TIMESTAMP</code></td><td>NULLABLE</td><td>When the email was verified</td></tr>
+        <tr><td>is_admin</td><td><code>BOOLEAN</code></td><td>DEFAULT false</td><td>Whether the user has admin privileges</td></tr>
+        <tr><td>password</td><td><code>VARCHAR(255)</code></td><td>NOT NULL</td><td>Bcrypt-hashed password</td></tr>
+        <tr><td>remember_token</td><td><code>VARCHAR(100)</code></td><td>NULLABLE</td><td>Token for "Remember Me" sessions</td></tr>
+        <tr><td>created_at</td><td><code>TIMESTAMP</code></td><td></td><td>Registration date</td></tr>
+        <tr><td>updated_at</td><td><code>TIMESTAMP</code></td><td></td><td>Last profile update</td></tr>
+    </table>
+
+    <h3>books</h3>
+    <table>
+        <tr><th>Column</th><th>Type</th><th>Constraints</th><th>Description</th></tr>
+        <tr><td><strong>id</strong></td><td><code>BIGINT</code></td><td>PK, Auto Increment</td><td>Unique book identifier</td></tr>
+        <tr><td>title</td><td><code>VARCHAR(255)</code></td><td>NOT NULL</td><td>Book title</td></tr>
+        <tr><td>author</td><td><code>VARCHAR(255)</code></td><td>NOT NULL</td><td>Author name</td></tr>
+        <tr><td>category</td><td><code>VARCHAR(255)</code></td><td>NULLABLE</td><td>Book category/genre</td></tr>
+        <tr><td>description</td><td><code>TEXT</code></td><td>NULLABLE</td><td>Detailed book description</td></tr>
+        <tr><td>price</td><td><code>DECIMAL(8,2)</code></td><td>NOT NULL</td><td>Book price</td></tr>
+        <tr><td>stock</td><td><code>INT</code></td><td>DEFAULT 0</td><td>Available stock quantity</td></tr>
+        <tr><td>image_url</td><td><code>VARCHAR(255)</code></td><td>NULLABLE</td><td>URL to book cover image</td></tr>
+        <tr><td>created_at</td><td><code>TIMESTAMP</code></td><td></td><td>When the book was added</td></tr>
+        <tr><td>updated_at</td><td><code>TIMESTAMP</code></td><td></td><td>Last book update</td></tr>
+    </table>
+
+    <h3>cart_items</h3>
+    <table>
+        <tr><th>Column</th><th>Type</th><th>Constraints</th><th>Description</th></tr>
+        <tr><td><strong>id</strong></td><td><code>BIGINT</code></td><td>PK, Auto Increment</td><td>Unique cart item identifier</td></tr>
+        <tr><td>user_id</td><td><code>BIGINT</code></td><td>FK &rarr; users.id, CASCADE</td><td>Owner of the cart item</td></tr>
+        <tr><td>book_id</td><td><code>BIGINT</code></td><td>FK &rarr; books.id, CASCADE</td><td>Book being added to cart</td></tr>
+        <tr><td>quantity</td><td><code>INT</code></td><td>DEFAULT 1</td><td>Number of copies in cart</td></tr>
+        <tr><td>price</td><td><code>DECIMAL(8,2)</code></td><td>NOT NULL</td><td>Price at time of adding to cart</td></tr>
+        <tr><td>created_at</td><td><code>TIMESTAMP</code></td><td></td><td>When item was added to cart</td></tr>
+        <tr><td>updated_at</td><td><code>TIMESTAMP</code></td><td></td><td>Last quantity update</td></tr>
+    </table>
+
+    <h3>orders</h3>
+    <table>
+        <tr><th>Column</th><th>Type</th><th>Constraints</th><th>Description</th></tr>
+        <tr><td><strong>id</strong></td><td><code>BIGINT</code></td><td>PK, Auto Increment</td><td>Unique order identifier</td></tr>
+        <tr><td>user_id</td><td><code>BIGINT</code></td><td>FK &rarr; users.id, CASCADE</td><td>Customer who placed the order</td></tr>
+        <tr><td>total</td><td><code>DECIMAL(10,2)</code></td><td>NOT NULL</td><td>Grand total of the order</td></tr>
+        <tr><td>status</td><td><code>VARCHAR(255)</code></td><td>DEFAULT 'pending'</td><td>Order status (pending, processing, shipped, delivered, cancelled)</td></tr>
+        <tr><td>created_at</td><td><code>TIMESTAMP</code></td><td></td><td>When the order was placed</td></tr>
+        <tr><td>updated_at</td><td><code>TIMESTAMP</code></td><td></td><td>Last status update</td></tr>
+    </table>
+
+    <h3>order_items</h3>
+    <table>
+        <tr><th>Column</th><th>Type</th><th>Constraints</th><th>Description</th></tr>
+        <tr><td><strong>id</strong></td><td><code>BIGINT</code></td><td>PK, Auto Increment</td><td>Unique order item identifier</td></tr>
+        <tr><td>order_id</td><td><code>BIGINT</code></td><td>FK &rarr; orders.id, CASCADE</td><td>Parent order</td></tr>
+        <tr><td>book_id</td><td><code>BIGINT</code></td><td>FK &rarr; books.id, CASCADE</td><td>Book purchased</td></tr>
+        <tr><td>quantity</td><td><code>INT</code></td><td>NOT NULL</td><td>Number of copies ordered</td></tr>
+        <tr><td>price</td><td><code>DECIMAL(10,2)</code></td><td>NOT NULL</td><td>Unit price at time of order</td></tr>
+        <tr><td>line_total</td><td><code>DECIMAL(10,2)</code></td><td>NOT NULL</td><td>quantity &times; price</td></tr>
+        <tr><td>created_at</td><td><code>TIMESTAMP</code></td><td></td><td>When the order item was created</td></tr>
+        <tr><td>updated_at</td><td><code>TIMESTAMP</code></td><td></td><td>Last update</td></tr>
+    </table>
+
+    <!-- ============================================================ -->
+    <!-- RELATIONSHIPS TABLE -->
+    <!-- ============================================================ -->
+    <h2>Relationship Summary</h2>
+    <table>
+        <tr><th>#</th><th>Parent Entity</th><th>Child Entity</th><th>Foreign Key</th><th>Cardinality</th><th>On Delete</th><th>Description</th></tr>
+        <tr><td>1</td><td><strong>users</strong></td><td><strong>cart_items</strong></td><td>user_id</td><td>One-to-Many</td><td>CASCADE</td><td>A user can have many cart items; deleting a user removes all their cart items</td></tr>
+        <tr><td>2</td><td><strong>books</strong></td><td><strong>cart_items</strong></td><td>book_id</td><td>One-to-Many</td><td>CASCADE</td><td>A book can appear in many carts; deleting a book removes related cart items</td></tr>
+        <tr><td>3</td><td><strong>users</strong></td><td><strong>orders</strong></td><td>user_id</td><td>One-to-Many</td><td>CASCADE</td><td>A user can place many orders; deleting a user removes all their orders</td></tr>
+        <tr><td>4</td><td><strong>orders</strong></td><td><strong>order_items</strong></td><td>order_id</td><td>One-to-Many</td><td>CASCADE</td><td>An order contains many line items; deleting an order removes its items</td></tr>
+        <tr><td>5</td><td><strong>books</strong></td><td><strong>order_items</strong></td><td>book_id</td><td>One-to-Many</td><td>CASCADE</td><td>A book can appear in many order items; deleting a book removes related order items</td></tr>
+    </table>
+
+    <!-- ============================================================ -->
+    <!-- CARDINALITY SUMMARY -->
+    <!-- ============================================================ -->
+    <h2>Cardinality Rules (Business Rules)</h2>
+    <table>
+        <tr><th>#</th><th>Rule</th></tr>
+        <tr><td>1</td><td>Each <strong>user</strong> can have <strong>zero or many</strong> cart items.</td></tr>
+        <tr><td>2</td><td>Each <strong>cart item</strong> belongs to exactly <strong>one user</strong> and references exactly <strong>one book</strong>.</td></tr>
+        <tr><td>3</td><td>Each <strong>user</strong> can place <strong>zero or many</strong> orders.</td></tr>
+        <tr><td>4</td><td>Each <strong>order</strong> belongs to exactly <strong>one user</strong>.</td></tr>
+        <tr><td>5</td><td>Each <strong>order</strong> contains <strong>one or many</strong> order items.</td></tr>
+        <tr><td>6</td><td>Each <strong>order item</strong> references exactly <strong>one order</strong> and exactly <strong>one book</strong>.</td></tr>
+        <tr><td>7</td><td>Each <strong>book</strong> can appear in <strong>zero or many</strong> cart items and <strong>zero or many</strong> order items.</td></tr>
+        <tr><td>8</td><td>The <strong>cart_items</strong> table acts as an associative entity between <strong>users</strong> and <strong>books</strong>.</td></tr>
+        <tr><td>9</td><td>The <strong>order_items</strong> table acts as an associative entity between <strong>orders</strong> and <strong>books</strong>.</td></tr>
+    </table>
+
+    <p style="text-align:center; margin-top:40px; color:#adb5bd; font-size:12px;">
+        Online Bookstore — Entity Relationship Diagram &nbsp;|&nbsp; Generated February 2026
+    </p>
+
+</div>
+</body>
+</html>

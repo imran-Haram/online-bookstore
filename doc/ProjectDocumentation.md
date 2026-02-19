@@ -25,7 +25,8 @@ This document serves as the **comprehensive technical and functional reference**
 | 13 | **How to Run** | Step-by-step setup instructions for developers — from starting MySQL and importing the database to installing dependencies and launching the development servers. |
 | 14 | **Project File Structure** | A complete directory tree of the entire project, showing the location of every controller, model, middleware, view, migration, seeder, configuration file, and frontend asset. |
 | 15 | **Known Gaps / Future Enhancements** | An honest assessment of features not yet implemented and areas for future improvement, providing a roadmap for continued development. |
-| — | **Data Flow Diagrams (DFD)** *(separate document: `doc/DataFlowDiagram.md`)* | A complete set of DFDs at three levels: Level 0 (Context Diagram) showing external entities and system boundary, Level 1 showing 9 major processes and 6 data stores, and Level 2 with detailed decomposition of authentication, book catalog, shopping cart, order processing, admin book management, admin order management, and admin dashboard processes. |
+| — | **Data Flow Diagrams (DFD)** *(section 2.2 + `doc/DFD-Visual.html`)* | A complete set of DFDs at three levels: Level 0 (Context Diagram) showing external entities and system boundary, Level 1 showing 9 major processes and 4 data stores, and Level 2 with detailed decomposition of authentication, book catalog, shopping cart, order processing, admin book management, and admin dashboard processes. |
+| — | **Entity Relationship Diagram (ERD)** *(section 2.3 + `doc/ERD-Visual.html`)* | A visual ERD showing all 5 database entities (users, books, cart_items, orders, order_items), their attributes, primary/foreign keys, data types, constraints, and one-to-many relationships with crow's foot notation. Includes entity details, relationship summary, and business rules. |
 
 ### Purpose of This Document in the Software Development Lifecycle
 
@@ -423,6 +424,80 @@ Level 1 decomposes the system into **9 major processes** and **6 data stores**, 
 | **D6 Sessions** | R/W | — | — | — | — | — | — | — | — |
 
 *(R = Read, W = Write, R/W = Both)*
+
+---
+
+## 2.3 Entity Relationship Diagram (ERD)
+
+An **Entity Relationship Diagram (ERD)** is a visual representation of the database structure showing entities (tables), their attributes (columns), primary keys, foreign keys, and the relationships between them. The ERD below documents the Online Bookstore's data model.
+
+> **Visual ERD:** Open `doc/ERD-Visual.html` in any web browser for the full graphical ERD diagram with crow's foot notation (suitable for printing or screenshotting into Microsoft Visio).
+
+### Entities
+
+| Entity | Table | Description |
+|--------|-------|-------------|
+| **users** | `users` | Registered users (customers and administrators) |
+| **books** | `books` | Book catalog with title, author, category, price, stock |
+| **cart_items** | `cart_items` | Shopping cart items linking users to books |
+| **orders** | `orders` | Customer orders with total and status |
+| **order_items** | `order_items` | Individual line items within an order |
+
+### ERD Diagram
+
+```
+  ┌──────────────┐          ┌──────────────────┐          ┌──────────────┐
+  │    users      │          │   cart_items      │          │    books      │
+  ├──────────────┤          ├──────────────────┤          ├──────────────┤
+  │ PK id         │──┐      │ PK id             │      ┌──│ PK id         │
+  │    name       │  │  1  *│ FK user_id        │      │  │    title      │
+  │    email      │  ├─────→│ FK book_id        │←─────┤  │    author     │
+  │    is_admin   │  │      │    quantity        │  1  *│  │    category   │
+  │    password   │  │      │    price           │      │  │    price      │
+  │    ...        │  │      │    created_at      │      │  │    stock      │
+  └──────────────┘  │      └──────────────────┘      │  │    image_url  │
+                     │                                  │  │    ...        │
+                     │  1   ┌──────────────────┐   1   │  └──────────────┘
+                     │      │    orders         │      │
+                     │      ├──────────────────┤      │
+                     └─────→│ PK id             │      │
+                        *   │ FK user_id        │      │
+                            │    total          │      │
+                            │    status         │      │
+                            │    created_at     │      │
+                            └────────┬─────────┘      │
+                                     │                  │
+                                  1  │  ┌──────────────────┐
+                                     │  │  order_items      │
+                                     │  ├──────────────────┤
+                                     └─→│ PK id             │
+                                     *  │ FK order_id       │
+                                        │ FK book_id        │←── * ──┘
+                                        │    quantity        │     1
+                                        │    price           │
+                                        │    line_total      │
+                                        └──────────────────┘
+```
+
+### Relationships
+
+| # | Parent | Child | FK | Cardinality | On Delete | Description |
+|---|--------|-------|----|-------------|-----------|-------------|
+| 1 | users | cart_items | user_id | 1 : * | CASCADE | A user can have many cart items |
+| 2 | books | cart_items | book_id | 1 : * | CASCADE | A book can appear in many carts |
+| 3 | users | orders | user_id | 1 : * | CASCADE | A user can place many orders |
+| 4 | orders | order_items | order_id | 1 : * | CASCADE | An order contains many line items |
+| 5 | books | order_items | book_id | 1 : * | CASCADE | A book can appear in many order items |
+
+### Business Rules
+
+1. Each **user** can have zero or many cart items and zero or many orders.
+2. Each **cart item** belongs to exactly one user and references exactly one book.
+3. Each **order** belongs to exactly one user and contains one or many order items.
+4. Each **order item** references exactly one order and exactly one book.
+5. The **cart_items** table is an associative entity between users and books (shopping phase).
+6. The **order_items** table is an associative entity between orders and books (purchase phase).
+7. All foreign keys use **CASCADE** on delete — removing a parent record removes all dependent child records.
 
 ---
 
