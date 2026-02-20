@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Online Bookstore — Use Case Diagram</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Inter', 'Segoe UI', sans-serif;
+            background: #f8f9fa;
+            color: #2d3436;
+            line-height: 1.6;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 30px;
+        }
+        h1 {
+            font-size: 26px;
+            font-weight: 700;
+            color: #0984e3;
+            margin-bottom: 5px;
+        }
+        .subtitle {
+            font-size: 14px;
+            color: #636e72;
+            margin-bottom: 30px;
+        }
+        h2 {
+            font-size: 22px;
+            font-weight: 600;
+            color: #2d3436;
+            margin: 50px 0 10px 0;
+            padding-bottom: 8px;
+            border-bottom: 3px solid #0984e3;
+        }
+        h3 {
+            font-size: 17px;
+            font-weight: 600;
+            color: #2d3436;
+            margin: 30px 0 10px 0;
+        }
+        p, .section-desc {
+            font-size: 14px;
+            color: #636e72;
+            margin-bottom: 15px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0 30px 0;
+            font-size: 13px;
+        }
+        th {
+            background: #0984e3;
+            color: #fff;
+            padding: 10px 14px;
+            text-align: left;
+            font-weight: 600;
+        }
+        td {
+            padding: 9px 14px;
+            border-bottom: 1px solid #dfe6e9;
+        }
+        tr:nth-child(even) td { background: #f1f3f5; }
+        code {
+            background: #dfe6e9;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-size: 12px;
+            font-family: 'Consolas', 'Courier New', monospace;
+        }
+        .diagram-container {
+            background: #fff;
+            border: 1px solid #dfe6e9;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+            overflow-x: auto;
+            text-align: center;
+        }
+        .legend {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 25px;
+            background: #fff;
+            border: 1px solid #dfe6e9;
+            border-radius: 8px;
+            padding: 18px 25px;
+            margin: 20px 0;
+            align-items: center;
+        }
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 13px;
+            color: #636e72;
+        }
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+        .stat-card {
+            background: #fff;
+            border: 1px solid #dfe6e9;
+            border-radius: 8px;
+            padding: 20px;
+            text-align: center;
+        }
+        .stat-card .number {
+            font-size: 32px;
+            font-weight: 700;
+            color: #0984e3;
+        }
+        .stat-card .label {
+            font-size: 12px;
+            color: #636e72;
+            margin-top: 5px;
+        }
+        .page-break { page-break-before: always; }
+
+        @media print {
+            body { background: #fff; }
+            .container { padding: 20px; }
+            .diagram-container { border: none; box-shadow: none; }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+
+    <h1>Use Case Diagram</h1>
+    <p class="subtitle">Online Bookstore &nbsp;|&nbsp; Laravel 12 &nbsp;|&nbsp; UML 2.0 Notation &nbsp;|&nbsp; Section 2.4</p>
+
+    <!-- ============================================================ -->
+    <!-- OVERVIEW -->
+    <!-- ============================================================ -->
+    <h2>Overview</h2>
+    <div class="section-desc">
+        The Use Case Diagram identifies the <strong>2 actors</strong> (Customer and Administrator) who interact with the Online Bookstore system and the <strong>16 use cases</strong> they can perform. Relationships include associations, &laquo;include&raquo;, and &laquo;extend&raquo; stereotypes following UML 2.0 notation.
+    </div>
+
+    <div class="stats-grid">
+        <div class="stat-card">
+            <div class="number">2</div>
+            <div class="label">Actors</div>
+        </div>
+        <div class="stat-card">
+            <div class="number">16</div>
+            <div class="label">Use Cases</div>
+        </div>
+        <div class="stat-card">
+            <div class="number">3</div>
+            <div class="label">&laquo;include&raquo;</div>
+        </div>
+        <div class="stat-card">
+            <div class="number">2</div>
+            <div class="label">&laquo;extend&raquo;</div>
+        </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- LEGEND -->
+    <!-- ============================================================ -->
+    <h2>UML Notation Legend</h2>
+    <div class="legend">
+        <div class="legend-item">
+            <svg width="40" height="55">
+                <circle cx="20" cy="10" r="8" fill="none" stroke="#2d3436" stroke-width="2"/>
+                <line x1="20" y1="18" x2="20" y2="36" stroke="#2d3436" stroke-width="2"/>
+                <line x1="8" y1="25" x2="32" y2="25" stroke="#2d3436" stroke-width="2"/>
+                <line x1="20" y1="36" x2="10" y2="50" stroke="#2d3436" stroke-width="2"/>
+                <line x1="20" y1="36" x2="30" y2="50" stroke="#2d3436" stroke-width="2"/>
+            </svg>
+            <span>Actor</span>
+        </div>
+        <div class="legend-item">
+            <svg width="80" height="36">
+                <ellipse cx="40" cy="18" rx="38" ry="16" fill="#dfe6fb" stroke="#0984e3" stroke-width="2"/>
+                <text x="40" y="22" text-anchor="middle" font-family="Inter" font-size="9" fill="#2d3436">Use Case</text>
+            </svg>
+            <span>Use Case</span>
+        </div>
+        <div class="legend-item">
+            <svg width="80" height="36">
+                <rect x="2" y="4" width="76" height="28" rx="5" fill="#e8f5e9" stroke="#27ae60" stroke-width="2"/>
+                <text x="40" y="22" text-anchor="middle" font-family="Inter" font-size="9" fill="#2d3436">System</text>
+            </svg>
+            <span>System Boundary</span>
+        </div>
+        <div class="legend-item">
+            <svg width="80" height="20">
+                <line x1="5" y1="10" x2="75" y2="10" stroke="#2d3436" stroke-width="2"/>
+            </svg>
+            <span>Association</span>
+        </div>
+        <div class="legend-item">
+            <svg width="80" height="20">
+                <line x1="5" y1="10" x2="75" y2="10" stroke="#636e72" stroke-width="1.5" stroke-dasharray="8,4"/>
+                <polygon points="75,10 65,5 65,15" fill="#636e72"/>
+            </svg>
+            <span>&laquo;include&raquo;</span>
+        </div>
+        <div class="legend-item">
+            <svg width="80" height="20">
+                <line x1="5" y1="10" x2="75" y2="10" stroke="#d63031" stroke-width="1.5" stroke-dasharray="8,4"/>
+                <polygon points="75,10 65,5 65,15" fill="#d63031"/>
+            </svg>
+            <span>&laquo;extend&raquo;</span>
+        </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- USE CASE DIAGRAM SVG -->
+    <!-- ============================================================ -->
+    <h2>Use Case Diagram</h2>
+    <div class="diagram-container">
+        <svg width="1100" height="860" viewBox="0 0 1100 860">
+            <defs>
+                <style>
+                    .uc-boundary { fill: #f0fdf4; stroke: #27ae60; stroke-width: 2.5; rx: 12; }
+                    .uc-title { font-family: 'Inter', sans-serif; font-size: 18px; font-weight: 700; fill: #27ae60; }
+                    .uc-ellipse { fill: #dfe6fb; stroke: #0984e3; stroke-width: 2; }
+                    .uc-text { font-family: 'Inter', sans-serif; font-size: 12px; fill: #2d3436; font-weight: 500; }
+                    .uc-text-sm { font-family: 'Inter', sans-serif; font-size: 10.5px; fill: #2d3436; font-weight: 500; }
+                    .actor-line { stroke: #2d3436; stroke-width: 2.5; fill: none; }
+                    .actor-label { font-family: 'Inter', sans-serif; font-size: 13px; fill: #2d3436; font-weight: 600; }
+                    .assoc { stroke: #2d3436; stroke-width: 1.8; }
+                    .incl { stroke: #636e72; stroke-width: 1.5; stroke-dasharray: 8,4; fill: none; }
+                    .extd { stroke: #d63031; stroke-width: 1.5; stroke-dasharray: 8,4; fill: none; }
+                    .stereo { font-family: 'Inter', sans-serif; font-size: 9px; font-weight: 600; }
+                    .stereo-inc { fill: #636e72; }
+                    .stereo-ext { fill: #d63031; }
+                </style>
+                <marker id="arrow-inc" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="8" markerHeight="8" orient="auto">
+                    <path d="M 0 0 L 10 5 L 0 10 z" fill="#636e72"/>
+                </marker>
+                <marker id="arrow-ext" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="8" markerHeight="8" orient="auto">
+                    <path d="M 0 0 L 10 5 L 0 10 z" fill="#d63031"/>
+                </marker>
+            </defs>
+
+            <!-- ===================================================== -->
+            <!-- SYSTEM BOUNDARY -->
+            <!-- ===================================================== -->
+            <rect class="uc-boundary" x="220" y="30" width="660" height="800" rx="12"/>
+            <text class="uc-title" x="550" y="68" text-anchor="middle">Online Bookstore System</text>
+
+            <!-- ===================================================== -->
+            <!-- ACTOR: Customer (left) -->
+            <!-- ===================================================== -->
+            <g transform="translate(80, 340)">
+                <circle cx="0" cy="0" r="18" class="actor-line"/>
+                <line x1="0" y1="18" x2="0" y2="55" class="actor-line"/>
+                <line x1="-28" y1="32" x2="28" y2="32" class="actor-line"/>
+                <line x1="0" y1="55" x2="-22" y2="85" class="actor-line"/>
+                <line x1="0" y1="55" x2="22" y2="85" class="actor-line"/>
+                <text x="0" y="106" text-anchor="middle" class="actor-label">Customer</text>
+            </g>
+
+            <!-- ===================================================== -->
+            <!-- ACTOR: Administrator (right) -->
+            <!-- ===================================================== -->
+            <g transform="translate(1020, 340)">
+                <circle cx="0" cy="0" r="18" class="actor-line"/>
+                <line x1="0" y1="18" x2="0" y2="55" class="actor-line"/>
+                <line x1="-28" y1="32" x2="28" y2="32" class="actor-line"/>
+                <line x1="0" y1="55" x2="-22" y2="85" class="actor-line"/>
+                <line x1="0" y1="55" x2="22" y2="85" class="actor-line"/>
+                <text x="0" y="106" text-anchor="middle" class="actor-label">Administrator</text>
+            </g>
+
+            <!-- ===================================================== -->
+            <!-- USE CASES — Customer Side (left column) -->
+            <!-- ===================================================== -->
+
+            <!-- UC1: Register -->
+            <ellipse class="uc-ellipse" cx="390" cy="110" rx="100" ry="28"/>
+            <text class="uc-text" x="390" y="114" text-anchor="middle">Register</text>
+
+            <!-- UC2: Login -->
+            <ellipse class="uc-ellipse" cx="390" cy="180" rx="100" ry="28"/>
+            <text class="uc-text" x="390" y="184" text-anchor="middle">Login</text>
+
+            <!-- UC3: Logout -->
+            <ellipse class="uc-ellipse" cx="390" cy="250" rx="100" ry="28"/>
+            <text class="uc-text" x="390" y="254" text-anchor="middle">Logout</text>
+
+            <!-- UC4: Browse Books -->
+            <ellipse class="uc-ellipse" cx="390" cy="320" rx="110" ry="28"/>
+            <text class="uc-text" x="390" y="324" text-anchor="middle">Browse Books</text>
+
+            <!-- UC5: View Book Details -->
+            <ellipse class="uc-ellipse" cx="390" cy="390" rx="115" ry="28"/>
+            <text class="uc-text" x="390" y="394" text-anchor="middle">View Book Details</text>
+
+            <!-- UC6: Add to Cart -->
+            <ellipse class="uc-ellipse" cx="390" cy="460" rx="105" ry="28"/>
+            <text class="uc-text" x="390" y="464" text-anchor="middle">Add to Cart</text>
+
+            <!-- UC7: Update / Remove Cart -->
+            <ellipse class="uc-ellipse" cx="390" cy="530" rx="125" ry="28"/>
+            <text class="uc-text-sm" x="390" y="534" text-anchor="middle">Update / Remove Cart</text>
+
+            <!-- UC8: Checkout & Place Order -->
+            <ellipse class="uc-ellipse" cx="390" cy="600" rx="130" ry="28"/>
+            <text class="uc-text-sm" x="390" y="604" text-anchor="middle">Checkout &amp; Place Order</text>
+
+            <!-- UC9: View Order History -->
+            <ellipse class="uc-ellipse" cx="390" cy="670" rx="120" ry="28"/>
+            <text class="uc-text" x="390" y="674" text-anchor="middle">View Order History</text>
+
+            <!-- UC10: Edit Profile -->
+            <ellipse class="uc-ellipse" cx="390" cy="740" rx="105" ry="28"/>
+            <text class="uc-text" x="390" y="744" text-anchor="middle">Edit Profile</text>
+
+            <!-- UC11: Delete Account -->
+            <ellipse class="uc-ellipse" cx="390" cy="800" rx="105" ry="28"/>
+            <text class="uc-text" x="390" y="804" text-anchor="middle">Delete Account</text>
+
+            <!-- ===================================================== -->
+            <!-- USE CASES — Shared / Center -->
+            <!-- ===================================================== -->
+
+            <!-- UC12: Search / Filter Books -->
+            <ellipse class="uc-ellipse" cx="610" cy="320" rx="115" ry="28"/>
+            <text class="uc-text-sm" x="610" y="324" text-anchor="middle">Search / Filter Books</text>
+
+            <!-- ===================================================== -->
+            <!-- USE CASES — Admin Side (right column) -->
+            <!-- ===================================================== -->
+
+            <!-- UC13: View Dashboard -->
+            <ellipse class="uc-ellipse" cx="710" cy="180" rx="110" ry="28"/>
+            <text class="uc-text" x="710" y="184" text-anchor="middle">View Dashboard</text>
+
+            <!-- UC14: Manage Books -->
+            <ellipse class="uc-ellipse" cx="710" cy="460" rx="130" ry="28"/>
+            <text class="uc-text-sm" x="710" y="464" text-anchor="middle">Manage Books (CRUD)</text>
+
+            <!-- UC15: Manage Orders -->
+            <ellipse class="uc-ellipse" cx="710" cy="600" rx="130" ry="28"/>
+            <text class="uc-text-sm" x="710" y="604" text-anchor="middle">Manage Orders (Status)</text>
+
+            <!-- UC16: Manage Users -->
+            <ellipse class="uc-ellipse" cx="710" cy="740" rx="115" ry="28"/>
+            <text class="uc-text" x="710" y="744" text-anchor="middle">Manage Users</text>
+
+            <!-- ===================================================== -->
+            <!-- ASSOCIATIONS — Customer -->
+            <!-- ===================================================== -->
+            <line class="assoc" x1="108" y1="320" x2="290" y2="110"/>
+            <line class="assoc" x1="108" y1="330" x2="290" y2="180"/>
+            <line class="assoc" x1="108" y1="340" x2="290" y2="250"/>
+            <line class="assoc" x1="108" y1="345" x2="280" y2="320"/>
+            <line class="assoc" x1="108" y1="355" x2="275" y2="390"/>
+            <line class="assoc" x1="108" y1="365" x2="285" y2="460"/>
+            <line class="assoc" x1="108" y1="375" x2="265" y2="530"/>
+            <line class="assoc" x1="108" y1="385" x2="260" y2="600"/>
+            <line class="assoc" x1="108" y1="395" x2="270" y2="670"/>
+            <line class="assoc" x1="108" y1="400" x2="285" y2="740"/>
+            <line class="assoc" x1="108" y1="410" x2="285" y2="800"/>
+
+            <!-- Customer to Search/Filter -->
+            <line class="assoc" x1="108" y1="350" x2="495" y2="320"/>
+
+            <!-- ===================================================== -->
+            <!-- ASSOCIATIONS — Administrator -->
+            <!-- ===================================================== -->
+            <!-- Admin to Login (shared) -->
+            <line class="assoc" x1="992" y1="330" x2="490" y2="180"/>
+            <!-- Admin to Logout (shared) -->
+            <line class="assoc" x1="992" y1="335" x2="490" y2="250"/>
+            <!-- Admin to Dashboard -->
+            <line class="assoc" x1="992" y1="325" x2="820" y2="180"/>
+            <!-- Admin to Manage Books -->
+            <line class="assoc" x1="992" y1="355" x2="840" y2="460"/>
+            <!-- Admin to Manage Orders -->
+            <line class="assoc" x1="992" y1="375" x2="840" y2="600"/>
+            <!-- Admin to Manage Users -->
+            <line class="assoc" x1="992" y1="395" x2="825" y2="740"/>
+            <!-- Admin to Browse Books -->
+            <line class="assoc" x1="992" y1="340" x2="500" y2="320"/>
+
+            <!-- ===================================================== -->
+            <!-- <<include>> RELATIONSHIPS -->
+            <!-- ===================================================== -->
+
+            <!-- Checkout includes Login -->
+            <line class="incl" x1="390" y1="572" x2="390" y2="208" marker-end="url(#arrow-inc)"/>
+            <text class="stereo stereo-inc" x="398" y="410" transform="rotate(-90, 398, 410)">&laquo;include&raquo;</text>
+
+            <!-- Add to Cart includes Login -->
+            <path class="incl" d="M 345,435 Q 310,350 340,208" marker-end="url(#arrow-inc)"/>
+            <text class="stereo stereo-inc" x="295" y="330">&laquo;include&raquo;</text>
+
+            <!-- View Order History includes Login -->
+            <path class="incl" d="M 440,645 Q 500,500 440,208" marker-end="url(#arrow-inc)"/>
+            <text class="stereo stereo-inc" x="468" y="440">&laquo;include&raquo;</text>
+
+            <!-- ===================================================== -->
+            <!-- <<extend>> RELATIONSHIPS -->
+            <!-- ===================================================== -->
+
+            <!-- Search/Filter extends Browse Books -->
+            <line class="extd" x1="545" y1="300" x2="455" y2="300" marker-end="url(#arrow-ext)"/>
+            <text class="stereo stereo-ext" x="470" y="292">&laquo;extend&raquo;</text>
+
+            <!-- View Book Details extends Browse Books -->
+            <path class="extd" d="M 390,362 L 390,348" marker-end="url(#arrow-ext)"/>
+            <text class="stereo stereo-ext" x="398" y="360">&laquo;extend&raquo;</text>
+
+        </svg>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- ACTORS TABLE -->
+    <!-- ============================================================ -->
+    <h2>Actors</h2>
+    <table>
+        <tr><th>Actor</th><th>Type</th><th>Description</th></tr>
+        <tr>
+            <td><strong>Customer</strong></td>
+            <td>Primary</td>
+            <td>A registered user who can browse, search and filter books, manage a shopping cart, place orders, view order history, and manage their profile. Must register and login to perform cart/order/profile operations.</td>
+        </tr>
+        <tr>
+            <td><strong>Administrator</strong></td>
+            <td>Primary</td>
+            <td>A privileged user (<code>is_admin = true</code>) who can access the admin dashboard, manage books (CRUD), manage orders (view and update status), and view registered users. Shares login/logout with the Customer actor.</td>
+        </tr>
+    </table>
+
+    <!-- ============================================================ -->
+    <!-- USE CASES TABLE -->
+    <!-- ============================================================ -->
+    <h2>Use Case Descriptions</h2>
+
+    <h3>Customer Use Cases</h3>
+    <table>
+        <tr><th>ID</th><th>Use Case</th><th>Actor</th><th>Description</th><th>Controller / Route</th></tr>
+        <tr><td>UC-01</td><td><strong>Register</strong></td><td>Customer</td><td>Create a new account by providing name, email, and password</td><td><code>RegisteredUserController</code> &rarr; <code>POST /register</code></td></tr>
+        <tr><td>UC-02</td><td><strong>Login</strong></td><td>Customer, Admin</td><td>Authenticate with email and password to access the system</td><td><code>AuthenticatedSessionController</code> &rarr; <code>POST /login</code></td></tr>
+        <tr><td>UC-03</td><td><strong>Logout</strong></td><td>Customer, Admin</td><td>Terminate the current session and redirect to the homepage</td><td><code>AuthenticatedSessionController</code> &rarr; <code>POST /logout</code></td></tr>
+        <tr><td>UC-04</td><td><strong>Browse Books</strong></td><td>Customer, Admin</td><td>View the paginated book catalog with title, author, price, and stock</td><td><code>BookController@index</code> &rarr; <code>GET /books</code></td></tr>
+        <tr><td>UC-05</td><td><strong>View Book Details</strong></td><td>Customer</td><td>View full details of a specific book including description and image</td><td><code>BookController@show</code> &rarr; <code>GET /books/{book}</code></td></tr>
+        <tr><td>UC-06</td><td><strong>Search / Filter Books</strong></td><td>Customer</td><td>Search by keyword or filter by category to find specific books</td><td><code>BookController@index</code> &rarr; <code>GET /books?search=&category=</code></td></tr>
+        <tr><td>UC-07</td><td><strong>Add to Cart</strong></td><td>Customer</td><td>Add a book to the shopping cart with a specified quantity</td><td><code>CartController@store</code> &rarr; <code>POST /cart</code></td></tr>
+        <tr><td>UC-08</td><td><strong>Update / Remove Cart</strong></td><td>Customer</td><td>Change item quantity or remove items from the cart</td><td><code>CartController@update|destroy</code> &rarr; <code>PATCH|DELETE /cart/{id}</code></td></tr>
+        <tr><td>UC-09</td><td><strong>Checkout &amp; Place Order</strong></td><td>Customer</td><td>Review cart, confirm checkout, and create an order with all cart items</td><td><code>OrderController@create|store</code> &rarr; <code>GET|POST /checkout</code></td></tr>
+        <tr><td>UC-10</td><td><strong>View Order History</strong></td><td>Customer</td><td>View a list of all past orders with status, total, and date</td><td><code>OrderController@index|show</code> &rarr; <code>GET /orders</code></td></tr>
+        <tr><td>UC-11</td><td><strong>Edit Profile</strong></td><td>Customer</td><td>Update name, email, or change password</td><td><code>ProfileController@update</code> &rarr; <code>PATCH /profile</code></td></tr>
+        <tr><td>UC-12</td><td><strong>Delete Account</strong></td><td>Customer</td><td>Permanently delete account and all associated data</td><td><code>ProfileController@destroy</code> &rarr; <code>DELETE /profile</code></td></tr>
+    </table>
+
+    <h3>Administrator Use Cases</h3>
+    <table>
+        <tr><th>ID</th><th>Use Case</th><th>Actor</th><th>Description</th><th>Controller / Route</th></tr>
+        <tr><td>UC-13</td><td><strong>View Dashboard</strong></td><td>Admin</td><td>View system statistics — total users, books, orders, revenue, and recent activity</td><td><code>AdminController@dashboard</code> &rarr; <code>GET /admin/dashboard</code></td></tr>
+        <tr><td>UC-14</td><td><strong>Manage Books (CRUD)</strong></td><td>Admin</td><td>Create new books, edit existing books, and delete books from the catalog</td><td><code>BookController@create|store|edit|update|destroy</code></td></tr>
+        <tr><td>UC-15</td><td><strong>Manage Orders (Status)</strong></td><td>Admin</td><td>View all orders and update their status (pending → processing → shipped → delivered)</td><td><code>AdminController@orders|updateOrderStatus</code></td></tr>
+        <tr><td>UC-16</td><td><strong>Manage Users</strong></td><td>Admin</td><td>View the list of all registered users</td><td><code>AdminController@users</code> &rarr; <code>GET /admin/users</code></td></tr>
+    </table>
+
+    <!-- ============================================================ -->
+    <!-- RELATIONSHIPS TABLE -->
+    <!-- ============================================================ -->
+    <h2>Relationships</h2>
+
+    <h3>Associations (Actor → Use Case)</h3>
+    <table>
+        <tr><th>Actor</th><th>Use Cases</th></tr>
+        <tr><td><strong>Customer</strong></td><td>UC-01 Register, UC-02 Login, UC-03 Logout, UC-04 Browse Books, UC-05 View Book Details, UC-06 Search/Filter Books, UC-07 Add to Cart, UC-08 Update/Remove Cart, UC-09 Checkout &amp; Place Order, UC-10 View Order History, UC-11 Edit Profile, UC-12 Delete Account</td></tr>
+        <tr><td><strong>Administrator</strong></td><td>UC-02 Login, UC-03 Logout, UC-04 Browse Books, UC-13 View Dashboard, UC-14 Manage Books, UC-15 Manage Orders, UC-16 Manage Users</td></tr>
+    </table>
+
+    <h3>&laquo;include&raquo; Relationships</h3>
+    <table>
+        <tr><th>#</th><th>Base Use Case</th><th>Included Use Case</th><th>Description</th></tr>
+        <tr><td>1</td><td>Add to Cart (UC-07)</td><td>Login (UC-02)</td><td>User must be authenticated before adding items to cart</td></tr>
+        <tr><td>2</td><td>Checkout &amp; Place Order (UC-09)</td><td>Login (UC-02)</td><td>User must be authenticated to checkout and place orders</td></tr>
+        <tr><td>3</td><td>View Order History (UC-10)</td><td>Login (UC-02)</td><td>User must be authenticated to view order history</td></tr>
+    </table>
+
+    <h3>&laquo;extend&raquo; Relationships</h3>
+    <table>
+        <tr><th>#</th><th>Base Use Case</th><th>Extending Use Case</th><th>Description</th></tr>
+        <tr><td>1</td><td>Browse Books (UC-04)</td><td>Search / Filter Books (UC-06)</td><td>User can optionally search or filter while browsing</td></tr>
+        <tr><td>2</td><td>Browse Books (UC-04)</td><td>View Book Details (UC-05)</td><td>User can optionally click a book to view its full details</td></tr>
+    </table>
+
+    <!-- ============================================================ -->
+    <!-- PRE/POST CONDITIONS -->
+    <!-- ============================================================ -->
+    <div class="page-break"></div>
+    <h2>Use Case Pre &amp; Post Conditions</h2>
+    <table>
+        <tr><th>Use Case</th><th>Pre-Conditions</th><th>Post-Conditions</th></tr>
+        <tr><td><strong>Register</strong></td><td>User is not logged in; email is not already registered</td><td>New user record created; user is auto-logged in</td></tr>
+        <tr><td><strong>Login</strong></td><td>User is not logged in; valid credentials exist</td><td>Session created; user redirected to dashboard or books page</td></tr>
+        <tr><td><strong>Browse Books</strong></td><td>None (public access)</td><td>Paginated list of books displayed</td></tr>
+        <tr><td><strong>Add to Cart</strong></td><td>User is logged in; book exists and is in stock</td><td>Cart item created or quantity updated</td></tr>
+        <tr><td><strong>Checkout &amp; Place Order</strong></td><td>User is logged in; cart is not empty</td><td>Order created; cart emptied; stock decremented</td></tr>
+        <tr><td><strong>View Order History</strong></td><td>User is logged in</td><td>List of user's orders displayed with status</td></tr>
+        <tr><td><strong>Manage Books (CRUD)</strong></td><td>User is logged in as admin</td><td>Book created, updated, or deleted in database</td></tr>
+        <tr><td><strong>Manage Orders (Status)</strong></td><td>User is logged in as admin; order exists</td><td>Order status updated (e.g., pending → shipped)</td></tr>
+        <tr><td><strong>View Dashboard</strong></td><td>User is logged in as admin</td><td>Statistics and recent activity displayed</td></tr>
+        <tr><td><strong>Edit Profile</strong></td><td>User is logged in</td><td>User name/email/password updated</td></tr>
+        <tr><td><strong>Delete Account</strong></td><td>User is logged in; password confirmed</td><td>User record and all associated data deleted</td></tr>
+    </table>
+
+    <p style="text-align:center; margin-top:40px; color:#adb5bd; font-size:12px;">
+        Online Bookstore — Use Case Diagram &nbsp;|&nbsp; Generated February 2026
+    </p>
+
+</div>
+</body>
+</html>

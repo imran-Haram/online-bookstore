@@ -1,0 +1,775 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Online Bookstore — Database Design Diagram</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Inter', 'Segoe UI', sans-serif;
+            background: #f8f9fa;
+            color: #2d3436;
+            line-height: 1.6;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 30px;
+        }
+        h1 {
+            font-size: 26px;
+            font-weight: 700;
+            color: #0984e3;
+            margin-bottom: 5px;
+        }
+        .subtitle {
+            font-size: 14px;
+            color: #636e72;
+            margin-bottom: 30px;
+        }
+        h2 {
+            font-size: 22px;
+            font-weight: 600;
+            color: #2d3436;
+            margin: 50px 0 10px 0;
+            padding-bottom: 8px;
+            border-bottom: 3px solid #0984e3;
+        }
+        h3 {
+            font-size: 17px;
+            font-weight: 600;
+            color: #2d3436;
+            margin: 30px 0 10px 0;
+        }
+        p, .section-desc {
+            font-size: 14px;
+            color: #636e72;
+            margin-bottom: 15px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0 30px 0;
+            font-size: 13px;
+        }
+        th {
+            background: #0984e3;
+            color: #fff;
+            padding: 10px 14px;
+            text-align: left;
+            font-weight: 600;
+        }
+        td {
+            padding: 9px 14px;
+            border-bottom: 1px solid #dfe6e9;
+        }
+        tr:nth-child(even) td { background: #f1f3f5; }
+        code {
+            background: #dfe6e9;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-size: 12px;
+            font-family: 'Consolas', 'Courier New', monospace;
+        }
+        .diagram-container {
+            background: #fff;
+            border: 1px solid #dfe6e9;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+            overflow-x: auto;
+            text-align: center;
+        }
+        .legend {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 25px;
+            background: #fff;
+            border: 1px solid #dfe6e9;
+            border-radius: 8px;
+            padding: 18px 25px;
+            margin: 20px 0;
+            align-items: center;
+        }
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 13px;
+            color: #636e72;
+        }
+        .badge {
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-size: 11px;
+            font-weight: 600;
+        }
+        .badge-pk { background: #d63031; color: #fff; }
+        .badge-fk { background: #0984e3; color: #fff; }
+        .badge-uq { background: #00b894; color: #fff; }
+        .badge-idx { background: #fdcb6e; color: #2d3436; }
+        .badge-null { background: #b2bec3; color: #fff; }
+        .page-break { page-break-before: always; }
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+        .stat-card {
+            background: #fff;
+            border: 1px solid #dfe6e9;
+            border-radius: 8px;
+            padding: 20px;
+            text-align: center;
+        }
+        .stat-card .number {
+            font-size: 32px;
+            font-weight: 700;
+            color: #0984e3;
+        }
+        .stat-card .label {
+            font-size: 12px;
+            color: #636e72;
+            margin-top: 5px;
+        }
+        .group-label {
+            display: inline-block;
+            padding: 4px 14px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+        .group-app { background: #dfe6e9; color: #0984e3; }
+        .group-infra { background: #ffeaa7; color: #636e72; }
+
+        @media print {
+            body { background: #fff; }
+            .container { padding: 20px; }
+            .diagram-container { border: none; box-shadow: none; }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+
+    <h1>Database Design Diagram</h1>
+    <p class="subtitle">Online Bookstore &nbsp;|&nbsp; MySQL 8.4.3 &nbsp;|&nbsp; Laravel 12 &nbsp;|&nbsp; InnoDB Engine</p>
+
+    <!-- ============================================================ -->
+    <!-- DATABASE OVERVIEW -->
+    <!-- ============================================================ -->
+    <h2>Database Overview</h2>
+    <div class="section-desc">
+        The <strong>online_bookstore</strong> database uses <strong>MySQL 8.4.3</strong> with the InnoDB storage engine. It contains <strong>13 tables</strong> organized into two groups: 5 application tables that store business data and 8 Laravel framework infrastructure tables.
+    </div>
+
+    <div class="stats-grid">
+        <div class="stat-card">
+            <div class="number">13</div>
+            <div class="label">Total Tables</div>
+        </div>
+        <div class="stat-card">
+            <div class="number">5</div>
+            <div class="label">Application Tables</div>
+        </div>
+        <div class="stat-card">
+            <div class="number">8</div>
+            <div class="label">Infrastructure Tables</div>
+        </div>
+        <div class="stat-card">
+            <div class="number">5</div>
+            <div class="label">Foreign Keys</div>
+        </div>
+        <div class="stat-card">
+            <div class="number">5</div>
+            <div class="label">Relationships</div>
+        </div>
+    </div>
+
+    <h3>Table Inventory</h3>
+    <table>
+        <tr><th>#</th><th>Table</th><th>Group</th><th>Columns</th><th>Primary Key</th><th>Foreign Keys</th><th>Purpose</th></tr>
+        <tr><td>1</td><td><code>users</code></td><td><span class="group-label group-app">Application</span></td><td>9</td><td>id</td><td>—</td><td>Registered users (customers &amp; admins)</td></tr>
+        <tr><td>2</td><td><code>books</code></td><td><span class="group-label group-app">Application</span></td><td>10</td><td>id</td><td>—</td><td>Book catalog</td></tr>
+        <tr><td>3</td><td><code>cart_items</code></td><td><span class="group-label group-app">Application</span></td><td>7</td><td>id</td><td>user_id, book_id</td><td>Shopping cart items</td></tr>
+        <tr><td>4</td><td><code>orders</code></td><td><span class="group-label group-app">Application</span></td><td>6</td><td>id</td><td>user_id</td><td>Customer orders</td></tr>
+        <tr><td>5</td><td><code>order_items</code></td><td><span class="group-label group-app">Application</span></td><td>8</td><td>id</td><td>order_id, book_id</td><td>Order line items</td></tr>
+        <tr><td>6</td><td><code>password_reset_tokens</code></td><td><span class="group-label group-infra">Infrastructure</span></td><td>3</td><td>email</td><td>—</td><td>Password reset tokens</td></tr>
+        <tr><td>7</td><td><code>sessions</code></td><td><span class="group-label group-infra">Infrastructure</span></td><td>6</td><td>id</td><td>user_id (index)</td><td>Session storage</td></tr>
+        <tr><td>8</td><td><code>cache</code></td><td><span class="group-label group-infra">Infrastructure</span></td><td>3</td><td>key</td><td>—</td><td>Application cache</td></tr>
+        <tr><td>9</td><td><code>cache_locks</code></td><td><span class="group-label group-infra">Infrastructure</span></td><td>3</td><td>key</td><td>—</td><td>Cache lock management</td></tr>
+        <tr><td>10</td><td><code>jobs</code></td><td><span class="group-label group-infra">Infrastructure</span></td><td>7</td><td>id</td><td>—</td><td>Queue jobs</td></tr>
+        <tr><td>11</td><td><code>job_batches</code></td><td><span class="group-label group-infra">Infrastructure</span></td><td>9</td><td>id</td><td>—</td><td>Batched job tracking</td></tr>
+        <tr><td>12</td><td><code>failed_jobs</code></td><td><span class="group-label group-infra">Infrastructure</span></td><td>7</td><td>id</td><td>—</td><td>Failed job log</td></tr>
+        <tr><td>13</td><td><code>migrations</code></td><td><span class="group-label group-infra">Infrastructure</span></td><td>3</td><td>id</td><td>—</td><td>Migration version tracking</td></tr>
+    </table>
+
+    <!-- ============================================================ -->
+    <!-- PHYSICAL SCHEMA DIAGRAM (Application Tables) -->
+    <!-- ============================================================ -->
+    <div class="page-break"></div>
+    <h2>Physical Schema Diagram — Application Tables</h2>
+    <div class="section-desc">
+        This diagram shows the <strong>5 application tables</strong> with all columns, data types, keys, indexes, and foreign-key relationships drawn with crow's foot notation. Nullable columns are marked with <code>?</code>.
+    </div>
+
+    <div class="legend">
+        <div class="legend-item"><span class="badge badge-pk">PK</span> Primary Key</div>
+        <div class="legend-item"><span class="badge badge-fk">FK</span> Foreign Key</div>
+        <div class="legend-item"><span class="badge badge-uq">UQ</span> Unique</div>
+        <div class="legend-item"><span class="badge badge-idx">IDX</span> Index</div>
+        <div class="legend-item"><span class="badge badge-null">NULL</span> Nullable</div>
+        <div class="legend-item">
+            <svg width="60" height="16"><line x1="2" y1="8" x2="50" y2="8" stroke="#636e72" stroke-width="2"/><line x1="50" y1="8" x2="42" y2="2" stroke="#636e72" stroke-width="2"/><line x1="50" y1="8" x2="42" y2="14" stroke="#636e72" stroke-width="2"/></svg>
+            One-to-Many
+        </div>
+    </div>
+
+    <div class="diagram-container">
+        <svg width="1100" height="820" viewBox="0 0 1100 820">
+            <defs>
+                <style>
+                    .th { fill: #0984e3; }
+                    .th text { fill: #fff; font-family: 'Inter', sans-serif; font-size: 14px; font-weight: 700; }
+                    .tb { fill: #fff; stroke: #b2bec3; stroke-width: 1.5; }
+                    .ct { font-family: 'Inter', sans-serif; font-size: 11px; fill: #2d3436; }
+                    .dt { font-family: 'Consolas', monospace; font-size: 10px; fill: #636e72; }
+                    .pk { font-family: 'Inter', sans-serif; font-size: 8px; font-weight: 700; fill: #fff; }
+                    .fk { font-family: 'Inter', sans-serif; font-size: 8px; font-weight: 700; fill: #fff; }
+                    .rl { stroke: #636e72; stroke-width: 2; fill: none; }
+                    .rlb { font-family: 'Inter', sans-serif; font-size: 10px; fill: #636e72; font-weight: 600; }
+                    .sep { stroke: #e8ecef; stroke-width: 1; }
+                </style>
+            </defs>
+
+            <!-- ===================================================== -->
+            <!-- TABLE: users (top-left) -->
+            <!-- ===================================================== -->
+            <g transform="translate(20, 20)">
+                <rect class="th" x="0" y="0" width="240" height="32" rx="5"/>
+                <rect class="th" x="0" y="15" width="240" height="17"/>
+                <text x="120" y="22" text-anchor="middle" fill="#fff" font-family="Inter" font-size="14" font-weight="700">users</text>
+                <rect class="tb" x="0" y="32" width="240" height="198"/>
+
+                <rect x="8" y="40" width="22" height="13" rx="3" fill="#d63031"/><text class="pk" x="19" y="50" text-anchor="middle">PK</text>
+                <text class="ct" x="36" y="50">id</text><text class="dt" x="155" y="50">BIGINT AI</text>
+                <line class="sep" x1="5" y1="56" x2="235" y2="56"/>
+
+                <text class="ct" x="36" y="70">name</text><text class="dt" x="155" y="70">VARCHAR(255)</text>
+
+                <rect x="8" y="78" width="22" height="13" rx="3" fill="#00b894"/><text x="19" y="88" text-anchor="middle" font-family="Inter" font-size="8" font-weight="700" fill="#fff">UQ</text>
+                <text class="ct" x="36" y="88">email</text><text class="dt" x="155" y="88">VARCHAR(255)</text>
+
+                <text class="ct" x="36" y="106">email_verified_at</text><text class="dt" x="155" y="106">TIMESTAMP?</text>
+
+                <text class="ct" x="36" y="124">is_admin</text><text class="dt" x="155" y="124">BOOL (def: false)</text>
+
+                <text class="ct" x="36" y="142">password</text><text class="dt" x="155" y="142">VARCHAR(255)</text>
+
+                <text class="ct" x="36" y="160">remember_token</text><text class="dt" x="155" y="160">VARCHAR(100)?</text>
+
+                <text class="ct" x="36" y="178">created_at</text><text class="dt" x="155" y="178">TIMESTAMP</text>
+
+                <text class="ct" x="36" y="196">updated_at</text><text class="dt" x="155" y="196">TIMESTAMP</text>
+            </g>
+
+            <!-- ===================================================== -->
+            <!-- TABLE: books (top-right) -->
+            <!-- ===================================================== -->
+            <g transform="translate(830, 20)">
+                <rect class="th" x="0" y="0" width="250" height="32" rx="5"/>
+                <rect class="th" x="0" y="15" width="250" height="17"/>
+                <text x="125" y="22" text-anchor="middle" fill="#fff" font-family="Inter" font-size="14" font-weight="700">books</text>
+                <rect class="tb" x="0" y="32" width="250" height="216"/>
+
+                <rect x="8" y="40" width="22" height="13" rx="3" fill="#d63031"/><text class="pk" x="19" y="50" text-anchor="middle">PK</text>
+                <text class="ct" x="36" y="50">id</text><text class="dt" x="160" y="50">BIGINT AI</text>
+                <line class="sep" x1="5" y1="56" x2="245" y2="56"/>
+
+                <text class="ct" x="36" y="70">title</text><text class="dt" x="160" y="70">VARCHAR(255)</text>
+
+                <text class="ct" x="36" y="88">author</text><text class="dt" x="160" y="88">VARCHAR(255)</text>
+
+                <text class="ct" x="36" y="106">category</text><text class="dt" x="160" y="106">VARCHAR(255)?</text>
+
+                <text class="ct" x="36" y="124">description</text><text class="dt" x="160" y="124">TEXT?</text>
+
+                <text class="ct" x="36" y="142">price</text><text class="dt" x="160" y="142">DECIMAL(8,2)</text>
+
+                <text class="ct" x="36" y="160">stock</text><text class="dt" x="160" y="160">INT (def: 0)</text>
+
+                <text class="ct" x="36" y="178">image_url</text><text class="dt" x="160" y="178">VARCHAR(255)?</text>
+
+                <text class="ct" x="36" y="196">created_at</text><text class="dt" x="160" y="196">TIMESTAMP</text>
+
+                <text class="ct" x="36" y="214">updated_at</text><text class="dt" x="160" y="214">TIMESTAMP</text>
+            </g>
+
+            <!-- ===================================================== -->
+            <!-- TABLE: cart_items (center) -->
+            <!-- ===================================================== -->
+            <g transform="translate(420, 120)">
+                <rect class="th" x="0" y="0" width="240" height="32" rx="5"/>
+                <rect class="th" x="0" y="15" width="240" height="17"/>
+                <text x="120" y="22" text-anchor="middle" fill="#fff" font-family="Inter" font-size="14" font-weight="700">cart_items</text>
+                <rect class="tb" x="0" y="32" width="240" height="144"/>
+
+                <rect x="8" y="40" width="22" height="13" rx="3" fill="#d63031"/><text class="pk" x="19" y="50" text-anchor="middle">PK</text>
+                <text class="ct" x="36" y="50">id</text><text class="dt" x="155" y="50">BIGINT AI</text>
+                <line class="sep" x1="5" y1="56" x2="235" y2="56"/>
+
+                <rect x="8" y="60" width="22" height="13" rx="3" fill="#0984e3"/><text class="fk" x="19" y="70" text-anchor="middle">FK</text>
+                <text class="ct" x="36" y="70">user_id</text><text class="dt" x="155" y="70">BIGINT</text>
+
+                <rect x="8" y="78" width="22" height="13" rx="3" fill="#0984e3"/><text class="fk" x="19" y="88" text-anchor="middle">FK</text>
+                <text class="ct" x="36" y="88">book_id</text><text class="dt" x="155" y="88">BIGINT</text>
+
+                <text class="ct" x="36" y="106">quantity</text><text class="dt" x="155" y="106">INT (def: 1)</text>
+
+                <text class="ct" x="36" y="124">price</text><text class="dt" x="155" y="124">DECIMAL(8,2)</text>
+
+                <text class="ct" x="36" y="142">created_at</text><text class="dt" x="155" y="142">TIMESTAMP</text>
+
+                <text class="ct" x="36" y="160">updated_at</text><text class="dt" x="155" y="160">TIMESTAMP</text>
+            </g>
+
+            <!-- ===================================================== -->
+            <!-- TABLE: orders (bottom-left) -->
+            <!-- ===================================================== -->
+            <g transform="translate(50, 510)">
+                <rect class="th" x="0" y="0" width="230" height="32" rx="5"/>
+                <rect class="th" x="0" y="15" width="230" height="17"/>
+                <text x="115" y="22" text-anchor="middle" fill="#fff" font-family="Inter" font-size="14" font-weight="700">orders</text>
+                <rect class="tb" x="0" y="32" width="230" height="126"/>
+
+                <rect x="8" y="40" width="22" height="13" rx="3" fill="#d63031"/><text class="pk" x="19" y="50" text-anchor="middle">PK</text>
+                <text class="ct" x="36" y="50">id</text><text class="dt" x="150" y="50">BIGINT AI</text>
+                <line class="sep" x1="5" y1="56" x2="225" y2="56"/>
+
+                <rect x="8" y="60" width="22" height="13" rx="3" fill="#0984e3"/><text class="fk" x="19" y="70" text-anchor="middle">FK</text>
+                <text class="ct" x="36" y="70">user_id</text><text class="dt" x="150" y="70">BIGINT</text>
+
+                <text class="ct" x="36" y="88">total</text><text class="dt" x="150" y="88">DECIMAL(10,2)</text>
+
+                <text class="ct" x="36" y="106">status</text><text class="dt" x="150" y="106">VARCHAR (def: pending)</text>
+
+                <text class="ct" x="36" y="124">created_at</text><text class="dt" x="150" y="124">TIMESTAMP</text>
+
+                <text class="ct" x="36" y="142">updated_at</text><text class="dt" x="150" y="142">TIMESTAMP</text>
+            </g>
+
+            <!-- ===================================================== -->
+            <!-- TABLE: order_items (bottom-right) -->
+            <!-- ===================================================== -->
+            <g transform="translate(530, 500)">
+                <rect class="th" x="0" y="0" width="260" height="32" rx="5"/>
+                <rect class="th" x="0" y="15" width="260" height="17"/>
+                <text x="130" y="22" text-anchor="middle" fill="#fff" font-family="Inter" font-size="14" font-weight="700">order_items</text>
+                <rect class="tb" x="0" y="32" width="260" height="162"/>
+
+                <rect x="8" y="40" width="22" height="13" rx="3" fill="#d63031"/><text class="pk" x="19" y="50" text-anchor="middle">PK</text>
+                <text class="ct" x="36" y="50">id</text><text class="dt" x="170" y="50">BIGINT AI</text>
+                <line class="sep" x1="5" y1="56" x2="255" y2="56"/>
+
+                <rect x="8" y="60" width="22" height="13" rx="3" fill="#0984e3"/><text class="fk" x="19" y="70" text-anchor="middle">FK</text>
+                <text class="ct" x="36" y="70">order_id</text><text class="dt" x="170" y="70">BIGINT</text>
+
+                <rect x="8" y="78" width="22" height="13" rx="3" fill="#0984e3"/><text class="fk" x="19" y="88" text-anchor="middle">FK</text>
+                <text class="ct" x="36" y="88">book_id</text><text class="dt" x="170" y="88">BIGINT</text>
+
+                <text class="ct" x="36" y="106">quantity</text><text class="dt" x="170" y="106">INT</text>
+
+                <text class="ct" x="36" y="124">price</text><text class="dt" x="170" y="124">DECIMAL(10,2)</text>
+
+                <text class="ct" x="36" y="142">line_total</text><text class="dt" x="170" y="142">DECIMAL(10,2)</text>
+
+                <text class="ct" x="36" y="160">created_at</text><text class="dt" x="170" y="160">TIMESTAMP</text>
+
+                <text class="ct" x="36" y="178">updated_at</text><text class="dt" x="170" y="178">TIMESTAMP</text>
+            </g>
+
+            <!-- ===================================================== -->
+            <!-- RELATIONSHIPS -->
+            <!-- ===================================================== -->
+
+            <!-- users.id 1──* cart_items.user_id -->
+            <line class="rl" x1="260" y1="190" x2="420" y2="190"/>
+            <text class="rlb" x="270" y="184">1</text>
+            <text class="rlb" x="402" y="184">*</text>
+            <line x1="420" y1="190" x2="408" y2="182" stroke="#636e72" stroke-width="2"/>
+            <line x1="420" y1="190" x2="408" y2="198" stroke="#636e72" stroke-width="2"/>
+            <text x="340" y="180" text-anchor="middle" font-family="Inter" font-size="9" fill="#0984e3" font-weight="600">user_id</text>
+
+            <!-- books.id 1──* cart_items.book_id -->
+            <line class="rl" x1="830" y1="208" x2="660" y2="208"/>
+            <text class="rlb" x="815" y="202">1</text>
+            <text class="rlb" x="668" y="202">*</text>
+            <line x1="660" y1="208" x2="672" y2="200" stroke="#636e72" stroke-width="2"/>
+            <line x1="660" y1="208" x2="672" y2="216" stroke="#636e72" stroke-width="2"/>
+            <text x="745" y="200" text-anchor="middle" font-family="Inter" font-size="9" fill="#0984e3" font-weight="600">book_id</text>
+
+            <!-- users.id 1──* orders.user_id -->
+            <path class="rl" d="M 140,250 L 140,400 L 165,400 L 165,510" fill="none"/>
+            <text class="rlb" x="148" y="268">1</text>
+            <text class="rlb" x="173" y="502">*</text>
+            <line x1="165" y1="510" x2="157" y2="498" stroke="#636e72" stroke-width="2"/>
+            <line x1="165" y1="510" x2="173" y2="498" stroke="#636e72" stroke-width="2"/>
+            <text x="175" y="400" font-family="Inter" font-size="9" fill="#0984e3" font-weight="600">user_id</text>
+
+            <!-- orders.id 1──* order_items.order_id -->
+            <line class="rl" x1="280" y1="580" x2="530" y2="570"/>
+            <text class="rlb" x="290" y="574">1</text>
+            <text class="rlb" x="512" y="564">*</text>
+            <line x1="530" y1="570" x2="518" y2="562" stroke="#636e72" stroke-width="2"/>
+            <line x1="530" y1="570" x2="518" y2="578" stroke="#636e72" stroke-width="2"/>
+            <text x="405" y="566" text-anchor="middle" font-family="Inter" font-size="9" fill="#0984e3" font-weight="600">order_id</text>
+
+            <!-- books.id 1──* order_items.book_id -->
+            <path class="rl" d="M 955,268 L 955,440 L 720,440 L 720,500" fill="none"/>
+            <text class="rlb" x="963" y="286">1</text>
+            <text class="rlb" x="728" y="492">*</text>
+            <line x1="720" y1="500" x2="712" y2="488" stroke="#636e72" stroke-width="2"/>
+            <line x1="720" y1="500" x2="728" y2="488" stroke="#636e72" stroke-width="2"/>
+            <text x="838" y="432" text-anchor="middle" font-family="Inter" font-size="9" fill="#0984e3" font-weight="600">book_id</text>
+
+        </svg>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- INFRASTRUCTURE TABLES DIAGRAM -->
+    <!-- ============================================================ -->
+    <div class="page-break"></div>
+    <h2>Infrastructure Tables</h2>
+    <div class="section-desc">
+        Laravel's framework-level tables for authentication, caching, session management, and background job processing. These are created by default Laravel migrations and are not directly part of the business domain but support the application's runtime.
+    </div>
+
+    <div class="diagram-container">
+        <svg width="1100" height="620" viewBox="0 0 1100 620">
+            <defs>
+                <style>
+                    .ih { fill: #636e72; }
+                    .ih text { fill: #fff; font-family: 'Inter', sans-serif; font-size: 13px; font-weight: 700; }
+                    .ib { fill: #fff; stroke: #b2bec3; stroke-width: 1.5; }
+                    .ic { font-family: 'Inter', sans-serif; font-size: 11px; fill: #2d3436; }
+                    .id { font-family: 'Consolas', monospace; font-size: 10px; fill: #636e72; }
+                    .ipk { font-family: 'Inter', sans-serif; font-size: 8px; font-weight: 700; fill: #fff; }
+                    .isep { stroke: #e8ecef; stroke-width: 1; }
+                    .grp-label { font-family: 'Inter', sans-serif; font-size: 12px; fill: #b2bec3; font-weight: 600; font-style: italic; }
+                </style>
+            </defs>
+
+            <!-- Group label: Authentication -->
+            <text class="grp-label" x="20" y="18">Authentication &amp; Sessions</text>
+
+            <!-- password_reset_tokens -->
+            <g transform="translate(20, 30)">
+                <rect class="ih" x="0" y="0" width="230" height="30" rx="5"/>
+                <rect class="ih" x="0" y="14" width="230" height="16"/>
+                <text x="115" y="20" text-anchor="middle" fill="#fff" font-family="Inter" font-size="13" font-weight="700">password_reset_tokens</text>
+                <rect class="ib" x="0" y="30" width="230" height="72"/>
+
+                <rect x="8" y="38" width="22" height="13" rx="3" fill="#d63031"/><text class="ipk" x="19" y="48" text-anchor="middle">PK</text>
+                <text class="ic" x="36" y="48">email</text><text class="id" x="145" y="48">VARCHAR(255)</text>
+                <line class="isep" x1="5" y1="54" x2="225" y2="54"/>
+
+                <text class="ic" x="36" y="68">token</text><text class="id" x="145" y="68">VARCHAR(255)</text>
+                <text class="ic" x="36" y="86">created_at</text><text class="id" x="145" y="86">TIMESTAMP?</text>
+            </g>
+
+            <!-- sessions -->
+            <g transform="translate(20, 160)">
+                <rect class="ih" x="0" y="0" width="230" height="30" rx="5"/>
+                <rect class="ih" x="0" y="14" width="230" height="16"/>
+                <text x="115" y="20" text-anchor="middle" fill="#fff" font-family="Inter" font-size="13" font-weight="700">sessions</text>
+                <rect class="ib" x="0" y="30" width="230" height="126"/>
+
+                <rect x="8" y="38" width="22" height="13" rx="3" fill="#d63031"/><text class="ipk" x="19" y="48" text-anchor="middle">PK</text>
+                <text class="ic" x="36" y="48">id</text><text class="id" x="145" y="48">VARCHAR(255)</text>
+                <line class="isep" x1="5" y1="54" x2="225" y2="54"/>
+
+                <rect x="8" y="58" width="22" height="13" rx="3" fill="#fdcb6e"/><text x="19" y="68" text-anchor="middle" font-family="Inter" font-size="8" font-weight="700" fill="#2d3436">IDX</text>
+                <text class="ic" x="36" y="68">user_id</text><text class="id" x="145" y="68">BIGINT?</text>
+                <text class="ic" x="36" y="86">ip_address</text><text class="id" x="145" y="86">VARCHAR(45)?</text>
+                <text class="ic" x="36" y="104">user_agent</text><text class="id" x="145" y="104">TEXT?</text>
+                <text class="ic" x="36" y="122">payload</text><text class="id" x="145" y="122">LONGTEXT</text>
+
+                <rect x="8" y="132" width="22" height="13" rx="3" fill="#fdcb6e"/><text x="19" y="142" text-anchor="middle" font-family="Inter" font-size="8" font-weight="700" fill="#2d3436">IDX</text>
+                <text class="ic" x="36" y="142">last_activity</text><text class="id" x="145" y="142">INT</text>
+            </g>
+
+            <!-- migrations -->
+            <g transform="translate(20, 370)">
+                <rect class="ih" x="0" y="0" width="230" height="30" rx="5"/>
+                <rect class="ih" x="0" y="14" width="230" height="16"/>
+                <text x="115" y="20" text-anchor="middle" fill="#fff" font-family="Inter" font-size="13" font-weight="700">migrations</text>
+                <rect class="ib" x="0" y="30" width="230" height="72"/>
+
+                <rect x="8" y="38" width="22" height="13" rx="3" fill="#d63031"/><text class="ipk" x="19" y="48" text-anchor="middle">PK</text>
+                <text class="ic" x="36" y="48">id</text><text class="id" x="145" y="48">INT AI</text>
+                <line class="isep" x1="5" y1="54" x2="225" y2="54"/>
+
+                <text class="ic" x="36" y="68">migration</text><text class="id" x="145" y="68">VARCHAR(255)</text>
+                <text class="ic" x="36" y="86">batch</text><text class="id" x="145" y="86">INT</text>
+            </g>
+
+            <!-- Group label: Caching -->
+            <text class="grp-label" x="370" y="18">Caching</text>
+
+            <!-- cache -->
+            <g transform="translate(370, 30)">
+                <rect class="ih" x="0" y="0" width="210" height="30" rx="5"/>
+                <rect class="ih" x="0" y="14" width="210" height="16"/>
+                <text x="105" y="20" text-anchor="middle" fill="#fff" font-family="Inter" font-size="13" font-weight="700">cache</text>
+                <rect class="ib" x="0" y="30" width="210" height="72"/>
+
+                <rect x="8" y="38" width="22" height="13" rx="3" fill="#d63031"/><text class="ipk" x="19" y="48" text-anchor="middle">PK</text>
+                <text class="ic" x="36" y="48">key</text><text class="id" x="130" y="48">VARCHAR(255)</text>
+                <line class="isep" x1="5" y1="54" x2="205" y2="54"/>
+
+                <text class="ic" x="36" y="68">value</text><text class="id" x="130" y="68">MEDIUMTEXT</text>
+                <text class="ic" x="36" y="86">expiration</text><text class="id" x="130" y="86">INT</text>
+            </g>
+
+            <!-- cache_locks -->
+            <g transform="translate(370, 160)">
+                <rect class="ih" x="0" y="0" width="210" height="30" rx="5"/>
+                <rect class="ih" x="0" y="14" width="210" height="16"/>
+                <text x="105" y="20" text-anchor="middle" fill="#fff" font-family="Inter" font-size="13" font-weight="700">cache_locks</text>
+                <rect class="ib" x="0" y="30" width="210" height="72"/>
+
+                <rect x="8" y="38" width="22" height="13" rx="3" fill="#d63031"/><text class="ipk" x="19" y="48" text-anchor="middle">PK</text>
+                <text class="ic" x="36" y="48">key</text><text class="id" x="130" y="48">VARCHAR(255)</text>
+                <line class="isep" x1="5" y1="54" x2="205" y2="54"/>
+
+                <text class="ic" x="36" y="68">owner</text><text class="id" x="130" y="68">VARCHAR(255)</text>
+                <text class="ic" x="36" y="86">expiration</text><text class="id" x="130" y="86">INT</text>
+            </g>
+
+            <!-- Group label: Queue / Jobs -->
+            <text class="grp-label" x="700" y="18">Queue &amp; Job Processing</text>
+
+            <!-- jobs -->
+            <g transform="translate(700, 30)">
+                <rect class="ih" x="0" y="0" width="230" height="30" rx="5"/>
+                <rect class="ih" x="0" y="14" width="230" height="16"/>
+                <text x="115" y="20" text-anchor="middle" fill="#fff" font-family="Inter" font-size="13" font-weight="700">jobs</text>
+                <rect class="ib" x="0" y="30" width="230" height="144"/>
+
+                <rect x="8" y="38" width="22" height="13" rx="3" fill="#d63031"/><text class="ipk" x="19" y="48" text-anchor="middle">PK</text>
+                <text class="ic" x="36" y="48">id</text><text class="id" x="150" y="48">BIGINT AI</text>
+                <line class="isep" x1="5" y1="54" x2="225" y2="54"/>
+
+                <rect x="8" y="58" width="22" height="13" rx="3" fill="#fdcb6e"/><text x="19" y="68" text-anchor="middle" font-family="Inter" font-size="8" font-weight="700" fill="#2d3436">IDX</text>
+                <text class="ic" x="36" y="68">queue</text><text class="id" x="150" y="68">VARCHAR(255)</text>
+                <text class="ic" x="36" y="86">payload</text><text class="id" x="150" y="86">LONGTEXT</text>
+                <text class="ic" x="36" y="104">attempts</text><text class="id" x="150" y="104">TINYINT</text>
+                <text class="ic" x="36" y="122">reserved_at</text><text class="id" x="150" y="122">INT?</text>
+                <text class="ic" x="36" y="140">available_at</text><text class="id" x="150" y="140">INT</text>
+                <text class="ic" x="36" y="158">created_at</text><text class="id" x="150" y="158">INT</text>
+            </g>
+
+            <!-- job_batches -->
+            <g transform="translate(700, 230)">
+                <rect class="ih" x="0" y="0" width="230" height="30" rx="5"/>
+                <rect class="ih" x="0" y="14" width="230" height="16"/>
+                <text x="115" y="20" text-anchor="middle" fill="#fff" font-family="Inter" font-size="13" font-weight="700">job_batches</text>
+                <rect class="ib" x="0" y="30" width="230" height="180"/>
+
+                <rect x="8" y="38" width="22" height="13" rx="3" fill="#d63031"/><text class="ipk" x="19" y="48" text-anchor="middle">PK</text>
+                <text class="ic" x="36" y="48">id</text><text class="id" x="150" y="48">VARCHAR(255)</text>
+                <line class="isep" x1="5" y1="54" x2="225" y2="54"/>
+
+                <text class="ic" x="36" y="68">name</text><text class="id" x="150" y="68">VARCHAR(255)</text>
+                <text class="ic" x="36" y="86">total_jobs</text><text class="id" x="150" y="86">INT</text>
+                <text class="ic" x="36" y="104">pending_jobs</text><text class="id" x="150" y="104">INT</text>
+                <text class="ic" x="36" y="122">failed_jobs</text><text class="id" x="150" y="122">INT</text>
+                <text class="ic" x="36" y="140">failed_job_ids</text><text class="id" x="150" y="140">LONGTEXT</text>
+                <text class="ic" x="36" y="158">options</text><text class="id" x="150" y="158">MEDIUMTEXT?</text>
+                <text class="ic" x="36" y="176">cancelled_at</text><text class="id" x="150" y="176">INT?</text>
+                <text class="ic" x="36" y="194">created_at</text><text class="id" x="150" y="194">INT</text>
+            </g>
+
+            <!-- failed_jobs -->
+            <g transform="translate(700, 470)">
+                <rect class="ih" x="0" y="0" width="230" height="30" rx="5"/>
+                <rect class="ih" x="0" y="14" width="230" height="16"/>
+                <text x="115" y="20" text-anchor="middle" fill="#fff" font-family="Inter" font-size="13" font-weight="700">failed_jobs</text>
+                <rect class="ib" x="0" y="30" width="230" height="144"/>
+
+                <rect x="8" y="38" width="22" height="13" rx="3" fill="#d63031"/><text class="ipk" x="19" y="48" text-anchor="middle">PK</text>
+                <text class="ic" x="36" y="48">id</text><text class="id" x="150" y="48">BIGINT AI</text>
+                <line class="isep" x1="5" y1="54" x2="225" y2="54"/>
+
+                <rect x="8" y="58" width="22" height="13" rx="3" fill="#00b894"/><text x="19" y="68" text-anchor="middle" font-family="Inter" font-size="8" font-weight="700" fill="#fff">UQ</text>
+                <text class="ic" x="36" y="68">uuid</text><text class="id" x="150" y="68">VARCHAR(255)</text>
+                <text class="ic" x="36" y="86">connection</text><text class="id" x="150" y="86">TEXT</text>
+                <text class="ic" x="36" y="104">queue</text><text class="id" x="150" y="104">TEXT</text>
+                <text class="ic" x="36" y="122">payload</text><text class="id" x="150" y="122">LONGTEXT</text>
+                <text class="ic" x="36" y="140">exception</text><text class="id" x="150" y="140">LONGTEXT</text>
+                <text class="ic" x="36" y="158">failed_at</text><text class="id" x="150" y="158">TIMESTAMP</text>
+            </g>
+
+        </svg>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- DETAILED TABLE SPECIFICATIONS -->
+    <!-- ============================================================ -->
+    <div class="page-break"></div>
+    <h2>Detailed Table Specifications</h2>
+
+    <h3>1. users</h3>
+    <table>
+        <tr><th>Column</th><th>Data Type</th><th>Key</th><th>Nullable</th><th>Default</th><th>Description</th></tr>
+        <tr><td><strong>id</strong></td><td><code>BIGINT UNSIGNED</code></td><td>PK, AI</td><td>No</td><td>—</td><td>Auto-incrementing user ID</td></tr>
+        <tr><td>name</td><td><code>VARCHAR(255)</code></td><td>—</td><td>No</td><td>—</td><td>Full name</td></tr>
+        <tr><td>email</td><td><code>VARCHAR(255)</code></td><td>UQ</td><td>No</td><td>—</td><td>Email address (login identifier)</td></tr>
+        <tr><td>email_verified_at</td><td><code>TIMESTAMP</code></td><td>—</td><td>Yes</td><td>NULL</td><td>Email verification timestamp</td></tr>
+        <tr><td>is_admin</td><td><code>TINYINT(1)</code></td><td>—</td><td>No</td><td>0 (false)</td><td>Admin role flag</td></tr>
+        <tr><td>password</td><td><code>VARCHAR(255)</code></td><td>—</td><td>No</td><td>—</td><td>Bcrypt-hashed password</td></tr>
+        <tr><td>remember_token</td><td><code>VARCHAR(100)</code></td><td>—</td><td>Yes</td><td>NULL</td><td>"Remember Me" token</td></tr>
+        <tr><td>created_at</td><td><code>TIMESTAMP</code></td><td>—</td><td>Yes</td><td>—</td><td>Registration date</td></tr>
+        <tr><td>updated_at</td><td><code>TIMESTAMP</code></td><td>—</td><td>Yes</td><td>—</td><td>Last update</td></tr>
+    </table>
+
+    <h3>2. books</h3>
+    <table>
+        <tr><th>Column</th><th>Data Type</th><th>Key</th><th>Nullable</th><th>Default</th><th>Description</th></tr>
+        <tr><td><strong>id</strong></td><td><code>BIGINT UNSIGNED</code></td><td>PK, AI</td><td>No</td><td>—</td><td>Auto-incrementing book ID</td></tr>
+        <tr><td>title</td><td><code>VARCHAR(255)</code></td><td>—</td><td>No</td><td>—</td><td>Book title</td></tr>
+        <tr><td>author</td><td><code>VARCHAR(255)</code></td><td>—</td><td>No</td><td>—</td><td>Author name</td></tr>
+        <tr><td>category</td><td><code>VARCHAR(255)</code></td><td>—</td><td>Yes</td><td>NULL</td><td>Category / genre</td></tr>
+        <tr><td>description</td><td><code>TEXT</code></td><td>—</td><td>Yes</td><td>NULL</td><td>Book description</td></tr>
+        <tr><td>price</td><td><code>DECIMAL(8,2)</code></td><td>—</td><td>No</td><td>—</td><td>Unit price</td></tr>
+        <tr><td>stock</td><td><code>INT</code></td><td>—</td><td>No</td><td>0</td><td>Available inventory</td></tr>
+        <tr><td>image_url</td><td><code>VARCHAR(255)</code></td><td>—</td><td>Yes</td><td>NULL</td><td>Cover image URL</td></tr>
+        <tr><td>created_at</td><td><code>TIMESTAMP</code></td><td>—</td><td>Yes</td><td>—</td><td>Creation date</td></tr>
+        <tr><td>updated_at</td><td><code>TIMESTAMP</code></td><td>—</td><td>Yes</td><td>—</td><td>Last update</td></tr>
+    </table>
+
+    <h3>3. cart_items</h3>
+    <table>
+        <tr><th>Column</th><th>Data Type</th><th>Key</th><th>Nullable</th><th>Default</th><th>Description</th></tr>
+        <tr><td><strong>id</strong></td><td><code>BIGINT UNSIGNED</code></td><td>PK, AI</td><td>No</td><td>—</td><td>Auto-incrementing cart item ID</td></tr>
+        <tr><td>user_id</td><td><code>BIGINT UNSIGNED</code></td><td>FK &rarr; users.id</td><td>No</td><td>—</td><td>Cart owner</td></tr>
+        <tr><td>book_id</td><td><code>BIGINT UNSIGNED</code></td><td>FK &rarr; books.id</td><td>No</td><td>—</td><td>Book in cart</td></tr>
+        <tr><td>quantity</td><td><code>INT</code></td><td>—</td><td>No</td><td>1</td><td>Quantity in cart</td></tr>
+        <tr><td>price</td><td><code>DECIMAL(8,2)</code></td><td>—</td><td>No</td><td>—</td><td>Price at time of adding</td></tr>
+        <tr><td>created_at</td><td><code>TIMESTAMP</code></td><td>—</td><td>Yes</td><td>—</td><td>Added to cart date</td></tr>
+        <tr><td>updated_at</td><td><code>TIMESTAMP</code></td><td>—</td><td>Yes</td><td>—</td><td>Last quantity update</td></tr>
+    </table>
+
+    <h3>4. orders</h3>
+    <table>
+        <tr><th>Column</th><th>Data Type</th><th>Key</th><th>Nullable</th><th>Default</th><th>Description</th></tr>
+        <tr><td><strong>id</strong></td><td><code>BIGINT UNSIGNED</code></td><td>PK, AI</td><td>No</td><td>—</td><td>Auto-incrementing order ID</td></tr>
+        <tr><td>user_id</td><td><code>BIGINT UNSIGNED</code></td><td>FK &rarr; users.id</td><td>No</td><td>—</td><td>Customer who placed order</td></tr>
+        <tr><td>total</td><td><code>DECIMAL(10,2)</code></td><td>—</td><td>No</td><td>—</td><td>Grand total</td></tr>
+        <tr><td>status</td><td><code>VARCHAR(255)</code></td><td>—</td><td>No</td><td>'pending'</td><td>Order status</td></tr>
+        <tr><td>created_at</td><td><code>TIMESTAMP</code></td><td>—</td><td>Yes</td><td>—</td><td>Order placement date</td></tr>
+        <tr><td>updated_at</td><td><code>TIMESTAMP</code></td><td>—</td><td>Yes</td><td>—</td><td>Last status change</td></tr>
+    </table>
+
+    <h3>5. order_items</h3>
+    <table>
+        <tr><th>Column</th><th>Data Type</th><th>Key</th><th>Nullable</th><th>Default</th><th>Description</th></tr>
+        <tr><td><strong>id</strong></td><td><code>BIGINT UNSIGNED</code></td><td>PK, AI</td><td>No</td><td>—</td><td>Auto-incrementing line item ID</td></tr>
+        <tr><td>order_id</td><td><code>BIGINT UNSIGNED</code></td><td>FK &rarr; orders.id</td><td>No</td><td>—</td><td>Parent order</td></tr>
+        <tr><td>book_id</td><td><code>BIGINT UNSIGNED</code></td><td>FK &rarr; books.id</td><td>No</td><td>—</td><td>Purchased book</td></tr>
+        <tr><td>quantity</td><td><code>INT</code></td><td>—</td><td>No</td><td>—</td><td>Copies ordered</td></tr>
+        <tr><td>price</td><td><code>DECIMAL(10,2)</code></td><td>—</td><td>No</td><td>—</td><td>Unit price at order time</td></tr>
+        <tr><td>line_total</td><td><code>DECIMAL(10,2)</code></td><td>—</td><td>No</td><td>—</td><td>quantity &times; price</td></tr>
+        <tr><td>created_at</td><td><code>TIMESTAMP</code></td><td>—</td><td>Yes</td><td>—</td><td>Creation date</td></tr>
+        <tr><td>updated_at</td><td><code>TIMESTAMP</code></td><td>—</td><td>Yes</td><td>—</td><td>Last update</td></tr>
+    </table>
+
+    <!-- ============================================================ -->
+    <!-- FOREIGN KEY CONSTRAINTS -->
+    <!-- ============================================================ -->
+    <h2>Foreign Key Constraints</h2>
+    <table>
+        <tr><th>#</th><th>Child Table</th><th>FK Column</th><th>References</th><th>On Delete</th><th>On Update</th></tr>
+        <tr><td>1</td><td><code>cart_items</code></td><td>user_id</td><td><code>users</code>.id</td><td>CASCADE</td><td>RESTRICT</td></tr>
+        <tr><td>2</td><td><code>cart_items</code></td><td>book_id</td><td><code>books</code>.id</td><td>CASCADE</td><td>RESTRICT</td></tr>
+        <tr><td>3</td><td><code>orders</code></td><td>user_id</td><td><code>users</code>.id</td><td>CASCADE</td><td>RESTRICT</td></tr>
+        <tr><td>4</td><td><code>order_items</code></td><td>order_id</td><td><code>orders</code>.id</td><td>CASCADE</td><td>RESTRICT</td></tr>
+        <tr><td>5</td><td><code>order_items</code></td><td>book_id</td><td><code>books</code>.id</td><td>CASCADE</td><td>RESTRICT</td></tr>
+    </table>
+
+    <!-- ============================================================ -->
+    <!-- INDEXES -->
+    <!-- ============================================================ -->
+    <h2>Indexes</h2>
+    <table>
+        <tr><th>#</th><th>Table</th><th>Index Name</th><th>Column(s)</th><th>Type</th></tr>
+        <tr><td>1</td><td><code>users</code></td><td>PRIMARY</td><td>id</td><td>Primary Key</td></tr>
+        <tr><td>2</td><td><code>users</code></td><td>users_email_unique</td><td>email</td><td>Unique</td></tr>
+        <tr><td>3</td><td><code>books</code></td><td>PRIMARY</td><td>id</td><td>Primary Key</td></tr>
+        <tr><td>4</td><td><code>cart_items</code></td><td>PRIMARY</td><td>id</td><td>Primary Key</td></tr>
+        <tr><td>5</td><td><code>cart_items</code></td><td>cart_items_user_id_foreign</td><td>user_id</td><td>Foreign Key Index</td></tr>
+        <tr><td>6</td><td><code>cart_items</code></td><td>cart_items_book_id_foreign</td><td>book_id</td><td>Foreign Key Index</td></tr>
+        <tr><td>7</td><td><code>orders</code></td><td>PRIMARY</td><td>id</td><td>Primary Key</td></tr>
+        <tr><td>8</td><td><code>orders</code></td><td>orders_user_id_foreign</td><td>user_id</td><td>Foreign Key Index</td></tr>
+        <tr><td>9</td><td><code>order_items</code></td><td>PRIMARY</td><td>id</td><td>Primary Key</td></tr>
+        <tr><td>10</td><td><code>order_items</code></td><td>order_items_order_id_foreign</td><td>order_id</td><td>Foreign Key Index</td></tr>
+        <tr><td>11</td><td><code>order_items</code></td><td>order_items_book_id_foreign</td><td>book_id</td><td>Foreign Key Index</td></tr>
+        <tr><td>12</td><td><code>sessions</code></td><td>PRIMARY</td><td>id</td><td>Primary Key</td></tr>
+        <tr><td>13</td><td><code>sessions</code></td><td>sessions_user_id_index</td><td>user_id</td><td>Index</td></tr>
+        <tr><td>14</td><td><code>sessions</code></td><td>sessions_last_activity_index</td><td>last_activity</td><td>Index</td></tr>
+        <tr><td>15</td><td><code>jobs</code></td><td>PRIMARY</td><td>id</td><td>Primary Key</td></tr>
+        <tr><td>16</td><td><code>jobs</code></td><td>jobs_queue_index</td><td>queue</td><td>Index</td></tr>
+        <tr><td>17</td><td><code>failed_jobs</code></td><td>PRIMARY</td><td>id</td><td>Primary Key</td></tr>
+        <tr><td>18</td><td><code>failed_jobs</code></td><td>failed_jobs_uuid_unique</td><td>uuid</td><td>Unique</td></tr>
+    </table>
+
+    <!-- ============================================================ -->
+    <!-- MIGRATION HISTORY -->
+    <!-- ============================================================ -->
+    <h2>Migration History</h2>
+    <div class="section-desc">
+        The database schema was built incrementally through 9 Laravel migration files, executed in chronological order.
+    </div>
+    <table>
+        <tr><th>#</th><th>Migration File</th><th>Tables / Changes</th><th>Date</th></tr>
+        <tr><td>1</td><td><code>0001_01_01_000000_create_users_table</code></td><td>users, password_reset_tokens, sessions</td><td>Laravel default</td></tr>
+        <tr><td>2</td><td><code>0001_01_01_000001_create_cache_table</code></td><td>cache, cache_locks</td><td>Laravel default</td></tr>
+        <tr><td>3</td><td><code>0001_01_01_000002_create_jobs_table</code></td><td>jobs, job_batches, failed_jobs</td><td>Laravel default</td></tr>
+        <tr><td>4</td><td><code>2025_11_14_084413_create_books_table</code></td><td>books</td><td>Nov 14, 2025</td></tr>
+        <tr><td>5</td><td><code>2025_11_14_091817_create_cart_items_table</code></td><td>cart_items (FK: user_id, book_id)</td><td>Nov 14, 2025</td></tr>
+        <tr><td>6</td><td><code>2025_11_14_110259_create_orders_table</code></td><td>orders (FK: user_id)</td><td>Nov 14, 2025</td></tr>
+        <tr><td>7</td><td><code>2025_11_14_110305_create_order_items_table</code></td><td>order_items (FK: order_id, book_id)</td><td>Nov 14, 2025</td></tr>
+        <tr><td>8</td><td><code>2025_11_16_124800_add_is_admin_to_users</code></td><td>ALTER users: add is_admin column</td><td>Nov 16, 2025</td></tr>
+        <tr><td>9</td><td><code>2025_11_16_125000_add_status_to_orders</code></td><td>ALTER orders: add status column</td><td>Nov 16, 2025</td></tr>
+    </table>
+
+    <!-- ============================================================ -->
+    <!-- DESIGN DECISIONS -->
+    <!-- ============================================================ -->
+    <h2>Design Decisions &amp; Notes</h2>
+    <table>
+        <tr><th>#</th><th>Decision</th><th>Rationale</th></tr>
+        <tr><td>1</td><td>All PKs use <code>BIGINT UNSIGNED AUTO_INCREMENT</code></td><td>Laravel convention; supports billions of rows</td></tr>
+        <tr><td>2</td><td>All FKs cascade on delete</td><td>Ensures referential integrity — no orphan records</td></tr>
+        <tr><td>3</td><td>Prices stored as <code>DECIMAL</code> not <code>FLOAT</code></td><td>Avoids floating-point rounding errors in financial calculations</td></tr>
+        <tr><td>4</td><td><code>cart_items.price</code> captured at add-time</td><td>Price snapshot protects against catalog price changes after adding to cart</td></tr>
+        <tr><td>5</td><td><code>order_items.price</code> and <code>line_total</code> denormalized</td><td>Preserves historical price at time of purchase; no recalculation needed</td></tr>
+        <tr><td>6</td><td><code>orders.status</code> is VARCHAR not ENUM</td><td>Allows flexible status values without schema migration</td></tr>
+        <tr><td>7</td><td><code>is_admin</code> boolean on users table</td><td>Simple role management — single admin role sufficient for current scope</td></tr>
+        <tr><td>8</td><td>InnoDB storage engine</td><td>Supports transactions, foreign keys, and row-level locking</td></tr>
+        <tr><td>9</td><td>Sessions stored in database</td><td>Enables horizontal scaling across multiple app servers</td></tr>
+    </table>
+
+    <p style="text-align:center; margin-top:40px; color:#adb5bd; font-size:12px;">
+        Online Bookstore — Database Design Diagram &nbsp;|&nbsp; Generated February 2026
+    </p>
+
+</div>
+</body>
+</html>

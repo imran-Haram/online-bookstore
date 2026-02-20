@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Online Bookstore — Database Query Results</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Inter', 'Segoe UI', sans-serif;
+            background: #f8f9fa;
+            color: #2d3436;
+            line-height: 1.6;
+        }
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 40px 30px;
+        }
+        h1 {
+            font-size: 26px;
+            font-weight: 700;
+            color: #0984e3;
+            margin-bottom: 5px;
+        }
+        .subtitle {
+            font-size: 14px;
+            color: #636e72;
+            margin-bottom: 30px;
+        }
+        h2 {
+            font-size: 22px;
+            font-weight: 600;
+            color: #2d3436;
+            margin: 50px 0 10px 0;
+            padding-bottom: 8px;
+            border-bottom: 3px solid #0984e3;
+        }
+        h3 {
+            font-size: 17px;
+            font-weight: 600;
+            color: #2d3436;
+            margin: 30px 0 10px 0;
+        }
+        p, .section-desc {
+            font-size: 14px;
+            color: #636e72;
+            margin-bottom: 15px;
+        }
+
+        /* ── Terminal / phpMyAdmin style panel ── */
+        .query-panel {
+            background: #fff;
+            border: 1px solid #dfe6e9;
+            border-radius: 8px;
+            margin: 20px 0 35px 0;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+        }
+        .query-panel .panel-header {
+            background: #2d3436;
+            color: #dfe6e9;
+            padding: 10px 18px;
+            font-family: 'JetBrains Mono', 'Consolas', monospace;
+            font-size: 12px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .query-panel .panel-header .dots {
+            display: flex;
+            gap: 6px;
+        }
+        .query-panel .panel-header .dots span {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+        .dot-red { background: #e74c3c; }
+        .dot-yellow { background: #f39c12; }
+        .dot-green { background: #27ae60; }
+        .query-panel .panel-header .title-text {
+            flex: 1;
+            text-align: center;
+            color: #b2bec3;
+            font-size: 11px;
+        }
+
+        .sql-block {
+            background: #1e272e;
+            color: #55efc4;
+            padding: 14px 18px;
+            font-family: 'JetBrains Mono', 'Consolas', monospace;
+            font-size: 13px;
+            line-height: 1.5;
+            border-bottom: 1px solid #636e72;
+            overflow-x: auto;
+        }
+        .sql-block .prompt {
+            color: #74b9ff;
+            user-select: none;
+        }
+        .sql-block .keyword {
+            color: #fd79a8;
+            font-weight: 500;
+        }
+        .sql-block .func {
+            color: #ffeaa7;
+        }
+        .sql-block .string {
+            color: #55efc4;
+        }
+        .sql-block .comment {
+            color: #636e72;
+            font-style: italic;
+        }
+
+        .result-section {
+            padding: 0;
+        }
+        .result-section .result-info {
+            background: #f1f3f5;
+            padding: 8px 18px;
+            font-size: 12px;
+            color: #636e72;
+            border-bottom: 1px solid #dfe6e9;
+            font-family: 'JetBrains Mono', monospace;
+        }
+        .result-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 13px;
+        }
+        .result-table th {
+            background: #0984e3;
+            color: #fff;
+            padding: 10px 14px;
+            text-align: left;
+            font-weight: 600;
+            font-family: 'Inter', sans-serif;
+        }
+        .result-table td {
+            padding: 9px 14px;
+            border-bottom: 1px solid #dfe6e9;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 12px;
+        }
+        .result-table tr:nth-child(even) td { background: #f8f9fa; }
+        .result-table tr:hover td { background: #dfe6fb; }
+
+        .badge {
+            display: inline-block;
+            padding: 2px 10px;
+            border-radius: 10px;
+            font-size: 11px;
+            font-weight: 600;
+            font-family: 'Inter', sans-serif;
+        }
+        .badge-pending { background: #ffeaa7; color: #636e72; }
+        .badge-processing { background: #74b9ff; color: #fff; }
+        .badge-admin { background: #d63031; color: #fff; }
+        .badge-customer { background: #00b894; color: #fff; }
+
+        .query-number {
+            display: inline-block;
+            background: #0984e3;
+            color: #fff;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 28px;
+            font-size: 13px;
+            font-weight: 700;
+            margin-right: 8px;
+        }
+
+        .page-break { page-break-before: always; }
+
+        @media print {
+            body { background: #fff; }
+            .container { padding: 20px; }
+            .query-panel { box-shadow: none; }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+
+    <h1>Database Query Results</h1>
+    <p class="subtitle">Online Bookstore &nbsp;|&nbsp; MySQL 8.4.3 &nbsp;|&nbsp; Database: online_bookstore &nbsp;|&nbsp; Executed: February 2026</p>
+
+    <div class="section-desc">
+        This document presents the results of <strong>12 database queries</strong> executed against the <code>online_bookstore</code> MySQL database. Each query is shown with its SQL statement and the resulting output, formatted to resemble phpMyAdmin / MySQL CLI screenshots.
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- QUERY 1: SHOW TABLES -->
+    <!-- ============================================================ -->
+    <h2><span class="query-number">1</span> Show All Tables</h2>
+    <p>Lists all tables in the <code>online_bookstore</code> database.</p>
+
+    <div class="query-panel">
+        <div class="panel-header">
+            <div class="dots"><span class="dot-red"></span><span class="dot-yellow"></span><span class="dot-green"></span></div>
+            <div class="title-text">MySQL — online_bookstore</div>
+        </div>
+        <div class="sql-block">
+            <span class="prompt">mysql&gt; </span><span class="keyword">SHOW</span> <span class="keyword">TABLES</span>;
+        </div>
+        <div class="result-section">
+            <div class="result-info">13 rows in set (0.01 sec)</div>
+            <table class="result-table">
+                <tr><th>Tables_in_online_bookstore</th></tr>
+                <tr><td>books</td></tr>
+                <tr><td>cache</td></tr>
+                <tr><td>cache_locks</td></tr>
+                <tr><td>cart_items</td></tr>
+                <tr><td>failed_jobs</td></tr>
+                <tr><td>job_batches</td></tr>
+                <tr><td>jobs</td></tr>
+                <tr><td>migrations</td></tr>
+                <tr><td>order_items</td></tr>
+                <tr><td>orders</td></tr>
+                <tr><td>password_reset_tokens</td></tr>
+                <tr><td>sessions</td></tr>
+                <tr><td>users</td></tr>
+            </table>
+        </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- QUERY 2: DESCRIBE users -->
+    <!-- ============================================================ -->
+    <h2><span class="query-number">2</span> Describe Users Table Structure</h2>
+    <p>Shows the column definitions, data types, keys, and defaults for the <code>users</code> table.</p>
+
+    <div class="query-panel">
+        <div class="panel-header">
+            <div class="dots"><span class="dot-red"></span><span class="dot-yellow"></span><span class="dot-green"></span></div>
+            <div class="title-text">MySQL — online_bookstore</div>
+        </div>
+        <div class="sql-block">
+            <span class="prompt">mysql&gt; </span><span class="keyword">DESCRIBE</span> users;
+        </div>
+        <div class="result-section">
+            <div class="result-info">9 rows in set (0.00 sec)</div>
+            <table class="result-table">
+                <tr><th>Field</th><th>Type</th><th>Null</th><th>Key</th><th>Default</th><th>Extra</th></tr>
+                <tr><td>id</td><td>bigint unsigned</td><td>NO</td><td>PRI</td><td>NULL</td><td>auto_increment</td></tr>
+                <tr><td>name</td><td>varchar(255)</td><td>NO</td><td></td><td>NULL</td><td></td></tr>
+                <tr><td>email</td><td>varchar(255)</td><td>NO</td><td>UNI</td><td>NULL</td><td></td></tr>
+                <tr><td>email_verified_at</td><td>timestamp</td><td>YES</td><td></td><td>NULL</td><td></td></tr>
+                <tr><td>is_admin</td><td>tinyint(1)</td><td>NO</td><td></td><td>0</td><td></td></tr>
+                <tr><td>password</td><td>varchar(255)</td><td>NO</td><td></td><td>NULL</td><td></td></tr>
+                <tr><td>remember_token</td><td>varchar(100)</td><td>YES</td><td></td><td>NULL</td><td></td></tr>
+                <tr><td>created_at</td><td>timestamp</td><td>YES</td><td></td><td>NULL</td><td></td></tr>
+                <tr><td>updated_at</td><td>timestamp</td><td>YES</td><td></td><td>NULL</td><td></td></tr>
+            </table>
+        </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- QUERY 3: DESCRIBE books -->
+    <!-- ============================================================ -->
+    <h2><span class="query-number">3</span> Describe Books Table Structure</h2>
+    <p>Shows the column definitions for the <code>books</code> table.</p>
+
+    <div class="query-panel">
+        <div class="panel-header">
+            <div class="dots"><span class="dot-red"></span><span class="dot-yellow"></span><span class="dot-green"></span></div>
+            <div class="title-text">MySQL — online_bookstore</div>
+        </div>
+        <div class="sql-block">
+            <span class="prompt">mysql&gt; </span><span class="keyword">DESCRIBE</span> books;
+        </div>
+        <div class="result-section">
+            <div class="result-info">10 rows in set (0.00 sec)</div>
+            <table class="result-table">
+                <tr><th>Field</th><th>Type</th><th>Null</th><th>Key</th><th>Default</th><th>Extra</th></tr>
+                <tr><td>id</td><td>bigint unsigned</td><td>NO</td><td>PRI</td><td>NULL</td><td>auto_increment</td></tr>
+                <tr><td>title</td><td>varchar(255)</td><td>NO</td><td></td><td>NULL</td><td></td></tr>
+                <tr><td>author</td><td>varchar(255)</td><td>NO</td><td></td><td>NULL</td><td></td></tr>
+                <tr><td>category</td><td>varchar(255)</td><td>YES</td><td></td><td>NULL</td><td></td></tr>
+                <tr><td>description</td><td>text</td><td>YES</td><td></td><td>NULL</td><td></td></tr>
+                <tr><td>price</td><td>decimal(8,2)</td><td>NO</td><td></td><td>NULL</td><td></td></tr>
+                <tr><td>stock</td><td>int</td><td>NO</td><td></td><td>0</td><td></td></tr>
+                <tr><td>image_url</td><td>varchar(255)</td><td>YES</td><td></td><td>NULL</td><td></td></tr>
+                <tr><td>created_at</td><td>timestamp</td><td>YES</td><td></td><td>NULL</td><td></td></tr>
+                <tr><td>updated_at</td><td>timestamp</td><td>YES</td><td></td><td>NULL</td><td></td></tr>
+            </table>
+        </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- QUERY 4: SELECT * FROM users -->
+    <!-- ============================================================ -->
+    <div class="page-break"></div>
+    <h2><span class="query-number">4</span> Select All Users</h2>
+    <p>Retrieves all registered users with their role (Customer or Admin).</p>
+
+    <div class="query-panel">
+        <div class="panel-header">
+            <div class="dots"><span class="dot-red"></span><span class="dot-yellow"></span><span class="dot-green"></span></div>
+            <div class="title-text">MySQL — online_bookstore</div>
+        </div>
+        <div class="sql-block">
+            <span class="prompt">mysql&gt; </span><span class="keyword">SELECT</span> id, name, email, is_admin, created_at <span class="keyword">FROM</span> users;
+        </div>
+        <div class="result-section">
+            <div class="result-info">2 rows in set (0.00 sec)</div>
+            <table class="result-table">
+                <tr><th>id</th><th>name</th><th>email</th><th>is_admin</th><th>created_at</th></tr>
+                <tr><td>1</td><td>imran</td><td>imran@example.com</td><td><span class="badge badge-customer">0 (Customer)</span></td><td>2025-11-14 09:07:34</td></tr>
+                <tr><td>2</td><td>Admin User</td><td>admin@bookstore.com</td><td><span class="badge badge-admin">1 (Admin)</span></td><td>2026-02-10 08:49:20</td></tr>
+            </table>
+        </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- QUERY 5: SELECT * FROM books -->
+    <!-- ============================================================ -->
+    <h2><span class="query-number">5</span> Select All Books</h2>
+    <p>Retrieves the complete book catalog with pricing and stock information.</p>
+
+    <div class="query-panel">
+        <div class="panel-header">
+            <div class="dots"><span class="dot-red"></span><span class="dot-yellow"></span><span class="dot-green"></span></div>
+            <div class="title-text">MySQL — online_bookstore</div>
+        </div>
+        <div class="sql-block">
+            <span class="prompt">mysql&gt; </span><span class="keyword">SELECT</span> id, title, author, category, price, stock <span class="keyword">FROM</span> books;
+        </div>
+        <div class="result-section">
+            <div class="result-info">3 rows in set (0.00 sec)</div>
+            <table class="result-table">
+                <tr><th>id</th><th>title</th><th>author</th><th>category</th><th>price</th><th>stock</th></tr>
+                <tr><td>1</td><td>test1</td><td>testerOne</td><td>debuging</td><td>1000.00</td><td>1</td></tr>
+                <tr><td>2</td><td>test2</td><td>Tester Two</td><td>back End</td><td>4000.00</td><td>3</td></tr>
+                <tr><td>3</td><td>test3</td><td>testerThree</td><td>frontEnd</td><td>500.00</td><td>4</td></tr>
+            </table>
+        </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- QUERY 6: SELECT * FROM orders (JOIN) -->
+    <!-- ============================================================ -->
+    <h2><span class="query-number">6</span> Select All Orders with Customer Names (JOIN)</h2>
+    <p>Joins the <code>orders</code> table with <code>users</code> to display the customer name alongside each order.</p>
+
+    <div class="query-panel">
+        <div class="panel-header">
+            <div class="dots"><span class="dot-red"></span><span class="dot-yellow"></span><span class="dot-green"></span></div>
+            <div class="title-text">MySQL — online_bookstore</div>
+        </div>
+        <div class="sql-block">
+            <span class="prompt">mysql&gt; </span><span class="keyword">SELECT</span> o.id <span class="keyword">AS</span> order_id, u.name <span class="keyword">AS</span> customer, o.total, o.status, o.created_at<br/>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">FROM</span> orders o<br/>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">JOIN</span> users u <span class="keyword">ON</span> o.user_id = u.id<br/>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">ORDER BY</span> o.created_at <span class="keyword">DESC</span>;
+        </div>
+        <div class="result-section">
+            <div class="result-info">2 rows in set (0.00 sec)</div>
+            <table class="result-table">
+                <tr><th>order_id</th><th>customer</th><th>total</th><th>status</th><th>created_at</th></tr>
+                <tr><td>2</td><td>imran</td><td>5500.00</td><td><span class="badge badge-processing">processing</span></td><td>2026-02-19 01:39:33</td></tr>
+                <tr><td>1</td><td>imran</td><td>1000.00</td><td><span class="badge badge-pending">pending</span></td><td>2025-11-14 16:22:32</td></tr>
+            </table>
+        </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- QUERY 7: Order Items with Book Titles (JOIN) -->
+    <!-- ============================================================ -->
+    <h2><span class="query-number">7</span> Order Items with Book Titles (Multi-Table JOIN)</h2>
+    <p>Joins <code>order_items</code> with <code>orders</code> and <code>books</code> to show which books were purchased in each order.</p>
+
+    <div class="query-panel">
+        <div class="panel-header">
+            <div class="dots"><span class="dot-red"></span><span class="dot-yellow"></span><span class="dot-green"></span></div>
+            <div class="title-text">MySQL — online_bookstore</div>
+        </div>
+        <div class="sql-block">
+            <span class="prompt">mysql&gt; </span><span class="keyword">SELECT</span> oi.id, o.id <span class="keyword">AS</span> order_id, b.title <span class="keyword">AS</span> book, oi.quantity, oi.price, oi.line_total<br/>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">FROM</span> order_items oi<br/>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">JOIN</span> orders o <span class="keyword">ON</span> oi.order_id = o.id<br/>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">JOIN</span> books b <span class="keyword">ON</span> oi.book_id = b.id;
+        </div>
+        <div class="result-section">
+            <div class="result-info">4 rows in set (0.00 sec)</div>
+            <table class="result-table">
+                <tr><th>id</th><th>order_id</th><th>book</th><th>quantity</th><th>price</th><th>line_total</th></tr>
+                <tr><td>1</td><td>1</td><td>test1</td><td>1</td><td>1000.00</td><td>1000.00</td></tr>
+                <tr><td>2</td><td>2</td><td>test2</td><td>1</td><td>4000.00</td><td>4000.00</td></tr>
+                <tr><td>3</td><td>2</td><td>test1</td><td>1</td><td>1000.00</td><td>1000.00</td></tr>
+                <tr><td>4</td><td>2</td><td>test3</td><td>1</td><td>500.00</td><td>500.00</td></tr>
+            </table>
+        </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- QUERY 8: Cart Items with Customer & Book (JOIN) -->
+    <!-- ============================================================ -->
+    <div class="page-break"></div>
+    <h2><span class="query-number">8</span> Current Cart Items (Multi-Table JOIN)</h2>
+    <p>Joins <code>cart_items</code> with <code>users</code> and <code>books</code> to show the current shopping cart contents.</p>
+
+    <div class="query-panel">
+        <div class="panel-header">
+            <div class="dots"><span class="dot-red"></span><span class="dot-yellow"></span><span class="dot-green"></span></div>
+            <div class="title-text">MySQL — online_bookstore</div>
+        </div>
+        <div class="sql-block">
+            <span class="prompt">mysql&gt; </span><span class="keyword">SELECT</span> ci.id, u.name <span class="keyword">AS</span> customer, b.title <span class="keyword">AS</span> book, ci.quantity, ci.price<br/>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">FROM</span> cart_items ci<br/>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">JOIN</span> users u <span class="keyword">ON</span> ci.user_id = u.id<br/>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">JOIN</span> books b <span class="keyword">ON</span> ci.book_id = b.id;
+        </div>
+        <div class="result-section">
+            <div class="result-info">2 rows in set (0.00 sec)</div>
+            <table class="result-table">
+                <tr><th>id</th><th>customer</th><th>book</th><th>quantity</th><th>price</th></tr>
+                <tr><td>6</td><td>imran</td><td>test3</td><td>1</td><td>500.00</td></tr>
+                <tr><td>7</td><td>imran</td><td>test2</td><td>1</td><td>4000.00</td></tr>
+            </table>
+        </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- QUERY 9: User Statistics (Aggregate) -->
+    <!-- ============================================================ -->
+    <h2><span class="query-number">9</span> User Statistics (Aggregate COUNT / SUM)</h2>
+    <p>Counts total users, admins, and customers using aggregate functions.</p>
+
+    <div class="query-panel">
+        <div class="panel-header">
+            <div class="dots"><span class="dot-red"></span><span class="dot-yellow"></span><span class="dot-green"></span></div>
+            <div class="title-text">MySQL — online_bookstore</div>
+        </div>
+        <div class="sql-block">
+            <span class="prompt">mysql&gt; </span><span class="keyword">SELECT</span> <span class="func">COUNT</span>(*) <span class="keyword">AS</span> total_users,<br/>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="func">SUM</span>(is_admin) <span class="keyword">AS</span> admins,<br/>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="func">COUNT</span>(*) - <span class="func">SUM</span>(is_admin) <span class="keyword">AS</span> customers<br/>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">FROM</span> users;
+        </div>
+        <div class="result-section">
+            <div class="result-info">1 row in set (0.00 sec)</div>
+            <table class="result-table">
+                <tr><th>total_users</th><th>admins</th><th>customers</th></tr>
+                <tr><td>2</td><td>1</td><td>1</td></tr>
+            </table>
+        </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- QUERY 10: Book Statistics (Aggregate) -->
+    <!-- ============================================================ -->
+    <h2><span class="query-number">10</span> Book Catalog Statistics (Aggregate)</h2>
+    <p>Calculates total books, total stock, average price, minimum and maximum price.</p>
+
+    <div class="query-panel">
+        <div class="panel-header">
+            <div class="dots"><span class="dot-red"></span><span class="dot-yellow"></span><span class="dot-green"></span></div>
+            <div class="title-text">MySQL — online_bookstore</div>
+        </div>
+        <div class="sql-block">
+            <span class="prompt">mysql&gt; </span><span class="keyword">SELECT</span> <span class="func">COUNT</span>(*) <span class="keyword">AS</span> total_books,<br/>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="func">SUM</span>(stock) <span class="keyword">AS</span> total_stock,<br/>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="func">ROUND</span>(<span class="func">AVG</span>(price), 2) <span class="keyword">AS</span> avg_price,<br/>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="func">MIN</span>(price) <span class="keyword">AS</span> min_price,<br/>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="func">MAX</span>(price) <span class="keyword">AS</span> max_price<br/>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">FROM</span> books;
+        </div>
+        <div class="result-section">
+            <div class="result-info">1 row in set (0.00 sec)</div>
+            <table class="result-table">
+                <tr><th>total_books</th><th>total_stock</th><th>avg_price</th><th>min_price</th><th>max_price</th></tr>
+                <tr><td>3</td><td>8</td><td>1833.33</td><td>500.00</td><td>4000.00</td></tr>
+            </table>
+        </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- QUERY 11: Order Revenue by Status (GROUP BY) -->
+    <!-- ============================================================ -->
+    <h2><span class="query-number">11</span> Order Revenue by Status (GROUP BY)</h2>
+    <p>Groups orders by status and calculates count and revenue per status.</p>
+
+    <div class="query-panel">
+        <div class="panel-header">
+            <div class="dots"><span class="dot-red"></span><span class="dot-yellow"></span><span class="dot-green"></span></div>
+            <div class="title-text">MySQL — online_bookstore</div>
+        </div>
+        <div class="sql-block">
+            <span class="prompt">mysql&gt; </span><span class="keyword">SELECT</span> status,<br/>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="func">COUNT</span>(*) <span class="keyword">AS</span> order_count,<br/>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="func">SUM</span>(total) <span class="keyword">AS</span> revenue<br/>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">FROM</span> orders<br/>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">GROUP BY</span> status;
+        </div>
+        <div class="result-section">
+            <div class="result-info">2 rows in set (0.00 sec)</div>
+            <table class="result-table">
+                <tr><th>status</th><th>order_count</th><th>revenue</th></tr>
+                <tr><td><span class="badge badge-pending">pending</span></td><td>1</td><td>1000.00</td></tr>
+                <tr><td><span class="badge badge-processing">processing</span></td><td>1</td><td>5500.00</td></tr>
+            </table>
+        </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- QUERY 12: Best Selling Books (GROUP BY + JOIN + ORDER BY) -->
+    <!-- ============================================================ -->
+    <h2><span class="query-number">12</span> Best Selling Books (JOIN + GROUP BY + ORDER BY)</h2>
+    <p>Joins <code>books</code> with <code>order_items</code>, groups by book, and ranks by total revenue — combining JOIN, GROUP BY, aggregate functions, and ORDER BY.</p>
+
+    <div class="query-panel">
+        <div class="panel-header">
+            <div class="dots"><span class="dot-red"></span><span class="dot-yellow"></span><span class="dot-green"></span></div>
+            <div class="title-text">MySQL — online_bookstore</div>
+        </div>
+        <div class="sql-block">
+            <span class="prompt">mysql&gt; </span><span class="keyword">SELECT</span> b.title,<br/>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="func">COUNT</span>(oi.id) <span class="keyword">AS</span> times_ordered,<br/>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="func">SUM</span>(oi.quantity) <span class="keyword">AS</span> total_qty_sold,<br/>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="func">SUM</span>(oi.line_total) <span class="keyword">AS</span> total_revenue<br/>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">FROM</span> books b<br/>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">LEFT JOIN</span> order_items oi <span class="keyword">ON</span> b.id = oi.book_id<br/>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">GROUP BY</span> b.id, b.title<br/>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">ORDER BY</span> total_revenue <span class="keyword">DESC</span>;
+        </div>
+        <div class="result-section">
+            <div class="result-info">3 rows in set (0.00 sec)</div>
+            <table class="result-table">
+                <tr><th>title</th><th>times_ordered</th><th>total_qty_sold</th><th>total_revenue</th></tr>
+                <tr><td>test2</td><td>1</td><td>1</td><td>4000.00</td></tr>
+                <tr><td>test1</td><td>2</td><td>2</td><td>2000.00</td></tr>
+                <tr><td>test3</td><td>1</td><td>1</td><td>500.00</td></tr>
+            </table>
+        </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- QUERY SUMMARY -->
+    <!-- ============================================================ -->
+    <div class="page-break"></div>
+    <h2>Query Summary</h2>
+    <p>The following table summarizes the SQL techniques demonstrated in each query.</p>
+
+    <table class="result-table" style="font-family: 'Inter', sans-serif;">
+        <tr><th>#</th><th>Query</th><th>SQL Techniques Used</th><th>Tables</th><th>Rows Returned</th></tr>
+        <tr><td>1</td><td>Show All Tables</td><td>SHOW TABLES</td><td>—</td><td>13</td></tr>
+        <tr><td>2</td><td>Describe Users</td><td>DESCRIBE</td><td>users</td><td>9</td></tr>
+        <tr><td>3</td><td>Describe Books</td><td>DESCRIBE</td><td>books</td><td>10</td></tr>
+        <tr><td>4</td><td>Select All Users</td><td>SELECT</td><td>users</td><td>2</td></tr>
+        <tr><td>5</td><td>Select All Books</td><td>SELECT</td><td>books</td><td>3</td></tr>
+        <tr><td>6</td><td>Orders with Customer Names</td><td>SELECT, JOIN, ORDER BY DESC</td><td>orders, users</td><td>2</td></tr>
+        <tr><td>7</td><td>Order Items with Book Titles</td><td>SELECT, Multi-JOIN</td><td>order_items, orders, books</td><td>4</td></tr>
+        <tr><td>8</td><td>Current Cart Items</td><td>SELECT, Multi-JOIN</td><td>cart_items, users, books</td><td>2</td></tr>
+        <tr><td>9</td><td>User Statistics</td><td>COUNT, SUM (Aggregate)</td><td>users</td><td>1</td></tr>
+        <tr><td>10</td><td>Book Catalog Statistics</td><td>COUNT, SUM, AVG, MIN, MAX, ROUND</td><td>books</td><td>1</td></tr>
+        <tr><td>11</td><td>Revenue by Status</td><td>COUNT, SUM, GROUP BY</td><td>orders</td><td>2</td></tr>
+        <tr><td>12</td><td>Best Selling Books</td><td>LEFT JOIN, COUNT, SUM, GROUP BY, ORDER BY</td><td>books, order_items</td><td>3</td></tr>
+    </table>
+
+    <p style="text-align:center; margin-top:40px; color:#adb5bd; font-size:12px;">
+        Online Bookstore — Database Query Results &nbsp;|&nbsp; Generated February 2026
+    </p>
+
+</div>
+</body>
+</html>

@@ -27,6 +27,9 @@ This document serves as the **comprehensive technical and functional reference**
 | 15 | **Known Gaps / Future Enhancements** | An honest assessment of features not yet implemented and areas for future improvement, providing a roadmap for continued development. |
 | — | **Data Flow Diagrams (DFD)** *(section 2.2 + `doc/DFD-Visual.html`)* | A complete set of DFDs at three levels: Level 0 (Context Diagram) showing external entities and system boundary, Level 1 showing 9 major processes and 4 data stores, and Level 2 with detailed decomposition of authentication, book catalog, shopping cart, order processing, admin book management, and admin dashboard processes. |
 | — | **Entity Relationship Diagram (ERD)** *(section 2.3 + `doc/ERD-Visual.html`)* | A visual ERD showing all 5 database entities (users, books, cart_items, orders, order_items), their attributes, primary/foreign keys, data types, constraints, and one-to-many relationships with crow's foot notation. Includes entity details, relationship summary, and business rules. |
+| — | **Database Design Diagram** *(`doc/DatabaseDesign-Visual.html`)* | A comprehensive physical database design document covering all 13 tables (5 application + 8 infrastructure), complete column specifications, foreign key constraints, indexes, migration history, and design decision rationale. |
+| — | **Use Case Diagram** *(section 2.4 + `doc/UseCase-Visual.html`)* | A UML 2.0 use case diagram showing 2 actors (Customer, Administrator), 16 use cases, associations, 3 «include» and 2 «extend» relationships, with full use case descriptions, pre/post conditions, and controller mappings. |
+| — | **Database Query Results** *(`doc/DatabaseQueries-Visual.html`)* | Screenshots of 12 SQL queries executed against the live database — including SHOW TABLES, DESCRIBE, SELECT, JOIN, multi-table JOIN, aggregate functions (COUNT, SUM, AVG, MIN, MAX), GROUP BY, and ORDER BY — with syntax-highlighted SQL and formatted result tables. |
 
 ### Purpose of This Document in the Software Development Lifecycle
 
@@ -498,6 +501,52 @@ An **Entity Relationship Diagram (ERD)** is a visual representation of the datab
 5. The **cart_items** table is an associative entity between users and books (shopping phase).
 6. The **order_items** table is an associative entity between orders and books (purchase phase).
 7. All foreign keys use **CASCADE** on delete — removing a parent record removes all dependent child records.
+
+---
+
+## 2.4 Use Case Diagram
+
+A **Use Case Diagram** identifies the actors (external entities) that interact with the system and the use cases (functions) they can perform. The diagram below documents the Online Bookstore's functional scope using UML 2.0 notation.
+
+> **Visual Use Case Diagram:** Open `doc/UseCase-Visual.html` in any web browser for the full graphical use case diagram with actor stick figures, system boundary, and relationship stereotypes (suitable for printing or screenshotting into Microsoft Visio).
+
+### Actors
+
+| Actor | Type | Description |
+|-------|------|-------------|
+| **Customer** | Primary | Registered user who browses books, manages cart, places orders, and manages profile |
+| **Administrator** | Primary | Privileged user (`is_admin = true`) who manages books, orders, users, and views the dashboard |
+
+### Use Cases Summary
+
+| ID | Use Case | Actor(s) | Description |
+|----|----------|----------|-------------|
+| UC-01 | Register | Customer | Create a new account |
+| UC-02 | Login | Customer, Admin | Authenticate with email and password |
+| UC-03 | Logout | Customer, Admin | Terminate session |
+| UC-04 | Browse Books | Customer, Admin | View paginated book catalog |
+| UC-05 | View Book Details | Customer | View full details of a book |
+| UC-06 | Search / Filter Books | Customer | Search by keyword or filter by category |
+| UC-07 | Add to Cart | Customer | Add a book to the shopping cart |
+| UC-08 | Update / Remove Cart | Customer | Change quantity or remove cart items |
+| UC-09 | Checkout & Place Order | Customer | Review cart and create an order |
+| UC-10 | View Order History | Customer | View past orders with status |
+| UC-11 | Edit Profile | Customer | Update name, email, or password |
+| UC-12 | Delete Account | Customer | Permanently delete account |
+| UC-13 | View Dashboard | Admin | View system statistics and recent activity |
+| UC-14 | Manage Books (CRUD) | Admin | Create, edit, and delete books |
+| UC-15 | Manage Orders (Status) | Admin | View all orders and update status |
+| UC-16 | Manage Users | Admin | View list of registered users |
+
+### Relationships
+
+| Type | Base Use Case | Related Use Case | Description |
+|------|---------------|------------------|-------------|
+| &laquo;include&raquo; | Add to Cart | Login | Must be authenticated |
+| &laquo;include&raquo; | Checkout & Place Order | Login | Must be authenticated |
+| &laquo;include&raquo; | View Order History | Login | Must be authenticated |
+| &laquo;extend&raquo; | Browse Books | Search / Filter Books | Optional search while browsing |
+| &laquo;extend&raquo; | Browse Books | View Book Details | Optional click to view details |
 
 ---
 
