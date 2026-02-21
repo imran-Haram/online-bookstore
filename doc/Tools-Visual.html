@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Online Bookstore — Development Tools</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Inter', 'Segoe UI', sans-serif;
+            background: #f8f9fa;
+            color: #2d3436;
+            line-height: 1.6;
+        }
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 40px 30px;
+        }
+        h1 {
+            font-size: 26px;
+            font-weight: 700;
+            color: #0984e3;
+            margin-bottom: 5px;
+        }
+        .subtitle {
+            font-size: 14px;
+            color: #636e72;
+            margin-bottom: 30px;
+        }
+        h2 {
+            font-size: 22px;
+            font-weight: 600;
+            color: #2d3436;
+            margin: 50px 0 10px 0;
+            padding-bottom: 8px;
+            border-bottom: 3px solid #0984e3;
+        }
+        p, .section-desc {
+            font-size: 14px;
+            color: #636e72;
+            margin-bottom: 15px;
+        }
+
+        /* ── Tool Card ── */
+        .tools-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 20px;
+            margin: 25px 0;
+        }
+        .tool-card {
+            background: #fff;
+            border: 1px solid #dfe6e9;
+            border-radius: 10px;
+            padding: 24px;
+            transition: box-shadow 0.2s;
+            display: flex;
+            flex-direction: column;
+        }
+        .tool-card:hover {
+            box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+        }
+        .tool-card .tool-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 14px;
+            flex-shrink: 0;
+        }
+        .tool-card .tool-name {
+            font-size: 17px;
+            font-weight: 700;
+            color: #2d3436;
+            margin-bottom: 2px;
+        }
+        .tool-card .tool-version {
+            font-size: 12px;
+            color: #0984e3;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+        .tool-card .tool-desc {
+            font-size: 13px;
+            color: #636e72;
+            flex: 1;
+        }
+        .tool-card .tool-url {
+            font-size: 11px;
+            color: #b2bec3;
+            margin-top: 10px;
+            word-break: break-all;
+        }
+
+        /* Category colors */
+        .bg-backend    { background: #6c5ce7; }
+        .bg-frontend   { background: #00b894; }
+        .bg-database   { background: #e17055; }
+        .bg-devtool    { background: #0984e3; }
+        .bg-build      { background: #fdcb6e; color: #2d3436 !important; }
+        .bg-testing    { background: #d63031; }
+        .bg-deploy     { background: #636e72; }
+        .bg-design     { background: #a29bfe; }
+
+        /* ── Summary Table ── */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0 30px 0;
+            font-size: 13px;
+        }
+        th {
+            background: #0984e3;
+            color: #fff;
+            padding: 10px 14px;
+            text-align: left;
+            font-weight: 600;
+        }
+        td {
+            padding: 9px 14px;
+            border-bottom: 1px solid #dfe6e9;
+        }
+        tr:nth-child(even) td { background: #f1f3f5; }
+
+        .badge {
+            display: inline-block;
+            padding: 2px 10px;
+            border-radius: 10px;
+            font-size: 11px;
+            font-weight: 600;
+        }
+        .badge-backend  { background: #dfe6fb; color: #6c5ce7; }
+        .badge-frontend { background: #d4edda; color: #00b894; }
+        .badge-database { background: #fde8e2; color: #e17055; }
+        .badge-devtool  { background: #d6eaf8; color: #0984e3; }
+        .badge-build    { background: #fef9e7; color: #b7950b; }
+        .badge-deploy   { background: #eaecee; color: #636e72; }
+
+        .page-break { page-break-before: always; }
+
+        @media print {
+            body { background: #fff; }
+            .container { padding: 20px; }
+            .tool-card { box-shadow: none; break-inside: avoid; }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+
+    <h1>Development Tools</h1>
+    <p class="subtitle">Online Bookstore &nbsp;|&nbsp; Tools &amp; Technologies Used During Development &nbsp;|&nbsp; February 2026</p>
+
+    <div class="section-desc">
+        This document lists all the <strong>tools, frameworks, libraries, and software</strong> used during the development, testing, and deployment of the Online Bookstore application. They are organized by category: Backend, Frontend, Database, Build Tools, Development Environment, Version Control &amp; Deployment, and Design &amp; Documentation.
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- 1. BACKEND TOOLS -->
+    <!-- ============================================================ -->
+    <h2>1. Backend Tools</h2>
+    <div class="tools-grid">
+
+        <div class="tool-card">
+            <div class="tool-icon bg-backend">P</div>
+            <div class="tool-name">PHP</div>
+            <div class="tool-version">Version 8.4.14</div>
+            <div class="tool-desc">The core server-side programming language used to build the entire application logic, controllers, models, middleware, and service providers.</div>
+            <div class="tool-url">https://www.php.net</div>
+        </div>
+
+        <div class="tool-card">
+            <div class="tool-icon bg-backend">L</div>
+            <div class="tool-name">Laravel Framework</div>
+            <div class="tool-version">Version 12.38.1</div>
+            <div class="tool-desc">The PHP web application framework providing MVC architecture, Eloquent ORM, Blade templating, routing, middleware, authentication, and artisan CLI commands.</div>
+            <div class="tool-url">https://laravel.com</div>
+        </div>
+
+        <div class="tool-card">
+            <div class="tool-icon bg-backend">B</div>
+            <div class="tool-name">Laravel Breeze</div>
+            <div class="tool-version">Version 2.3</div>
+            <div class="tool-desc">A lightweight authentication scaffolding for Laravel providing login, registration, password reset, email verification, and profile management out of the box.</div>
+            <div class="tool-url">https://github.com/laravel/breeze</div>
+        </div>
+
+        <div class="tool-card">
+            <div class="tool-icon bg-backend">C</div>
+            <div class="tool-name">Composer</div>
+            <div class="tool-version">Version 2.x</div>
+            <div class="tool-desc">PHP dependency manager used to install and manage all backend packages including Laravel, Breeze, and other PHP libraries defined in <code>composer.json</code>.</div>
+            <div class="tool-url">https://getcomposer.org</div>
+        </div>
+
+        <div class="tool-card">
+            <div class="tool-icon bg-backend">A</div>
+            <div class="tool-name">Artisan CLI</div>
+            <div class="tool-version">Built into Laravel</div>
+            <div class="tool-desc">Laravel's command-line interface used for running migrations, seeding the database, generating controllers/models, clearing caches, and starting the development server (<code>php artisan serve</code>).</div>
+            <div class="tool-url">https://laravel.com/docs/artisan</div>
+        </div>
+
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- 2. FRONTEND TOOLS -->
+    <!-- ============================================================ -->
+    <h2>2. Frontend Tools</h2>
+    <div class="tools-grid">
+
+        <div class="tool-card">
+            <div class="tool-icon bg-frontend">B</div>
+            <div class="tool-name">Blade Templating Engine</div>
+            <div class="tool-version">Built into Laravel</div>
+            <div class="tool-desc">Laravel's built-in templating engine used to create all views (.blade.php files) with template inheritance, components, directives, and conditional rendering.</div>
+            <div class="tool-url">https://laravel.com/docs/blade</div>
+        </div>
+
+        <div class="tool-card">
+            <div class="tool-icon bg-frontend">T</div>
+            <div class="tool-name">Tailwind CSS</div>
+            <div class="tool-version">Version 3.x</div>
+            <div class="tool-desc">A utility-first CSS framework used for styling all pages — providing responsive design, flexbox/grid layouts, spacing, typography, and color utilities without writing custom CSS.</div>
+            <div class="tool-url">https://tailwindcss.com</div>
+        </div>
+
+        <div class="tool-card">
+            <div class="tool-icon bg-frontend">A</div>
+            <div class="tool-name">Alpine.js</div>
+            <div class="tool-version">Version 3.x</div>
+            <div class="tool-desc">A lightweight JavaScript framework used for interactive UI behaviors — dropdown menus, modal dialogs, form toggles, and reactive components directly in Blade templates.</div>
+            <div class="tool-url">https://alpinejs.dev</div>
+        </div>
+
+        <div class="tool-card">
+            <div class="tool-icon bg-frontend">Ax</div>
+            <div class="tool-name">Axios</div>
+            <div class="tool-version">Version 1.x</div>
+            <div class="tool-desc">A promise-based HTTP client used for making AJAX requests from the frontend, included as a default dependency in Laravel's JavaScript bootstrap file.</div>
+            <div class="tool-url">https://axios-http.com</div>
+        </div>
+
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- 3. DATABASE TOOLS -->
+    <!-- ============================================================ -->
+    <h2>3. Database Tools</h2>
+    <div class="tools-grid">
+
+        <div class="tool-card">
+            <div class="tool-icon bg-database">M</div>
+            <div class="tool-name">MySQL</div>
+            <div class="tool-version">Version 8.4.3</div>
+            <div class="tool-desc">The relational database management system (RDBMS) storing all application data — 13 tables including users, books, cart_items, orders, order_items, and Laravel infrastructure tables.</div>
+            <div class="tool-url">https://www.mysql.com</div>
+        </div>
+
+        <div class="tool-card">
+            <div class="tool-icon bg-database">P</div>
+            <div class="tool-name">phpMyAdmin</div>
+            <div class="tool-version">Web-based</div>
+            <div class="tool-desc">A web-based database administration tool used to manage the MySQL database — browse tables, run SQL queries, import/export data, and manage users and permissions.</div>
+            <div class="tool-url">https://www.phpmyadmin.net</div>
+        </div>
+
+        <div class="tool-card">
+            <div class="tool-icon bg-database">E</div>
+            <div class="tool-name">Eloquent ORM</div>
+            <div class="tool-version">Built into Laravel</div>
+            <div class="tool-desc">Laravel's Active Record ORM used for database interactions — defining models (User, Book, CartItem, Order, OrderItem), relationships (hasMany, belongsTo), and query building.</div>
+            <div class="tool-url">https://laravel.com/docs/eloquent</div>
+        </div>
+
+        <div class="tool-card">
+            <div class="tool-icon bg-database">Mi</div>
+            <div class="tool-name">Laravel Migrations</div>
+            <div class="tool-version">Built into Laravel</div>
+            <div class="tool-desc">Database version control system used to define and modify the database schema programmatically — creating tables, adding columns, defining foreign keys, and setting indexes.</div>
+            <div class="tool-url">https://laravel.com/docs/migrations</div>
+        </div>
+
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- 4. BUILD TOOLS -->
+    <!-- ============================================================ -->
+    <h2>4. Build &amp; Package Tools</h2>
+    <div class="tools-grid">
+
+        <div class="tool-card">
+            <div class="tool-icon bg-build">V</div>
+            <div class="tool-name">Vite</div>
+            <div class="tool-version">Version 7.2.2</div>
+            <div class="tool-desc">A modern frontend build tool used for compiling and bundling CSS (Tailwind) and JavaScript (Alpine.js, Axios) assets with hot module replacement (HMR) during development and optimized production builds.</div>
+            <div class="tool-url">https://vitejs.dev</div>
+        </div>
+
+        <div class="tool-card">
+            <div class="tool-icon bg-build">N</div>
+            <div class="tool-name">Node.js</div>
+            <div class="tool-version">Version 22.x</div>
+            <div class="tool-desc">JavaScript runtime environment required to run Vite, npm, and all frontend build tooling. Provides the execution environment for compiling assets.</div>
+            <div class="tool-url">https://nodejs.org</div>
+        </div>
+
+        <div class="tool-card">
+            <div class="tool-icon bg-build">npm</div>
+            <div class="tool-name">npm</div>
+            <div class="tool-version">Version 10.x</div>
+            <div class="tool-desc">Node Package Manager used to install and manage all frontend dependencies defined in <code>package.json</code> — including Vite, Tailwind CSS, Alpine.js, Axios, and PostCSS.</div>
+            <div class="tool-url">https://www.npmjs.com</div>
+        </div>
+
+        <div class="tool-card">
+            <div class="tool-icon bg-build">Pc</div>
+            <div class="tool-name">PostCSS</div>
+            <div class="tool-version">Version 8.x</div>
+            <div class="tool-desc">A CSS transformation tool used as part of the Tailwind CSS build pipeline — processing utility classes, autoprefixing, and optimizing the final CSS output.</div>
+            <div class="tool-url">https://postcss.org</div>
+        </div>
+
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- 5. DEVELOPMENT ENVIRONMENT -->
+    <!-- ============================================================ -->
+    <div class="page-break"></div>
+    <h2>5. Development Environment</h2>
+    <div class="tools-grid">
+
+        <div class="tool-card">
+            <div class="tool-icon bg-devtool">La</div>
+            <div class="tool-name">Laragon</div>
+            <div class="tool-version">Full Edition</div>
+            <div class="tool-desc">A portable, isolated local development environment for Windows providing Apache, MySQL 8.4.3, PHP, and phpMyAdmin in a single package. Used as the primary development server stack.</div>
+            <div class="tool-url">https://laragon.org</div>
+        </div>
+
+        <div class="tool-card">
+            <div class="tool-icon bg-devtool">VS</div>
+            <div class="tool-name">Visual Studio Code / Windsurf</div>
+            <div class="tool-version">Latest</div>
+            <div class="tool-desc">The primary code editor / IDE used for writing all PHP, Blade, JavaScript, CSS, and configuration files. Provides syntax highlighting, IntelliSense, integrated terminal, and extensions for Laravel development.</div>
+            <div class="tool-url">https://code.visualstudio.com</div>
+        </div>
+
+        <div class="tool-card">
+            <div class="tool-icon bg-devtool">T</div>
+            <div class="tool-name">Windows Terminal / PowerShell</div>
+            <div class="tool-version">Windows 10/11</div>
+            <div class="tool-desc">The command-line interface used for running Artisan commands, Composer, npm, Git, and MySQL CLI operations throughout the development process.</div>
+            <div class="tool-url">https://github.com/microsoft/terminal</div>
+        </div>
+
+        <div class="tool-card">
+            <div class="tool-icon bg-devtool">FF</div>
+            <div class="tool-name">Web Browser (Firefox / Chrome)</div>
+            <div class="tool-version">Latest</div>
+            <div class="tool-desc">Used for testing the application UI, debugging with Developer Tools (F12), inspecting network requests, viewing console logs, and testing responsive design across breakpoints.</div>
+            <div class="tool-url">https://www.mozilla.org/firefox</div>
+        </div>
+
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- 6. VERSION CONTROL & DEPLOYMENT -->
+    <!-- ============================================================ -->
+    <h2>6. Version Control &amp; Deployment</h2>
+    <div class="tools-grid">
+
+        <div class="tool-card">
+            <div class="tool-icon bg-deploy">G</div>
+            <div class="tool-name">Git</div>
+            <div class="tool-version">Version 2.x</div>
+            <div class="tool-desc">Distributed version control system used to track all code changes, manage branches, create commits with conventional commit messages, and synchronize with the remote repository.</div>
+            <div class="tool-url">https://git-scm.com</div>
+        </div>
+
+        <div class="tool-card">
+            <div class="tool-icon bg-deploy">GH</div>
+            <div class="tool-name">GitHub</div>
+            <div class="tool-version">github.com</div>
+            <div class="tool-desc">Cloud-based Git hosting platform used as the remote repository for the project. All code, documentation, and diagram files are pushed to <code>github.com/imran-Haram/online-bookstore</code>.</div>
+            <div class="tool-url">https://github.com/imran-Haram/online-bookstore</div>
+        </div>
+
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- 7. DESIGN & DOCUMENTATION -->
+    <!-- ============================================================ -->
+    <h2>7. Design &amp; Documentation Tools</h2>
+    <div class="tools-grid">
+
+        <div class="tool-card">
+            <div class="tool-icon bg-design">SVG</div>
+            <div class="tool-name">SVG (Scalable Vector Graphics)</div>
+            <div class="tool-version">W3C Standard</div>
+            <div class="tool-desc">Used to create all visual diagrams — DFD (Data Flow Diagrams), ERD (Entity Relationship Diagram), Use Case Diagram, and Database Design Diagram — as resolution-independent vector graphics embedded in HTML.</div>
+            <div class="tool-url">https://www.w3.org/Graphics/SVG/</div>
+        </div>
+
+        <div class="tool-card">
+            <div class="tool-icon bg-design">Md</div>
+            <div class="tool-name">Markdown</div>
+            <div class="tool-version">CommonMark</div>
+            <div class="tool-desc">Lightweight markup language used for writing the main project documentation (<code>ProjectDocumentation.md</code>) with structured headings, tables, code blocks, and formatted text.</div>
+            <div class="tool-url">https://commonmark.org</div>
+        </div>
+
+        <div class="tool-card">
+            <div class="tool-icon bg-design">H</div>
+            <div class="tool-name">HTML5 / CSS3</div>
+            <div class="tool-version">W3C Standard</div>
+            <div class="tool-desc">Used to create all visual documentation files (DFD-Visual.html, ERD-Visual.html, UseCase-Visual.html, DatabaseDesign-Visual.html, DatabaseQueries-Visual.html) with modern styling and print-ready layouts.</div>
+            <div class="tool-url">https://developer.mozilla.org</div>
+        </div>
+
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- SUMMARY TABLE -->
+    <!-- ============================================================ -->
+    <div class="page-break"></div>
+    <h2>Complete Tools Summary</h2>
+    <p>The table below provides a consolidated view of all tools used in the project.</p>
+
+    <table>
+        <tr><th>#</th><th>Tool</th><th>Version</th><th>Category</th><th>Purpose</th></tr>
+        <tr><td>1</td><td><strong>PHP</strong></td><td>8.4.14</td><td><span class="badge badge-backend">Backend</span></td><td>Server-side programming language</td></tr>
+        <tr><td>2</td><td><strong>Laravel</strong></td><td>12.38.1</td><td><span class="badge badge-backend">Backend</span></td><td>MVC web application framework</td></tr>
+        <tr><td>3</td><td><strong>Laravel Breeze</strong></td><td>2.3</td><td><span class="badge badge-backend">Backend</span></td><td>Authentication scaffolding</td></tr>
+        <tr><td>4</td><td><strong>Composer</strong></td><td>2.x</td><td><span class="badge badge-backend">Backend</span></td><td>PHP dependency manager</td></tr>
+        <tr><td>5</td><td><strong>Artisan CLI</strong></td><td>—</td><td><span class="badge badge-backend">Backend</span></td><td>Laravel command-line interface</td></tr>
+        <tr><td>6</td><td><strong>Blade</strong></td><td>—</td><td><span class="badge badge-frontend">Frontend</span></td><td>Templating engine for views</td></tr>
+        <tr><td>7</td><td><strong>Tailwind CSS</strong></td><td>3.x</td><td><span class="badge badge-frontend">Frontend</span></td><td>Utility-first CSS framework</td></tr>
+        <tr><td>8</td><td><strong>Alpine.js</strong></td><td>3.x</td><td><span class="badge badge-frontend">Frontend</span></td><td>Lightweight JS framework for interactivity</td></tr>
+        <tr><td>9</td><td><strong>Axios</strong></td><td>1.x</td><td><span class="badge badge-frontend">Frontend</span></td><td>HTTP client for AJAX requests</td></tr>
+        <tr><td>10</td><td><strong>MySQL</strong></td><td>8.4.3</td><td><span class="badge badge-database">Database</span></td><td>Relational database management system</td></tr>
+        <tr><td>11</td><td><strong>phpMyAdmin</strong></td><td>—</td><td><span class="badge badge-database">Database</span></td><td>Web-based database administration</td></tr>
+        <tr><td>12</td><td><strong>Eloquent ORM</strong></td><td>—</td><td><span class="badge badge-database">Database</span></td><td>Object-Relational Mapping for DB queries</td></tr>
+        <tr><td>13</td><td><strong>Laravel Migrations</strong></td><td>—</td><td><span class="badge badge-database">Database</span></td><td>Database schema version control</td></tr>
+        <tr><td>14</td><td><strong>Vite</strong></td><td>7.2.2</td><td><span class="badge badge-build">Build</span></td><td>Frontend asset bundler with HMR</td></tr>
+        <tr><td>15</td><td><strong>Node.js</strong></td><td>22.x</td><td><span class="badge badge-build">Build</span></td><td>JavaScript runtime for build tools</td></tr>
+        <tr><td>16</td><td><strong>npm</strong></td><td>10.x</td><td><span class="badge badge-build">Build</span></td><td>Node package manager</td></tr>
+        <tr><td>17</td><td><strong>PostCSS</strong></td><td>8.x</td><td><span class="badge badge-build">Build</span></td><td>CSS transformation and optimization</td></tr>
+        <tr><td>18</td><td><strong>Laragon</strong></td><td>Full</td><td><span class="badge badge-devtool">DevTool</span></td><td>Local development environment (WAMP)</td></tr>
+        <tr><td>19</td><td><strong>VS Code / Windsurf</strong></td><td>Latest</td><td><span class="badge badge-devtool">DevTool</span></td><td>Code editor / IDE</td></tr>
+        <tr><td>20</td><td><strong>PowerShell</strong></td><td>—</td><td><span class="badge badge-devtool">DevTool</span></td><td>Command-line interface</td></tr>
+        <tr><td>21</td><td><strong>Web Browser</strong></td><td>Latest</td><td><span class="badge badge-devtool">DevTool</span></td><td>Testing and debugging UI</td></tr>
+        <tr><td>22</td><td><strong>Git</strong></td><td>2.x</td><td><span class="badge badge-deploy">Deploy</span></td><td>Version control system</td></tr>
+        <tr><td>23</td><td><strong>GitHub</strong></td><td>—</td><td><span class="badge badge-deploy">Deploy</span></td><td>Remote repository hosting</td></tr>
+        <tr><td>24</td><td><strong>SVG</strong></td><td>W3C</td><td><span class="badge badge-devtool">Design</span></td><td>Vector graphics for diagrams</td></tr>
+        <tr><td>25</td><td><strong>Markdown</strong></td><td>—</td><td><span class="badge badge-devtool">Design</span></td><td>Documentation markup language</td></tr>
+        <tr><td>26</td><td><strong>HTML5 / CSS3</strong></td><td>W3C</td><td><span class="badge badge-devtool">Design</span></td><td>Visual documentation files</td></tr>
+    </table>
+
+    <p style="text-align:center; margin-top:40px; color:#adb5bd; font-size:12px;">
+        Online Bookstore — Development Tools &nbsp;|&nbsp; Generated February 2026
+    </p>
+
+</div>
+</body>
+</html>
